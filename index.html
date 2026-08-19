@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Risola Nashr — kitob buyurtma qilish | O'zbekiston bo'ylab yetkazib berish</title>
+<meta name="description" content="Risola Nashr — sifatli kitoblarni butun O'zbekiston bo'ylab yetkazib beruvchi nashriyot. Buyurtmangizni 2 daqiqada rasmiylashtiring. Oldindan to'lov shart emas.">
+<meta name="theme-color" content="#f7f3ea">
+<meta property="og:title" content="Risola Nashr — ma'noli kitoblar, ishonchli yetkazib berish">
+<meta property="og:description" content="Katalogdan kitobni tanlang, ma'lumotlaringizni qoldiring — menejerimiz bog'lanib, buyurtmani manzilingizga yetkazadi.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="uz_UZ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231f5d47'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --cream:#f7f3ea; --cream-2:#efe8da; --ink:#14201b; --ink-soft:#4a5852;
+  --brand:#1f5d47; --brand-d:#143f31; --brand-l:#2f7d60; --gold:#b8873b; --gold-l:#d9ae63;
+  --r:16px; --shadow:0 1px 2px rgba(20,32,27,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream); color:var(--ink);
+  font-family:'Manrope',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.55;
+}
+h1,h2,h3,.serif{font-family:'Playfair Display',Georgia,serif; letter-spacing:-.015em}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+::selection{background:var(--gold-l);color:var(--ink)}
+:focus-visible{outline:2px solid var(--brand-l);outline-offset:2px}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.narrow{max-width:760px;margin:0 auto;padding:0 20px}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;border:0;cursor:pointer;
+  border-radius:999px;font-weight:600;letter-spacing:-.01em;transition:.18s ease}
+.btn-p{background:var(--brand);color:#fff;box-shadow:0 10px 30px -12px rgba(31,93,71,.7)}
+.btn-p:hover:not(:disabled){background:var(--brand-d);transform:translateY(-2px);box-shadow:0 18px 40px -14px rgba(31,93,71,.8)}
+.btn-p:disabled{opacity:.38;cursor:not-allowed;box-shadow:none;transform:none}
+.btn-g{background:transparent;border:1px solid rgba(20,32,27,.16);color:var(--ink)}
+.btn-g:hover{border-color:rgba(20,32,27,.36);background:rgba(255,255,255,.6)}
+.btn-w{background:var(--cream);color:var(--ink)}
+.btn-w:hover{background:#fff;transform:translateY(-2px)}
+.btn-sm{padding:10px 18px;font-size:14px}
+.btn-md{padding:14px 26px;font-size:15px}
+.btn-lg{padding:16px 30px;font-size:15.5px}
+
+.card{background:#fff;border:1px solid rgba(20,32,27,.08);border-radius:var(--r);box-shadow:var(--shadow)}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:40;transition:.28s ease;border-bottom:1px solid transparent}
+header.on{background:rgba(247,243,234,.95);backdrop-filter:blur(14px);border-bottom-color:rgba(20,32,27,.1)}
+.hd{display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo .mark{width:36px;height:36px;border-radius:11px;background:var(--brand);color:#fff;
+  display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:18px}
+.logo b{display:block;font-family:'Playfair Display',serif;font-size:17px;font-weight:600;line-height:1.15}
+.logo span{display:block;font-size:11px;color:var(--ink-soft)}
+nav.main{display:none;gap:28px;font-size:14px;color:var(--ink-soft)}
+nav.main a:hover{color:var(--ink)}
+.hd-r{display:flex;align-items:center;gap:8px}
+.ico{width:36px;height:36px;border-radius:50%;border:1px solid rgba(20,32,27,.12);
+  display:none;place-items:center;color:var(--ink-soft);transition:.2s}
+.ico:hover{border-color:rgba(20,32,27,.3);color:var(--ink)}
+@media(min-width:640px){.ico{display:grid}}
+@media(min-width:880px){nav.main{display:flex}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
+.hero:before{width:520px;height:520px;left:-170px;top:-180px;background:rgba(31,93,71,.16)}
+.hero:after{width:420px;height:420px;right:-140px;top:60px;background:rgba(184,135,59,.18)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.035;
+  background-image:radial-gradient(circle at 1px 1px,#14201b 1px,transparent 0);background-size:4px 4px}
+.hero-in{position:relative;display:grid;gap:48px;padding:56px 0 70px}
+@media(min-width:940px){.hero-in{grid-template-columns:1.05fr .95fr;align-items:center;gap:60px;padding:76px 0 96px}}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(184,135,59,.35);
+  background:rgba(184,135,59,.09);color:var(--gold);border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:600}
+h1{font-size:clamp(34px,7vw,58px);line-height:1.07;font-weight:600;margin-top:22px}
+h1 em{font-style:normal;color:var(--brand)}
+.lead{margin-top:22px;max-width:36em;font-size:16.5px;color:var(--ink-soft)}
+.cta{margin-top:34px;display:flex;flex-direction:column;gap:12px}
+@media(min-width:520px){.cta{flex-direction:row}}
+.ticks{margin-top:36px;display:flex;flex-wrap:wrap;gap:10px 26px;font-size:13.5px;color:var(--ink-soft)}
+.ticks i{display:inline-flex;align-items:center;gap:7px;font-style:normal}
+
+.hero-card{position:relative;max-width:420px;margin:0 auto}
+.hero-card .card{position:relative;z-index:2;padding:26px}
+.hero-card .blob1,.hero-card .blob2{position:absolute;border-radius:18px;z-index:1}
+.hero-card .blob1{width:128px;height:128px;right:-16px;bottom:-20px;background:rgba(184,135,59,.22);transform:rotate(6deg)}
+.hero-card .blob2{width:96px;height:96px;left:-18px;top:-16px;background:rgba(31,93,71,.13);transform:rotate(-6deg)}
+.step-row{display:flex;align-items:center;gap:12px;border:1px solid rgba(20,32,27,.08);
+  background:rgba(247,243,234,.6);border-radius:12px;padding:12px 15px;margin-top:11px}
+.step-row .n{width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;
+  display:grid;place-items:center;font-size:11px;font-weight:700;flex:none}
+.step-row .t{font-size:13.5px;font-weight:600}
+
+/* ---------- sections ---------- */
+section{scroll-margin-top:80px}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+h2{font-size:clamp(26px,4.2vw,38px);font-weight:600;margin-top:12px}
+.sub{margin-top:12px;color:var(--ink-soft);font-size:15px;max-width:36em}
+
+.feats{border-top:1px solid rgba(20,32,27,.08);border-bottom:1px solid rgba(20,32,27,.08);background:rgba(255,255,255,.55)}
+.feats .g{display:grid;gap:30px;padding:56px 0}
+@media(min-width:640px){.feats .g{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.feats .g{grid-template-columns:repeat(4,1fr)}}
+.feat .ic{width:44px;height:44px;border-radius:12px;background:rgba(31,93,71,.1);color:var(--brand);display:grid;place-items:center}
+.feat h3{font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;margin-top:15px}
+.feat p{margin-top:8px;font-size:13.5px;color:var(--ink-soft)}
+
+/* ---------- books ---------- */
+.books{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px}
+@media(min-width:640px){.books{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1000px){.books{grid-template-columns:repeat(6,1fr);gap:16px}}
+.book{overflow:hidden;transition:.28s;display:block;cursor:pointer;text-align:left;padding:0;border:1px solid rgba(20,32,27,.08);background:#fff;border-radius:var(--r)}
+.book:hover{transform:translateY(-4px);box-shadow:0 20px 40px -24px rgba(20,32,27,.45)}
+.cover{aspect-ratio:3/4;position:relative;overflow:hidden}
+.cover .lines{position:absolute;inset:0;opacity:.25;
+  background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.16) 0 1px,transparent 1px 14px)}
+.cover .spine{position:absolute;left:0;top:0;height:100%;width:7px;background:rgba(0,0,0,.25)}
+.cover .txt{position:absolute;inset:0;padding:14px;display:flex;flex-direction:column;justify-content:space-between}
+.cover .brandline{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.cover .name{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:#fff;line-height:1.25;
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.cover .auth{margin-top:5px;font-size:11px;color:rgba(255,255,255,.72)}
+.book .meta{padding:12px}
+.book .meta .t{font-size:13px;font-weight:700;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.book .meta .p{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--brand)}
+
+/* ---------- process ---------- */
+.proc{background:var(--ink);color:var(--cream)}
+.proc .eyebrow{color:var(--gold-l)}
+.proc h2{color:var(--cream)}
+.proc .g{display:grid;gap:1px;background:rgba(247,243,234,.13);border-radius:var(--r);overflow:hidden;margin-top:44px}
+@media(min-width:640px){.proc .g{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.proc .g{grid-template-columns:repeat(4,1fr)}}
+.pstep{background:var(--ink);padding:28px}
+.pstep .num{font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--gold-l)}
+.pstep h3{font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;margin-top:14px;color:var(--cream)}
+.pstep p{margin-top:8px;font-size:13.5px;color:rgba(247,243,234,.62)}
+
+/* ---------- faq ---------- */
+details{border:1px solid rgba(20,32,27,.08);background:#fff;border-radius:14px;padding:16px 20px;margin-top:12px}
+details summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;font-size:15px;font-weight:700}
+details summary::-webkit-details-marker{display:none}
+details .plus{width:24px;height:24px;flex:none;border-radius:50%;border:1px solid rgba(20,32,27,.16);
+  display:grid;place-items:center;color:var(--ink-soft);transition:.25s}
+details[open] .plus{transform:rotate(45deg)}
+details p{margin-top:12px;font-size:14px;color:var(--ink-soft)}
+
+/* ---------- cta band ---------- */
+.band{position:relative;overflow:hidden;background:var(--brand);border-radius:26px;padding:56px 24px;text-align:center;color:#fff}
+.band .lines{position:absolute;inset:0;opacity:.2;
+  background-image:repeating-linear-gradient(125deg,rgba(255,255,255,.14) 0 1px,transparent 1px 22px)}
+.band h2{color:#fff;max-width:16em;margin:0 auto}
+.band p{margin-top:14px;color:rgba(255,255,255,.72);font-size:15px}
+
+/* ---------- footer ---------- */
+footer{margin-top:90px;border-top:1px solid rgba(20,32,27,.08);background:rgba(239,232,218,.6)}
+.fg{display:grid;gap:34px;padding:52px 0}
+@media(min-width:640px){.fg{grid-template-columns:1fr 1fr}}
+@media(min-width:960px){.fg{grid-template-columns:2fr 1fr 1fr}}
+footer h4{font-size:14px;font-weight:700}
+footer ul{list-style:none;margin-top:14px;display:grid;gap:10px;font-size:14px;color:var(--ink-soft)}
+footer ul a:hover{color:var(--ink)}
+.fbot{border-top:1px solid rgba(20,32,27,.08);padding:20px 0;display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:space-between;font-size:12px;color:var(--ink-soft)}
+
+/* ---------- order overlay ---------- */
+#order{position:fixed;inset:0;z-index:90;background:var(--cream);overflow-y:auto;display:none}
+#order.open{display:block;animation:fade .3s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.obar{position:sticky;top:0;background:rgba(247,243,234,.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(20,32,27,.1);z-index:2}
+.obar .in{display:flex;align-items:center;justify-content:space-between;height:62px}
+.xbtn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(20,32,27,.14);background:transparent;
+  cursor:pointer;display:grid;place-items:center;color:var(--ink-soft);transition:.2s}
+.xbtn:hover{border-color:rgba(20,32,27,.34);color:var(--ink)}
+
+.prog{display:flex;align-items:center;margin:26px 0 30px}
+.prog .it{display:flex;align-items:center;flex:1}
+.prog .it:last-child{flex:none}
+.prog .cir{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;
+  border:1px solid rgba(20,32,27,.16);background:#fff;color:var(--ink-soft);transition:.3s;flex:none}
+.prog .it.done .cir,.prog .it.now .cir{background:var(--brand);color:#fff;border-color:var(--brand)}
+.prog .it.now .cir{box-shadow:0 0 0 4px rgba(31,93,71,.15)}
+.prog .lbl{display:none;font-size:11px;font-weight:600;color:var(--ink-soft);margin-top:6px}
+.prog .it.done .lbl,.prog .it.now .lbl{color:var(--ink)}
+.prog .col{display:flex;flex-direction:column;align-items:center}
+.prog .bar{flex:1;height:1px;background:rgba(20,32,27,.13);margin:0 10px;position:relative}
+.prog .bar i{position:absolute;left:0;top:0;height:1px;width:0;background:var(--brand);transition:.45s}
+.prog .it.done .bar i{width:100%}
+@media(min-width:600px){.prog .lbl{display:block}}
+
+.step{animation:up .45s cubic-bezier(.16,1,.3,1) both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.step h2{font-size:clamp(24px,4.6vw,32px);margin-top:0}
+.step .sub{margin-top:8px;font-size:14.5px}
+
+label.f{display:block;margin-top:20px}
+label.f .lt{display:block;font-size:13.5px;font-weight:700;margin-bottom:8px}
+label.f .hint{display:block;font-size:12px;color:var(--ink-soft);margin-top:7px}
+.inp{width:100%;border:1px solid rgba(20,32,27,.13);background:#fff;border-radius:12px;
+  padding:14px 16px;font-size:15px;transition:.18s;outline:none}
+.inp:focus{border-color:var(--brand)}
+.inp::placeholder{color:rgba(74,88,82,.5)}
+.err{display:block;font-size:12px;color:#c62828;margin-top:7px}
+.selwrap{position:relative}
+.selwrap svg{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-soft)}
+select.inp{appearance:none;padding-right:44px;cursor:pointer}
+
+.searchwrap{position:relative;margin-top:22px}
+.searchwrap .clr{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;
+  cursor:pointer;color:var(--ink-soft);padding:4px;display:none}
+.pickgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+@media(min-width:620px){.pickgrid{grid-template-columns:repeat(3,1fr);gap:16px}}
+.pick{position:relative;border:1px solid rgba(20,32,27,.08);background:#fff;border-radius:var(--r);
+  overflow:hidden;cursor:pointer;text-align:left;padding:0;transition:.2s}
+.pick:hover{transform:translateY(-3px);box-shadow:0 16px 32px -22px rgba(20,32,27,.5)}
+.pick.sel{border-color:var(--brand);box-shadow:0 0 0 2px rgba(31,93,71,.25)}
+.pick .tick{position:absolute;right:10px;top:10px;z-index:3;width:25px;height:25px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.82);display:grid;place-items:center;color:transparent}
+.pick.sel .tick{background:var(--brand);border-color:var(--brand);color:#fff}
+.pick .meta{padding:12px}
+.pick .meta .t{font-size:13px;font-weight:700;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pick .meta .a{margin-top:3px;font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pick .meta .p{margin-top:7px;font-size:12.5px;font-weight:700;color:var(--brand)}
+
+.qrow{display:flex;align-items:center;gap:14px;padding:14px;margin-top:12px}
+.qrow .th{width:58px;height:78px;border-radius:10px;overflow:hidden;flex:none;position:relative}
+.qrow .info{flex:1;min-width:0}
+.qrow .nm{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qrow .pr{font-size:12px;color:var(--ink-soft)}
+.qbtns{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.qb{height:34px;min-width:38px;border-radius:9px;border:1px solid rgba(20,32,27,.13);background:#fff;
+  cursor:pointer;font-size:13px;font-weight:700;transition:.18s}
+.qb:hover{border-color:rgba(20,32,27,.32)}
+.qb.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.qsep{width:1px;height:20px;background:rgba(20,32,27,.12);margin:0 4px}
+.qnum{width:50px;height:34px;text-align:center;border-radius:9px;border:1px solid rgba(20,32,27,.13);
+  background:#fff;font-size:13px;font-weight:700;outline:none}
+.qnum:focus{border-color:var(--brand)}
+.qrow .side{text-align:right;flex:none;display:none}
+@media(min-width:560px){.qrow .side{display:block}}
+.qrow .side .s{font-size:13px;font-weight:700;color:var(--brand)}
+.qrow .side .del{margin-top:4px;background:none;border:0;cursor:pointer;font-size:11.5px;color:var(--ink-soft)}
+.qrow .side .del:hover{color:#c62828}
+
+.total{display:flex;align-items:center;justify-content:space-between;background:rgba(31,93,71,.08);
+  border-radius:14px;padding:16px 20px;margin-top:18px}
+.total .l{font-size:14px;color:var(--ink-soft);font-weight:600}
+.total .r{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:var(--brand)}
+
+.sum{border:1px solid rgba(20,32,27,.08);background:#fff;border-radius:var(--r);margin-top:24px}
+.sum .blk{padding:20px}
+.sum .blk + .blk{border-top:1px solid rgba(20,32,27,.08)}
+.sum .bh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sum .bh h3{font-family:'Manrope',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.sum .bh button{background:none;border:0;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--brand)}
+.kv{display:flex;justify-content:space-between;gap:16px;font-size:14px;margin-top:9px}
+.kv .k{color:var(--ink-soft)}
+.kv .v{font-weight:600;text-align:right}
+.li{display:flex;justify-content:space-between;gap:16px;font-size:14px;margin-top:11px}
+.li .n{font-weight:600}
+.li .q{font-size:12.5px;color:var(--ink-soft)}
+.li .s{font-weight:700;flex:none}
+.sumtot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(20,32,27,.08);
+  margin-top:16px;padding-top:16px}
+.sumtot .l{font-size:14px;font-weight:600}
+.sumtot .r{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:var(--brand)}
+textarea.inp{resize:none;min-height:88px}
+
+.nav{display:flex;flex-direction:column-reverse;gap:12px;margin-top:30px}
+@media(min-width:560px){.nav{flex-direction:row;align-items:center;justify-content:space-between}}
+.fine{margin-top:16px;text-align:center;font-size:12.5px;color:var(--ink-soft)}
+.alert{background:#fdecec;color:#b3261e;border-radius:12px;padding:13px 16px;font-size:13.5px;margin-top:16px}
+
+/* done */
+.done{text-align:center;padding:60px 0 40px;max-width:520px;margin:0 auto}
+.done .ring{position:relative;width:96px;height:96px;margin:0 auto}
+.done .ring .pulse{position:absolute;inset:0;border-radius:50%;background:rgba(31,93,71,.16);animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.8);opacity:.9}70%{transform:scale(1.5);opacity:0}100%{opacity:0}}
+.done .ring .core{position:relative;width:96px;height:96px;border-radius:50%;background:var(--brand);color:#fff;
+  display:grid;place-items:center;box-shadow:0 20px 50px -18px rgba(31,93,71,.9);animation:pop .55s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.done h2{margin-top:30px}
+.done .p{margin-top:16px;font-size:15px;color:var(--ink-soft)}
+.done .card{margin-top:28px;padding:20px;text-align:left}
+.done .acts{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+@media(min-width:520px){.done .acts{flex-direction:row;justify-content:center}}
+
+.skel{background:rgba(20,32,27,.06);border-radius:var(--r);animation:sk 1.3s ease-in-out infinite}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.5}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.noscroll{overflow:hidden}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="wrap hd">
+    <a href="#" class="logo">
+      <span class="mark">R</span>
+      <span><b>Risola Nashr</b><span>Nashriyot</span></span>
+    </a>
+    <nav class="main">
+      <a href="#kitoblar">Kitoblar</a>
+      <a href="#jarayon">Qanday ishlaydi</a>
+      <a href="#savollar">Savollar</a>
+    </nav>
+    <div class="hd-r">
+      <a class="ico" href="https://t.me/risolanashr_buyurtma_bot" target="_blank" rel="noopener" aria-label="Telegram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg>
+      </a>
+      <button class="btn btn-p btn-sm" onclick="openOrder()">Buyurtma berish</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <span class="grain"></span>
+    <div class="wrap hero-in">
+      <div>
+        <span class="pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 2.6 5.6 6.1.8-4.5 4.2 1.2 6L12 16.8 6.6 19.6l1.2-6-4.5-4.2 6.1-.8z"/></svg>
+          O'zbekiston bo'ylab yetkazib berish
+        </span>
+        <h1>Ma'noli kitoblar —<br><em>bir necha bosqichda</em> qo'lingizda</h1>
+        <p class="lead">Risola Nashr — saralangan nashrlar katalogi. Katalogdan kitobni tanlang,
+          ma'lumotlaringizni qoldiring — menejerimiz bog'lanib, buyurtmani manzilingizga yetkazadi.</p>
+        <div class="cta">
+          <button class="btn btn-p btn-lg" onclick="openOrder()">
+            Buyurtma berish
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <a class="btn btn-g btn-lg" href="#jarayon">Qanday ishlaydi?</a>
+        </div>
+        <div class="ticks">
+          <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f5d47" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg> Oldindan to'lov yo'q</i>
+          <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f5d47" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg> Original nashrlar</i>
+          <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f5d47" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg> Har kuni 9:00 — 19:00</i>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <span class="blob1"></span><span class="blob2"></span>
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="width:44px;height:44px;border-radius:12px;background:rgba(31,93,71,.1);color:var(--brand);display:grid;place-items:center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z"/></svg>
+            </span>
+            <div>
+              <div style="font-size:14px;font-weight:700">Buyurtma oynasi</div>
+              <div style="font-size:12px;color:var(--ink-soft)">4 ta oddiy bosqich</div>
+            </div>
+          </div>
+          <div style="margin-top:18px">
+            <div class="step-row"><span class="n">1</span><span class="t">Ism-familya va telefon</span></div>
+            <div class="step-row"><span class="n">2</span><span class="t">Viloyatingiz</span></div>
+            <div class="step-row"><span class="n">3</span><span class="t">Kitob va soni</span></div>
+            <div class="step-row"><span class="n">4</span><span class="t">Tasdiqlash</span></div>
+          </div>
+          <div style="margin-top:20px;background:var(--brand);color:#fff;border-radius:12px;padding:13px;text-align:center;font-size:14px;font-weight:700">
+            Buyurtmangiz uchun rahmat!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AFZALLIKLAR -->
+  <section class="feats">
+    <div class="wrap g" id="feats"></div>
+  </section>
+
+  <!-- KITOBLAR -->
+  <section id="kitoblar" class="wrap" style="padding:74px 20px">
+    <div class="reveal">
+      <span class="eyebrow">Katalog</span>
+      <h2>Saralangan kitoblar</h2>
+      <p class="sub">Har bir nashr sifatli qog'oz va puxta tahrirdan o'tgan. To'liq ro'yxatni buyurtma oynasida ko'rasiz.</p>
+    </div>
+    <div class="books" id="booksGrid"></div>
+    <div style="margin-top:30px">
+      <button class="btn btn-p btn-md" onclick="openOrder()">Katalogni ochish va buyurtma berish</button>
+    </div>
+  </section>
+
+  <!-- JARAYON -->
+  <section id="jarayon" class="proc">
+    <div class="wrap" style="padding:74px 20px">
+      <div class="reveal">
+        <span class="eyebrow">Jarayon</span>
+        <h2>Buyurtma berish — 2 daqiqa</h2>
+      </div>
+      <div class="g" id="procGrid"></div>
+      <div style="margin-top:44px;text-align:center">
+        <button class="btn btn-w btn-lg" onclick="openOrder()">
+          Hoziroq buyurtma berish
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAVOLLAR -->
+  <section id="savollar" class="narrow" style="padding:74px 20px">
+    <div class="reveal">
+      <span class="eyebrow">Savol-javob</span>
+      <h2>Ko'p so'raladigan savollar</h2>
+    </div>
+    <div id="faq" style="margin-top:26px"></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wrap">
+    <div class="band reveal">
+      <span class="lines"></span>
+      <div style="position:relative">
+        <h2>Kitobingizni bugun buyurtma qiling</h2>
+        <p>Ma'lumotlaringizni qoldiring — qolganini biz hal qilamiz.</p>
+        <button class="btn btn-w btn-lg" style="margin-top:28px" onclick="openOrder()">
+          Buyurtma berish
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fg">
+      <div>
+        <div class="logo"><span class="mark">R</span><span><b>Risola Nashr</b></span></div>
+        <p style="margin-top:16px;max-width:32em;font-size:14px;color:var(--ink-soft)">
+          Risola Nashr — sifatli kitoblarni butun O'zbekiston bo'ylab yetkazib beruvchi nashriyot.
+          Buyurtmangizni 2 daqiqada rasmiylashtiring.</p>
+      </div>
+      <div>
+        <h4>Bo'limlar</h4>
+        <ul>
+          <li><a href="#kitoblar">Kitoblar</a></li>
+          <li><a href="#jarayon">Qanday ishlaydi</a></li>
+          <li><a href="#savollar">Savollar</a></li>
+          <li><a href="#" onclick="openOrder();return false">Buyurtma berish</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Bog'lanish</h4>
+        <ul>
+          <li><a href="https://t.me/risolanashr_buyurtma_bot" target="_blank" rel="noopener">Telegram</a></li>
+          <li>Har kuni 9:00 — 19:00</li>
+          <li>Toshkent shahri</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fbot">
+      <span>© <span id="yr"></span> Risola Nashr. Barcha huquqlar himoyalangan.</span>
+      <span>O'zbekiston bo'ylab yetkazib berish</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== BUYURTMA ==================== -->
+<div id="order" aria-hidden="true">
+  <div class="obar">
+    <div class="wrap in">
+      <a href="#" class="logo" onclick="closeOrder();return false">
+        <span class="mark">R</span><span><b>Risola Nashr</b><span>Buyurtma</span></span>
+      </a>
+      <button class="xbtn" onclick="closeOrder()" aria-label="Yopish">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="narrow" style="padding-bottom:70px"><div id="orderBody"></div></div>
+</div>
+
+<script>
+/* ================= SOZLAMALAR ================= */
+var ENDPOINT = "https://script.google.com/macros/s/AKfycbz2Wbbn8s8uGkHw4V8hbCDVKXZ4V-zIkF4S6KHv2E2_Q3EK9e4qBWx_PokiGFjHQ4V53Q/exec";
+
+var VILOYATLAR = ["Toshkent shahri","Toshkent viloyati","Andijon","Buxoro","Farg'ona","Jizzax","Xorazm",
+  "Namangan","Navoiy","Qashqadaryo","Qoraqalpog'iston Respublikasi","Samarqand","Sirdaryo","Surxondaryo"];
+
+var QADAMLAR = ["Ma'lumotlar","Kitob","Soni","Tasdiqlash"];
+
+var PALETTE = [["#1f5d47","#2f7d60"],["#8a4b2a","#b8873b"],["#243b53","#3d5a80"],
+  ["#5b2c3e","#8d4f63"],["#3d4a1f","#68793a"],["#4a2c5b","#74508d"]];
+
+var DEMO = [
+  {id:"k1",nomi:"Saodat asriga sayohat",muallif:"Sagoviddin Jabborov",narx:68000},
+  {id:"k2",nomi:"Qalb tarbiyasi",muallif:"Abdulaziz Mansur",narx:54000},
+  {id:"k3",nomi:"Ilm yo'lidagilar uchun",muallif:"Muhammad Sodiq",narx:72000},
+  {id:"k4",nomi:"Oila gulshani",muallif:"Nodira Karimova",narx:49000},
+  {id:"k5",nomi:"Buyuk allomalar",muallif:"Tarix instituti",narx:89000},
+  {id:"k6",nomi:"Vaqtni boshqarish san'ati",muallif:"Jasur Ergashev",narx:62000}
+];
+
+/* ================= YORDAMCHILAR ================= */
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function som(n){return String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?!\d))/g," ")+" so'm";}
+function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function coverHTML(b,compact){
+  if(b.rasm) return '<img src="'+esc(b.rasm)+'" alt="'+esc(b.nomi)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover">';
+  var p=PALETTE[hash(b.nomi||b.id)%PALETTE.length];
+  return '<div style="position:absolute;inset:0;background:linear-gradient(150deg,'+p[0]+','+p[1]+')"></div>'+
+    '<span class="lines"></span><span class="spine" style="width:'+(compact?3:7)+'px"></span>'+
+    (compact
+      ? '<div class="txt" style="padding:8px;justify-content:flex-end"><div class="name" style="font-size:10px;-webkit-line-clamp:3">'+esc(b.nomi)+'</div></div>'
+      : '<div class="txt"><div class="brandline">Risola Nashr</div><div><div class="name">'+esc(b.nomi)+'</div>'+
+        (b.muallif?'<div class="auth">'+esc(b.muallif)+'</div>':'')+'</div></div>');
+}
+function fmtPhone(v){
+  var d=String(v).replace(/\D/g,"").replace(/^998/,"").slice(0,9);
+  var p=[d.slice(0,2),d.slice(2,5),d.slice(5,7),d.slice(7,9)].filter(Boolean);
+  return p.length?"+998 "+p.join(" "):"";
+}
+function phoneDigits(v){return String(v).replace(/\D/g,"").replace(/^998/,"").slice(0,9);}
+
+/* ================= STATIC BLOKLAR ================= */
+document.getElementById("yr").textContent=new Date().getFullYear();
+
+var FEATS=[
+ ["M12 3l7.5 3v5.5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5V6z|m9 12 2 2 4-4","Original nashr","Barcha kitoblar rasmiy nashriyotdan. Sifatli qog'oz, aniq bosma, mustahkam muqova."],
+ ["M2 7.5A1.5 1.5 0 0 1 3.5 6H14v9H3.5A1.5 1.5 0 0 1 2 13.5z|M14 9h3.6a2 2 0 0 1 1.7.9L22 14v1h-8z","Tez yetkazish","Toshkent bo'ylab 1 kun, viloyatlarga 2–4 kun ichida yetkazib beramiz."],
+ ["M3 7.5A2.5 2.5 0 0 1 5.5 5H18v3|M3 7.5h18v12H3z","Qo'lda to'lov","Kitobni qo'lingizga olib, ko'rib chiqib, keyin to'laysiz. Oldindan to'lov shart emas."],
+ ["M5 3.5h3l1.6 4-2 1.4a12 12 0 0 0 5.5 5.5l1.4-2 4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5z","Jonli aloqa","Buyurtmadan so'ng menejer qo'ng'iroq qilib, barcha tafsilotni aniqlaydi."]
+];
+document.getElementById("feats").innerHTML=FEATS.map(function(f,i){
+  var paths=f[0].split("|").map(function(d){return '<path d="'+d+'"/>';}).join("");
+  return '<div class="feat reveal" style="transition-delay:'+(i*80)+'ms"><span class="ic">'+
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg>'+
+    '</span><h3>'+f[1]+'</h3><p>'+f[2]+'</p></div>';
+}).join("");
+
+var PROC=[
+ ["01","Ma'lumotlaringizni qoldiring","Ism-familya, telefon raqam va viloyatingizni kiritasiz. 30 soniya vaqt oladi."],
+ ["02","Kitobni tanlang","Katalogdan kerakli kitobni va nechta kerakligini belgilaysiz."],
+ ["03","Tasdiqlang","Buyurtma ma'lumotlarini ko'rib chiqib tasdiqlaysiz — tugadi."],
+ ["04","Qabul qilib oling","Menejer bog'lanadi, kitob manzilingizga yetkaziladi va shunda to'laysiz."]
+];
+document.getElementById("procGrid").innerHTML=PROC.map(function(p,i){
+  return '<div class="pstep reveal" style="transition-delay:'+(i*90)+'ms"><div class="num">'+p[0]+'</div><h3>'+p[1]+'</h3><p>'+p[2]+'</p></div>';
+}).join("");
+
+var FAQ=[
+ ["Yetkazib berish qancha vaqt oladi?","Toshkent shahri bo'yicha odatda 1 ish kuni, viloyatlarga 2–4 ish kuni. Aniq muddatni menejer qo'ng'iroq paytida aytadi."],
+ ["To'lovni qanday amalga oshiraman?","Kitobni qo'lingizga olganingizda naqd yoki karta orqali to'laysiz. Oldindan to'lov talab qilinmaydi."],
+ ["Bir nechta kitob buyurtma qilsam bo'ladimi?","Ha. Buyurtma oynasida bir nechta kitobni tanlab, har biriga alohida soni belgilashingiz mumkin."],
+ ["Buyurtmani bekor qilsam bo'ladimi?","Albatta. Menejer qo'ng'irog'i paytida yoki telefon orqali bog'lanib bekor qilishingiz mumkin."]
+];
+document.getElementById("faq").innerHTML=FAQ.map(function(f,i){
+  return '<details class="reveal" style="transition-delay:'+(i*70)+'ms"><summary>'+f[0]+
+    '<span class="plus"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><p>'+f[1]+'</p></details>';
+}).join("");
+
+/* ================= SCROLL EFFEKTLARI ================= */
+var hdr=document.getElementById("hdr");
+function onScroll(){hdr.classList.toggle("on",window.scrollY>12);}
+window.addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});
+},{threshold:.1,rootMargin:"0px 0px -40px 0px"});
+document.querySelectorAll(".reveal").forEach(function(el){io.observe(el);});
+
+/* ================= KATALOG ================= */
+var BOOKS=DEMO.slice(), catalogLoaded=false;
+function renderPreview(){
+  document.getElementById("booksGrid").innerHTML=BOOKS.slice(0,6).map(function(b,i){
+    return '<button class="book reveal" style="transition-delay:'+(i*60)+'ms" onclick="openOrder()">'+
+      '<div class="cover">'+coverHTML(b)+'</div>'+
+      '<div class="meta"><div class="t">'+esc(b.nomi)+'</div><div class="p">'+som(b.narx)+'</div></div></button>';
+  }).join("");
+  document.querySelectorAll("#booksGrid .reveal").forEach(function(el){io.observe(el);});
+}
+renderPreview();
+
+function loadCatalog(){
+  if(catalogLoaded||!ENDPOINT) return Promise.resolve();
+  return fetch(ENDPOINT+"?action=kitoblar",{cache:"no-store"})
+    .then(function(r){return r.json();})
+    .then(function(j){
+      if(j&&j.kitoblar&&j.kitoblar.length){BOOKS=j.kitoblar;catalogLoaded=true;renderPreview();}
+    })
+    .catch(function(){});
+}
+loadCatalog();
+
+/* ================= BUYURTMA HOLATI ================= */
+var S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",touched:false,sending:false,err:"",done:false};
+
+function selList(){
+  return BOOKS.filter(function(b){return S.sel[b.id];}).map(function(b){
+    return {id:b.id,nomi:b.nomi,muallif:b.muallif||"",narx:Number(b.narx)||0,soni:S.sel[b.id]};
+  });
+}
+function totals(){var l=selList(),n=0,s=0;l.forEach(function(k){n+=k.soni;s+=k.soni*k.narx;});return {list:l,n:n,s:s};}
+
+function openOrder(){
+  document.getElementById("order").classList.add("open");
+  document.getElementById("order").setAttribute("aria-hidden","false");
+  document.body.classList.add("noscroll");
+  loadCatalog().then(render);
+  render();
+}
+function closeOrder(){
+  document.getElementById("order").classList.remove("open");
+  document.getElementById("order").setAttribute("aria-hidden","true");
+  document.body.classList.remove("noscroll");
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeOrder();});
+
+function go(n){S.step=n;S.err="";render();document.getElementById("order").scrollTo({top:0,behavior:"smooth"});}
+function setF(k,v){S[k]=v;}
+
+function toggleBook(id){
+  if(S.sel[id])delete S.sel[id];else S.sel[id]=1;
+  render();
+}
+function setQ(id,v){
+  v=Math.max(1,Math.min(999,parseInt(v,10)||1));
+  S.sel[id]=v;render();
+}
+
+/* ================= RENDER ================= */
+function progressHTML(){
+  return '<div class="prog">'+QADAMLAR.map(function(n,i){
+    var cls=i<S.step?"done":(i===S.step?"now":"");
+    return '<div class="it '+cls+'"><div class="col"><span class="cir">'+
+      (i<S.step?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>':(i+1))+
+      '</span><span class="lbl">'+n+'</span></div>'+
+      (i<QADAMLAR.length-1?'<span class="bar"><i></i></span>':'')+'</div>';
+  }).join("")+'</div>';
+}
+
+function render(){
+  var el=document.getElementById("orderBody");
+  if(S.done){el.innerHTML=doneHTML();return;}
+  var t=totals();
+  var body="";
+  if(S.step===0)body=step1();
+  if(S.step===1)body=step2();
+  if(S.step===2)body=step3(t);
+  if(S.step===3)body=step4(t);
+  el.innerHTML=progressHTML()+'<div class="step">'+body+'</div>';
+  if(S.step===0){
+    var i1=document.getElementById("f_ism");if(i1)i1.value=S.ism;
+    var i2=document.getElementById("f_tel");if(i2)i2.value=S.tel;
+    var i3=document.getElementById("f_vil");if(i3)i3.value=S.viloyat;
+  }
+  if(S.step===1){var s=document.getElementById("f_q");if(s)s.value=S.q;}
+  if(S.step===3){var z=document.getElementById("f_izoh");if(z)z.value=S.izoh;}
+}
+
+function step1(){
+  var nameBad=S.touched&&S.ism.trim()&&S.ism.trim().split(/\s+/).length<2;
+  var telBad=S.touched&&S.tel&&phoneDigits(S.tel).length!==9;
+  var ok=S.ism.trim().split(/\s+/).length>=2&&phoneDigits(S.tel).length===9&&S.viloyat;
+  return '<h2>Ma\'lumotlaringizni kiriting</h2><p class="sub">Menejerimiz shu ma\'lumotlar orqali siz bilan bog\'lanadi.</p>'+
+  '<label class="f"><span class="lt">Ism va familya</span>'+
+    '<input id="f_ism" class="inp" type="text" placeholder="Ism Familya" autocomplete="name" '+
+    'oninput="setF(\'ism\',this.value);syncBtn()" onblur="S.touched=true;syncBtn()">'+
+    (nameBad?'<span class="err">Ism va familyani to\'liq yozing</span>':'<span class="hint">Masalan: Aziz Karimov</span>')+'</label>'+
+  '<label class="f"><span class="lt">Telefon raqam</span>'+
+    '<input id="f_tel" class="inp" type="tel" inputmode="numeric" placeholder="+998 90 123 45 67" autocomplete="tel" '+
+    'oninput="this.value=fmtPhone(this.value);setF(\'tel\',this.value);syncBtn()" '+
+    'onfocus="if(!this.value){this.value=\'+998 \';setF(\'tel\',this.value)}" onblur="S.touched=true;syncBtn()">'+
+    (telBad?'<span class="err">Raqam to\'liq emas (9 ta raqam)</span>':'<span class="hint">Menejer shu raqamga qo\'ng\'iroq qiladi</span>')+'</label>'+
+  '<label class="f"><span class="lt">Viloyat</span><span class="selwrap">'+
+    '<select id="f_vil" class="inp" onchange="setF(\'viloyat\',this.value);syncBtn()">'+
+    '<option value="">Viloyatni tanlang</option>'+
+    VILOYATLAR.map(function(v){return '<option value="'+esc(v)+'"'+(S.viloyat===v?' selected':'')+'>'+esc(v)+'</option>';}).join("")+
+    '</select><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>'+
+    '<span class="hint">Yetkazib berish hududi</span></label>'+
+  '<div class="nav"><button class="btn btn-g btn-md" onclick="closeOrder()">'+
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Bosh sahifa</button>'+
+    '<button id="nextBtn" class="btn btn-p btn-lg" '+(ok?"":"disabled")+' onclick="go(1)">Kitob tanlashga o\'tish'+
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>';
+}
+function syncBtn(){
+  var b=document.getElementById("nextBtn");if(!b)return;
+  var ok=S.ism.trim().split(/\s+/).length>=2&&phoneDigits(S.tel).length===9&&S.viloyat;
+  b.disabled=!ok;
+}
+
+function step2(){
+  var q=S.q.trim().toLowerCase();
+  var list=BOOKS.filter(function(b){
+    return !q||(b.nomi||"").toLowerCase().indexOf(q)>=0||(b.muallif||"").toLowerCase().indexOf(q)>=0;
+  });
+  var cnt=selList().length;
+  return '<h2>Kitobni tanlang</h2><p class="sub">Bir nechta kitobni ham tanlashingiz mumkin.</p>'+
+  '<div class="searchwrap"><input id="f_q" class="inp" type="text" placeholder="Kitob nomi yoki muallif bo\'yicha qidirish..." '+
+    'oninput="S.q=this.value;renderPicks()"></div>'+
+  '<div class="pickgrid" id="pickGrid">'+picksHTML(list)+'</div>'+
+  '<div class="nav"><button class="btn btn-g btn-md" onclick="go(0)">'+
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Orqaga</button>'+
+    '<button class="btn btn-p btn-lg" '+(cnt?"":"disabled")+' onclick="go(2)">'+(cnt?"Davom etish ("+cnt+")":"Kitob tanlang")+
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>';
+}
+function picksHTML(list){
+  if(!list.length)return '<p style="grid-column:1/-1;text-align:center;color:var(--ink-soft);font-size:14px;padding:30px 0">Hech narsa topilmadi.</p>';
+  return list.map(function(b){
+    return '<button class="pick'+(S.sel[b.id]?" sel":"")+'" onclick="toggleBook(\''+b.id+'\')">'+
+      '<span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>'+
+      '<div class="cover">'+coverHTML(b)+'</div>'+
+      '<div class="meta"><div class="t">'+esc(b.nomi)+'</div>'+
+      (b.muallif?'<div class="a">'+esc(b.muallif)+'</div>':'')+
+      '<div class="p">'+som(b.narx)+'</div></div></button>';
+  }).join("");
+}
+function renderPicks(){
+  var q=S.q.trim().toLowerCase();
+  var list=BOOKS.filter(function(b){
+    return !q||(b.nomi||"").toLowerCase().indexOf(q)>=0||(b.muallif||"").toLowerCase().indexOf(q)>=0;
+  });
+  document.getElementById("pickGrid").innerHTML=picksHTML(list);
+}
+
+function step3(t){
+  return '<h2>Nechta kerak?</h2><p class="sub">Har bir kitob uchun sonini belgilang.</p><div style="margin-top:22px">'+
+  t.list.map(function(k){
+    var b=BOOKS.filter(function(x){return x.id===k.id;})[0]||k;
+    return '<div class="card qrow"><div class="th">'+coverHTML(b,true)+'</div>'+
+      '<div class="info"><div class="nm">'+esc(k.nomi)+'</div><div class="pr">'+som(k.narx)+'</div>'+
+      '<div class="qbtns">'+[1,2,3].map(function(n){
+        return '<button class="qb'+(k.soni===n?" on":"")+'" onclick="setQ(\''+k.id+'\','+n+')">'+n+'</button>';
+      }).join("")+
+      '<span class="qsep"></span>'+
+      '<button class="qb" onclick="setQ(\''+k.id+'\','+(k.soni-1)+')">−</button>'+
+      '<input class="qnum" inputmode="numeric" value="'+k.soni+'" onchange="setQ(\''+k.id+'\',this.value)">'+
+      '<button class="qb" onclick="setQ(\''+k.id+'\','+(k.soni+1)+')">+</button>'+
+      '</div></div>'+
+      '<div class="side"><div class="s">'+som(k.narx*k.soni)+'</div>'+
+      '<button class="del" onclick="toggleBook(\''+k.id+'\')">O\'chirish</button></div></div>';
+  }).join("")+'</div>'+
+  '<div class="total"><span class="l">Jami '+t.n+' dona</span><span class="r">'+som(t.s)+'</span></div>'+
+  '<div class="nav"><button class="btn btn-g btn-md" onclick="go(1)">'+
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Orqaga</button>'+
+    '<button class="btn btn-p btn-lg" '+(t.n?"":"disabled")+' onclick="go(3)">Tasdiqlashga o\'tish'+
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>';
+}
+
+function step4(t){
+  return '<h2>Buyurtmani tasdiqlang</h2><p class="sub">Ma\'lumotlar to\'g\'riligini tekshiring va tasdiqlang.</p>'+
+  '<div class="sum">'+
+    '<div class="blk"><div class="bh"><h3>Mijoz</h3><button onclick="go(0)">O\'zgartirish</button></div>'+
+      '<div class="kv"><span class="k">Ism-familya</span><span class="v">'+esc(S.ism)+'</span></div>'+
+      '<div class="kv"><span class="k">Telefon</span><span class="v">'+esc(S.tel)+'</span></div>'+
+      '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div></div>'+
+    '<div class="blk"><div class="bh"><h3>Buyurtma</h3><button onclick="go(1)">O\'zgartirish</button></div>'+
+      t.list.map(function(k){
+        return '<div class="li"><span><span class="n">'+esc(k.nomi)+'</span><br><span class="q">'+k.soni+' × '+som(k.narx)+'</span></span>'+
+          '<span class="s">'+som(k.narx*k.soni)+'</span></div>';
+      }).join("")+
+      '<div class="sumtot"><span class="l">Jami ('+t.n+' dona)</span><span class="r">'+som(t.s)+'</span></div></div>'+
+    '<div class="blk"><span class="lt" style="font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)">Izoh (ixtiyoriy)</span>'+
+      '<textarea id="f_izoh" class="inp" style="margin-top:10px" maxlength="400" placeholder="Manzil, yetkazish vaqti yoki boshqa istaklaringiz..." oninput="S.izoh=this.value"></textarea></div>'+
+  '</div>'+
+  (S.err?'<div class="alert">'+esc(S.err)+'</div>':'')+
+  '<div class="nav"><button class="btn btn-g btn-md" '+(S.sending?"disabled":"")+' onclick="go(2)">'+
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Orqaga</button>'+
+    '<button class="btn btn-p btn-lg" '+(S.sending?"disabled":"")+' onclick="submitOrder()">'+
+      (S.sending?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-opacity=".25" stroke-width="3"/><path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> Yuborilmoqda...'
+        :'Buyurtmani tasdiqlash <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>')+
+    '</button></div>'+
+  '<p class="fine">Tasdiqlash orqali menejerimiz siz bilan bog\'lanishiga rozilik bildirasiz. Oldindan to\'lov talab qilinmaydi.</p>';
+}
+
+function submitOrder(){
+  var t=totals();
+  S.sending=true;S.err="";render();
+  var payload={
+    action:"buyurtma",
+    ism:S.ism.trim(),
+    telefon:"+998"+phoneDigits(S.tel),
+    viloyat:S.viloyat,
+    izoh:(S.izoh||"").trim(),
+    kitoblar:t.list,
+    jamiSoni:t.n,
+    jamiNarx:t.s,
+    manba:location.hostname||"sayt",
+    vaqt:new Date().toISOString()
+  };
+  if(!ENDPOINT){
+    setTimeout(function(){S.sending=false;S.done=true;render();},700);return;
+  }
+  fetch(ENDPOINT,{
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(payload),
+    redirect:"follow"
+  }).then(function(r){
+    return r.text();
+  }).then(function(txt){
+    var j=null;try{j=JSON.parse(txt);}catch(e){}
+    if(j&&j.ok===false)throw new Error(j.xato||"Server xatosi");
+    S.sending=false;S.done=true;render();
+    document.getElementById("order").scrollTo({top:0,behavior:"smooth"});
+  }).catch(function(e){
+    S.sending=false;
+    S.err="Yuborishda xatolik. Internetni tekshirib, qaytadan urinib ko'ring.";
+    render();
+  });
+}
+
+function doneHTML(){
+  var t=totals();
+  return '<div class="done"><div class="ring"><span class="pulse"></span>'+
+    '<span class="core"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span></div>'+
+    '<h2>Buyurtmangiz uchun rahmat!</h2>'+
+    '<p class="p">Buyurtmangiz qabul qilindi. Menejerimiz <b>'+esc(S.tel)+'</b> raqamiga eng qisqa vaqt ichida bog\'lanadi.</p>'+
+    '<div class="card">'+
+      '<div class="kv"><span class="k">Mijoz</span><span class="v">'+esc(S.ism)+'</span></div>'+
+      '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div>'+
+      '<div class="kv"><span class="k">Kitoblar</span><span class="v">'+t.list.length+' nom · '+t.n+' dona</span></div>'+
+      '<div class="kv"><span class="k">Jami summa</span><span class="v" style="color:var(--brand)">'+som(t.s)+'</span></div>'+
+    '</div>'+
+    '<div class="acts"><button class="btn btn-p btn-md" onclick="resetOrder()">Bosh sahifaga qaytish</button>'+
+    '<a class="btn btn-g btn-md" href="https://t.me/risolanashr_buyurtma_bot" target="_blank" rel="noopener">Telegram kanalimiz</a></div></div>';
+}
+function resetOrder(){
+  S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",touched:false,sending:false,err:"",done:false};
+  closeOrder();render();
+}
+</script>
+</body>
+</html>
