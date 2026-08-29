@@ -299,6 +299,9 @@ label.f .hint{display:block;font-size:12px;color:var(--ink-soft);margin-top:7px}
 .inp:focus{border-color:var(--brand)}
 .inp::placeholder{color:rgba(74,88,82,.5)}
 .err{display:block;font-size:12px;color:#c62828;margin-top:7px}
+.btslink{display:inline-flex;align-items:center;gap:7px;margin-top:10px;min-height:42px;padding:0 15px;
+  border-radius:999px;background:rgba(31,93,71,.08);color:var(--brand);font-size:13px;font-weight:600}
+.btslink:hover{background:rgba(31,93,71,.15)}
 .selwrap{position:relative}
 .selwrap svg{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-soft)}
 select.inp{appearance:none;padding-right:44px;cursor:pointer}
@@ -347,6 +350,10 @@ select.inp{appearance:none;padding-right:44px;cursor:pointer}
   background:#fff;font-size:14px;font-weight:700;outline:none}
 .qnum:focus{border-color:var(--brand)}
 
+.yetkr{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-top:12px;
+  border-top:1px dashed rgba(20,32,27,.16);font-size:13.5px;color:var(--ink-soft)}
+.yetkr b{color:var(--ink);font-size:14px;white-space:nowrap}
+.yetkm{margin-top:8px;font-size:12px;color:var(--ink-soft);line-height:1.5}
 .total{display:flex;align-items:center;justify-content:space-between;background:rgba(31,93,71,.08);
   border-radius:14px;padding:16px 20px;margin-top:18px}
 .total .l{font-size:14px;color:var(--ink-soft);font-weight:600}
@@ -374,7 +381,8 @@ textarea.inp{resize:none;min-height:88px}
 
 .nav{display:flex;flex-direction:row;align-items:center;gap:10px;margin-top:24px;position:sticky;bottom:0;z-index:5;padding:14px 0 calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--cream) 78%,rgba(247,243,234,0))}
 .nav .btn-p,.nav .btn-lg{flex:1;justify-content:center}
-.nav .btn-g{flex:none;padding-left:18px;padding-right:18px}
+.nav .btn-g{flex:none;padding-left:16px;padding-right:16px;white-space:nowrap}
+.nav .btn-p{white-space:nowrap}
 @media(min-width:560px){.nav{flex-direction:row;justify-content:space-between}
 .nav .btn-p,.nav .btn-lg{flex:none}}
 .fine{margin-top:16px;text-align:center;font-size:12.5px;color:var(--ink-soft)}
@@ -392,6 +400,7 @@ textarea.inp{resize:none;min-height:88px}
 .done .p{margin-top:16px;font-size:15px;color:var(--ink-soft)}
 .done .card{margin-top:28px;padding:20px;text-align:left}
 .done .acts{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+@media(min-width:520px){.done .acts{flex-wrap:wrap}}
 @media(min-width:520px){.done .acts{flex-direction:row;justify-content:center}}
 
 .skel{background:rgba(20,32,27,.06);border-radius:var(--r);animation:sk 1.3s ease-in-out infinite}
@@ -409,6 +418,8 @@ textarea.inp{resize:none;min-height:88px}
 .noscroll{overflow:hidden}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Risola Nashr","url":"https://risolanashr.vercel.app/","logo":"https://risolanashr.vercel.app/rn-logo.png","image":"https://risolanashr.vercel.app/og.png","description":"Risola Nashr — diniy va arab tili kitoblari nashriyoti. BTS va EMU orqali O'zbekiston bo'ylab yetkazib beramiz.","telephone":"+998770799900","address":{"@type":"PostalAddress","addressLocality":"Toshkent","addressCountry":"UZ"},"sameAs":["https://t.me/risolanashr","https://www.instagram.com/risolanashr"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Risola Nashr katalogi","numberOfItems":17,"itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Product","name":"Daloilul xoyrot","url":"https://risolanashr.vercel.app/#kitob-k01","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"105000"},"image":"https://risolanashr.vercel.app/dalail-al-xayrot.jpg","brand":{"@type":"Brand","name":"Muhammad ibn Sulaymon al-Juzuliy"},"description":"دلائل الخيرات · Kundalik vird, salovot · 160 bet · Muhaqqiq: Shayx Mahmud Durra"}},{"@type":"ListItem","position":2,"item":{"@type":"Product","name":"Nurul iyzoh va najotul arvoh","url":"https://risolanashr.vercel.app/#kitob-k02","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"95000"},"image":"https://risolanashr.vercel.app/nur-al-iyzoh.jpg","brand":{"@type":"Brand","name":"Hasan ibn Aliy Shurunbuloliy"},"description":"نور الإيضاح ونجاة الأرواح · Fiqh · 310 bet"}},{"@type":"ListItem","position":3,"item":{"@type":"Product","name":"Sharhul fiqhil akbar","url":"https://risolanashr.vercel.app/#kitob-k03","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"90000"},"image":"https://risolanashr.vercel.app/sharh-al-fiqh-al-akbar.jpg","brand":{"@type":"Brand","name":"Abul Muntaho Shihobiddin al-Mag'nisoviy"},"description":"شرح الفقه الأكبر · Aqida"}},{"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Al-Muxtasar fil fiqhil hanafiy","url":"https://risolanashr.vercel.app/#kitob-k04","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"120000"},"image":"https://risolanashr.vercel.app/al-muxtasar-fiqh-hanafiy.jpg","brand":{"@type":"Brand","name":"Ashraf Aliy Tahonaviy"},"description":"المختصر في الفقه الحنفي · Fiqh · 300 bet"}},{"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Qisosun nabiyyin","url":"https://risolanashr.vercel.app/#kitob-k05","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"78000"},"image":"https://risolanashr.vercel.app/qasas-an-nabiyyin.jpg","brand":{"@type":"Brand","name":"Abul Hasan Nadviy"},"description":"قصص النبيين · Mutolaa · 336 bet"}},{"@type":"ListItem","position":6,"item":{"@type":"Product","name":"Durusul lug'atil arabiyya (Madina)","url":"https://risolanashr.vercel.app/#kitob-k06","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"200000"},"image":"https://risolanashr.vercel.app/durus-al-lugha-jam.jpg","brand":{"@type":"Brand","name":"D. F. Abdurrahim"},"description":"دروس اللغة العربية · Arab tili · 800 bet"}},{"@type":"ListItem","position":7,"item":{"@type":"Product","name":"Ad-Durusun nahviyya","url":"https://risolanashr.vercel.app/#kitob-k07","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"120000"},"image":"https://risolanashr.vercel.app/ad-durus-an-nahviyya.jpg","brand":{"@type":"Brand","name":"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih"},"description":"الدروس النحوية · Arab tili · 488 bet"}},{"@type":"ListItem","position":8,"item":{"@type":"Product","name":"Al-Kofiya fi ilmin nahv","url":"https://risolanashr.vercel.app/#kitob-k08","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"75000"},"image":"https://risolanashr.vercel.app/al-kafiya-fi-ilm-nahv.jpg","brand":{"@type":"Brand","name":"Alloma ibn Hojib"},"description":"الكافية في علم النحو · Arab tili · 208 bet"}},{"@type":"ListItem","position":9,"item":{"@type":"Product","name":"Taysirus siyrotin nabaviyya","url":"https://risolanashr.vercel.app/#kitob-k09","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"145000"},"image":"https://risolanashr.vercel.app/taysir-sira-nabawiyya.jpg","brand":{"@type":"Brand","name":"D. Hasson Sayyid Yusuf"},"description":"تيسير السيرة النبوية · Siyrat, mutolaa · 304 bet"}},{"@type":"ListItem","position":10,"item":{"@type":"Product","name":"Nurul yaqin fi siyrati sayyidil mursalin","url":"https://risolanashr.vercel.app/#kitob-k10","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"130000"},"image":"https://risolanashr.vercel.app/nur-al-yaqin.jpg","brand":{"@type":"Brand","name":"Muhammad al-Bajuriy Huzariybek"},"description":"نور اليقين في سيرة سيد المرسلين · Siyrat · 455 bet"}},{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Ta'limul mutaallim va Nasoihul ibod","url":"https://risolanashr.vercel.app/#kitob-k11","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"135000"},"image":"https://risolanashr.vercel.app/talim-al-mutaallim.jpg","brand":{"@type":"Brand","name":"Imom Burhonul islom Zarnujiy va Muhammad Navaviy al-Joviy"},"description":"تعليم المتعلم ويليه نصائح العباد · Mutolaa · 488 bet"}},{"@type":"ListItem","position":12,"item":{"@type":"Product","name":"Muxtasarul viqoya (an-Nuqoya)","url":"https://risolanashr.vercel.app/#kitob-k12","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"95000"},"image":"https://risolanashr.vercel.app/muxtasar-al-viqoya.jpg","brand":{"@type":"Brand","name":"Ubaydulloh ibn Mas'ud al-Mahbubiy"},"description":"مختصر الوقاية في مسائل الهداية · Fiqh · 352 bet"}},{"@type":"ListItem","position":13,"item":{"@type":"Product","name":"Ayyuhal valad va laftatul kabad","url":"https://risolanashr.vercel.app/#kitob-k13","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"50000"},"image":"https://risolanashr.vercel.app/ayyuhal-valad.jpg","brand":{"@type":"Brand","name":"Abu Homid G'azzoliy va Jamoliddin Abul Faraj"},"description":"أيها الولد ويليه لفتة الكبد · Mutolaa · 136 bet"}},{"@type":"ListItem","position":14,"item":{"@type":"Product","name":"Unvonul bayon va bustonul azhon","url":"https://risolanashr.vercel.app/#kitob-k14","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"85000"},"image":"https://risolanashr.vercel.app/unvan-al-bayan.jpg","brand":{"@type":"Brand","name":"Abdulloh Shabroviy"},"description":"عنوان البيان وبستان الأذهان · Mutolaa · 232 bet"}},{"@type":"ListItem","position":15,"item":{"@type":"Product","name":"Durusul balog'a","url":"https://risolanashr.vercel.app/#kitob-k15","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"80000"},"image":"https://risolanashr.vercel.app/durus-al-balagha.jpg","brand":{"@type":"Brand","name":"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih"},"description":"دروس البلاغة · Balog'at · 192 bet"}},{"@type":"ListItem","position":16,"item":{"@type":"Product","name":"Zovul maoliy sharhu bad'il amoliy","url":"https://risolanashr.vercel.app/#kitob-k16","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"90000"},"image":"https://risolanashr.vercel.app/zavul-maoli.jpg","brand":{"@type":"Brand","name":"Mulla Aliy Qoriy"},"description":"ضوء المعالي شرح بدء الأمالي · Aqida · 192 bet"}},{"@type":"ListItem","position":17,"item":{"@type":"Product","name":"Al-Hidoya sharh bidoyatil mubtadiy (4 jild)","url":"https://risolanashr.vercel.app/#kitob-k17","offers":{"@type":"Offer","priceCurrency":"UZS","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Risola Nashr"},"price":"825000"},"brand":{"@type":"Brand","name":"Burhoniddin Marg'inoniy"},"description":"الهداية شرح بداية المبتدي · Fiqh · 4 jild, har jild ~500 bet · 25×35 sm"}}]}</script>
 </head>
 <body>
 <a class="skip" href="#kitoblar">Asosiy qismga o'tish</a>
@@ -615,7 +626,7 @@ textarea.inp{resize:none;min-height:88px}
 
 <div id="zoom" onclick="closeZoom()" aria-hidden="true">
   <button class="x" aria-label="Yopish"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-  <img id="zoomImg" src="" alt="">
+  <img id="zoomImg" src="" alt="" width="660" height="880">
 </div>
 
 <div id="bbar">
@@ -651,6 +662,9 @@ var ENDPOINT = "https://script.google.com/macros/s/AKfycbz2Wbbn8s8uGkHw4V8hbCDVK
 var SITE = {
   tel: "+998 77 079 99 00",
   telegram: "https://t.me/risolanashr",
+  menejer: "https://t.me/risolanashr_admin",
+  bts: "https://bts.uz/uz/nashi-ofisi?id=6",
+  yetkazish1kg: 30000,
   instagram: "https://www.instagram.com/risolanashr"
 };
 
@@ -665,7 +679,7 @@ var PALETTE = [["#1f5d47","#2f7d60"],["#8a4b2a","#b8873b"],["#243b53","#3d5a80"]
 var DEMO = [
   {id:"k01",nomi:"Daloilul xoyrot",muallif:"Muhammad ibn Sulaymon al-Juzuliy",narx:105000,tavsif:"دلائل الخيرات · Kundalik vird, salovot · 160 bet · Muhaqqiq: Shayx Mahmud Durra",rasm:"https://risolanashr.vercel.app/dalail-al-xayrot.jpg"},
   {id:"k02",nomi:"Nurul iyzoh va najotul arvoh",muallif:"Hasan ibn Aliy Shurunbuloliy",narx:95000,tavsif:"نور الإيضاح ونجاة الأرواح · Fiqh · 310 bet",rasm:"https://risolanashr.vercel.app/nur-al-iyzoh.jpg"},
-  {id:"k03",nomi:"Sharhul fiqhil akbar",muallif:"Abul Muntaho Shihobiddin al-Mag'nisoviy",narx:0,tavsif:"شرح الفقه الأكبر · Aqida",rasm:"https://risolanashr.vercel.app/sharh-al-fiqh-al-akbar.jpg"},
+  {id:"k03",nomi:"Sharhul fiqhil akbar",muallif:"Abul Muntaho Shihobiddin al-Mag'nisoviy",narx:90000,tavsif:"شرح الفقه الأكبر · Aqida",rasm:"https://risolanashr.vercel.app/sharh-al-fiqh-al-akbar.jpg"},
   {id:"k04",nomi:"Al-Muxtasar fil fiqhil hanafiy",muallif:"Ashraf Aliy Tahonaviy",narx:120000,tavsif:"المختصر في الفقه الحنفي · Fiqh · 300 bet",rasm:"https://risolanashr.vercel.app/al-muxtasar-fiqh-hanafiy.jpg"},
   {id:"k05",nomi:"Qisosun nabiyyin",muallif:"Abul Hasan Nadviy",narx:78000,tavsif:"قصص النبيين · Mutolaa · 336 bet",rasm:"https://risolanashr.vercel.app/qasas-an-nabiyyin.jpg"},
   {id:"k06",nomi:"Durusul lug'atil arabiyya (Madina)",muallif:"D. F. Abdurrahim",narx:200000,tavsif:"دروس اللغة العربية · Arab tili · 800 bet",rasm:"https://risolanashr.vercel.app/durus-al-lugha-jam.jpg"},
@@ -714,11 +728,11 @@ function tavHTML(t){
   return '<div class="d">'+esc(s)+'</div>';
 }
 function coverHTML(b,compact){
-  if(b.rasm) return '<img src="'+esc(b.rasm)+'" alt="'+esc(b.nomi)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover">';
+  if(b.rasm) return '<img src="'+esc(b.rasm)+'" alt="'+esc(b.nomi)+' muqovasi" width="660" height="880" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover">';
   var p=PALETTE[hash(b.nomi||b.id)%PALETTE.length];
   return '<div style="position:absolute;inset:0;background:linear-gradient(150deg,'+p[0]+','+p[1]+')"></div>'+
     '<span class="lines"></span><span class="spine" style="width:'+(compact?3:7)+'px"></span>'+
-    '<img src="/rn-mark-oq.png" alt="" style="position:absolute;left:50%;top:34%;transform:translate(-50%,-50%);width:'+(compact?38:58)+'%;opacity:.22">'+
+    '<img src="/rn-mark-oq.png" alt="" width="154" height="128" style="position:absolute;left:50%;top:34%;transform:translate(-50%,-50%);width:'+(compact?38:58)+'%;opacity:.22">'+
     (compact
       ? '<div class="txt" style="padding:8px;justify-content:flex-end"><div class="name" style="font-size:10px;-webkit-line-clamp:3">'+esc(b.nomi)+'</div></div>'
       : '<div class="txt"><div class="brandline">Risola Nashr</div><div><div class="name">'+esc(b.nomi)+'</div>'+
@@ -730,6 +744,16 @@ function fmtPhone(v){
   return p.length?"+998 "+p.join(" "):"";
 }
 function phoneDigits(v){return String(v).replace(/\D/g,"").replace(/^998/,"").slice(0,9);}
+var OPERATOR = ["33","50","55","77","88","90","91","93","94","95","97","98","99","20"];
+function telOk(v){
+  var d=phoneDigits(v);
+  return d.length===9 && OPERATOR.indexOf(d.slice(0,2))>=0;
+}
+function ismOk(v){
+  var t=String(v||"").trim();
+  return t.replace(/[^\u0400-\u04FF\u0100-\u017Fa-zA-Z'\u2019]/g,"").length>=4;
+}
+function formOk(){return ismOk(S.ism)&&telOk(S.tel)&&S.viloyat&&String(S.bts||"").trim().length>=3;}
 
 /* ================= STATIC BLOKLAR ================= */
 document.getElementById("yr").textContent=new Date().getFullYear();
@@ -925,7 +949,7 @@ function buyurtmaBer(id){
 }
 
 /* ================= BUYURTMA HOLATI ================= */
-var S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",sort:"",touched:false,sending:false,err:"",done:false};
+var S={step:0,ism:"",tel:"",viloyat:"",bts:"",izoh:"",sel:{},q:"",turi:"",sort:"",touched:false,sending:false,err:"",done:false};
 
 function selList(){
   return BOOKS.filter(function(b){return S.sel[b.id];}).map(function(b){
@@ -957,14 +981,17 @@ document.addEventListener("keydown",function(e){
 });
 
 function go(n){S.step=n;S.err="";render();document.getElementById("order").scrollTo({top:0,behavior:"smooth"});}
-function setF(k,v){S[k]=v;}
+function setF(k,v){S[k]=(typeof v==="string"?v.replace(/[<>]/g,""):v);}
 
 function toggleBook(id){
   if(S.sel[id])delete S.sel[id];else S.sel[id]=1;
   render();
 }
+var MAX_SONI=50;
 function setQ(id,v){
-  v=Math.max(1,Math.min(999,parseInt(v,10)||1));
+  v=parseInt(v,10)||1;
+  if(v>MAX_SONI){v=MAX_SONI;S.err="Bir kitobdan ko'pi bilan "+MAX_SONI+" dona buyurtma qilish mumkin. Ko'proq kerak bo'lsa menejerga murojaat qiling.";}
+  v=Math.max(1,v);
   S.sel[id]=v;render();
 }
 
@@ -995,40 +1022,51 @@ function render(){
     var i1=document.getElementById("f_ism");if(i1)i1.value=S.ism;
     var i2=document.getElementById("f_tel");if(i2)i2.value=S.tel;
     var i3=document.getElementById("f_vil");if(i3)i3.value=S.viloyat;
+    var i4=document.getElementById("f_bts");if(i4)i4.value=S.bts;
   }
   if(S.step===1){var s=document.getElementById("f_q");if(s)s.value=S.q;}
   if(S.step===3){var z=document.getElementById("f_izoh");if(z)z.value=S.izoh;}
 }
 
 function step1(){
-  var nameBad=S.touched&&S.ism.trim()&&S.ism.trim().split(/\s+/).length<2;
-  var telBad=S.touched&&S.tel&&phoneDigits(S.tel).length!==9;
-  var ok=S.ism.trim().split(/\s+/).length>=2&&phoneDigits(S.tel).length===9&&S.viloyat;
+  var nameBad=S.touched&&S.ism.trim()&&!ismOk(S.ism);
+  var telBad=S.touched&&S.tel&&!telOk(S.tel);
+  var btsBad=S.touched&&S.bts&&String(S.bts).trim().length<3;
+  var ok=formOk();
   return '<h2>Ma\'lumotlaringizni kiriting</h2><p class="sub">Menejerimiz shu ma\'lumotlar orqali siz bilan bog\'lanadi.</p>'+
-  '<label class="f"><span class="lt">Ism va familya</span>'+
-    '<input id="f_ism" class="inp" type="text" placeholder="Ism Familya" autocomplete="name" '+
+  '<label class="f"><span class="lt">Ismingiz</span>'+
+    '<input id="f_ism" class="inp" type="text" placeholder="Aziz" autocomplete="name" maxlength="60" '+
     'oninput="setF(\'ism\',this.value);syncBtn()" onblur="S.touched=true;syncBtn()">'+
-    (nameBad?'<span class="err">Ism va familyani to\'liq yozing</span>':'<span class="hint">Masalan: Aziz Karimov</span>')+'</label>'+
+    (nameBad?'<span class="err">Kamida 4 ta harf yozing</span>':'<span class="hint">Ismingizni yozsangiz kifoya</span>')+'</label>'+
   '<label class="f"><span class="lt">Telefon raqam</span>'+
     '<input id="f_tel" class="inp" type="tel" inputmode="numeric" placeholder="+998 90 123 45 67" autocomplete="tel" '+
     'oninput="this.value=fmtPhone(this.value);setF(\'tel\',this.value);syncBtn()" '+
     'onfocus="if(!this.value){this.value=\'+998 \';setF(\'tel\',this.value)}" onblur="S.touched=true;syncBtn()">'+
-    (telBad?'<span class="err">Raqam to\'liq emas (9 ta raqam)</span>':'<span class="hint">Menejer shu raqamga qo\'ng\'iroq qiladi</span>')+'</label>'+
+    (telBad?'<span class="err">'+(phoneDigits(S.tel).length!==9?'Raqam to\'liq emas (9 ta raqam)':'Bunday operator kodi mavjud emas')+'</span>':'<span class="hint">Menejer shu raqamga qo\'ng\'iroq qiladi</span>')+'</label>'+
   '<label class="f"><span class="lt">Viloyat</span><span class="selwrap">'+
     '<select id="f_vil" class="inp" onchange="setF(\'viloyat\',this.value);syncBtn()">'+
     '<option value="">Viloyatni tanlang</option>'+
     VILOYATLAR.map(function(v){return '<option value="'+esc(v)+'"'+(S.viloyat===v?' selected':'')+'>'+esc(v)+'</option>';}).join("")+
     '</select><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>'+
     '<span class="hint">BTS yoki EMU orqali shu hududga jo\'natamiz</span></label>'+
+  '<label class="f"><span class="lt">Sizga yaqin BTS filiali</span>'+
+    '<input id="f_bts" class="inp" type="text" maxlength="120" placeholder="Masalan: Namangan, Navoiy ko\'chasi 12" '+
+    'oninput="setF(\'bts\',this.value);syncBtn()" onblur="S.touched=true;syncBtn()">'+
+    (btsBad?'<span class="err">Filial nomini yoki manzilini yozing</span>'
+      :'<span class="hint">Kitob shu filialga jo\'natiladi</span>')+
+    '<a class="btslink" href="'+SITE.bts+'" target="_blank" rel="noopener">'+
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.5c0 5.5-8 11.5-8 11.5s-8-6-8-11.5a8 8 0 1 1 16 0z"/><circle cx="12" cy="10.3" r="2.7"/></svg>'+
+      ' BTS filiallari ro\'yxatini ochish'+
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>'+
+    '</label>'+
   '<div class="nav"><button class="btn btn-g btn-md" onclick="closeOrder()">'+
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Bosh sahifa</button>'+
-    '<button id="nextBtn" class="btn btn-p btn-lg" '+(ok?"":"disabled")+' onclick="go(1)">Kitob tanlashga o\'tish'+
+    '<button id="nextBtn" class="btn btn-p btn-lg" '+(ok?"":"disabled")+' onclick="go(1)">Davom etish'+
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>';
 }
 function syncBtn(){
   var b=document.getElementById("nextBtn");if(!b)return;
-  var ok=S.ism.trim().split(/\s+/).length>=2&&phoneDigits(S.tel).length===9&&S.viloyat;
-  b.disabled=!ok;
+  b.disabled=!formOk();
 }
 
 function matn(b){return ((b.nomi||"")+" "+(b.muallif||"")+" "+(b.tavsif||"")+" "+turi(b)).toLowerCase();}
@@ -1128,13 +1166,16 @@ function step4(t){
     '<div class="blk"><div class="bh"><h3>Mijoz</h3><button onclick="go(0)">O\'zgartirish</button></div>'+
       '<div class="kv"><span class="k">Ism-familya</span><span class="v">'+esc(S.ism)+'</span></div>'+
       '<div class="kv"><span class="k">Telefon</span><span class="v">'+esc(S.tel)+'</span></div>'+
-      '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div></div>'+
+      '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div>'+
+      '<div class="kv"><span class="k">BTS filiali</span><span class="v">'+esc(S.bts)+'</span></div></div>'+
     '<div class="blk"><div class="bh"><h3>Buyurtma</h3><button onclick="go(1)">O\'zgartirish</button></div>'+
       t.list.map(function(k){
         return '<div class="li"><span><span class="n">'+esc(k.nomi)+'</span><br><span class="q">'+k.soni+' dona'+(k.narx?' × '+som(k.narx):'')+'</span></span>'+
           '<span class="s">'+(k.narx?som(k.narx*k.soni):'\u2014')+'</span></div>';
       }).join("")+
-      '<div class="sumtot"><span class="l">Jami ('+t.n+' dona)</span><span class="r" style="font-size:'+(t.s?'21px':'14px')+'">'+totT(t.s)+'</span></div></div>'+
+      '<div class="sumtot"><span class="l">Kitoblar ('+t.n+' dona)</span><span class="r" style="font-size:'+(t.s?'21px':'14px')+'">'+totT(t.s)+'</span></div>'+
+      '<div class="yetkr"><span>Yetkazib berish (BTS)</span><b>1 kg \u2014 '+som(SITE.yetkazish1kg)+'</b></div>'+
+      '<p class="yetkm">Aniq summa buyurtma og\'irligiga qarab hisoblanadi — menejer qo\'ng\'iroq paytida aytadi.</p></div>'+
     '<div class="blk"><span class="lt" style="font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)">Izoh (ixtiyoriy)</span>'+
       '<textarea id="f_izoh" class="inp" style="margin-top:10px" maxlength="400" placeholder="Manzil, yetkazish vaqti yoki boshqa istaklaringiz..." oninput="S.izoh=this.value"></textarea></div>'+
   '</div>'+
@@ -1153,7 +1194,7 @@ var YUBORILGAN={};
 function submitOrder(){
   var t=totals();
   if(S.sending)return;
-  var kalit=phoneDigits(S.tel)+"|"+t.list.map(function(k){return k.id+"x"+k.soni;}).join(",");
+  var kalit=phoneDigits(S.tel)+"|"+(S.bts||"")+"|"+t.list.map(function(k){return k.id+"x"+k.soni;}).join(",");
   if(YUBORILGAN[kalit]){S.sending=false;S.done=true;render();return;}
   S.sending=true;S.err="";render();
   var payload={
@@ -1161,7 +1202,8 @@ function submitOrder(){
     ism:S.ism.trim(),
     telefon:"+998"+phoneDigits(S.tel),
     viloyat:S.viloyat,
-    izoh:(S.izoh||"").trim(),
+    bts:(S.bts||"").trim(),
+    izoh:"BTS filiali: "+(S.bts||"").trim()+((S.izoh||"").trim()?" | Izoh: "+(S.izoh||"").trim():""),
     kitoblar:t.list,
     jamiSoni:t.n,
     jamiNarx:t.s,
@@ -1200,18 +1242,23 @@ function doneHTML(){
     '<div class="card">'+
       '<div class="kv"><span class="k">Mijoz</span><span class="v">'+esc(S.ism)+'</span></div>'+
       '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div>'+
+      '<div class="kv"><span class="k">BTS filiali</span><span class="v">'+esc(S.bts)+'</span></div>'+
       '<div class="kv"><span class="k">Kitoblar</span><span class="v">'+t.list.length+' nom · '+t.n+' dona</span></div>'+
-      '<div class="kv"><span class="k">Jami summa</span><span class="v" style="color:var(--brand)">'+totT(t.s)+'</span></div>'+
+      '<div class="kv"><span class="k">Kitoblar summasi</span><span class="v" style="color:var(--brand)">'+totT(t.s)+'</span></div>'+
+      '<div class="kv"><span class="k">Yetkazib berish</span><span class="v">1 kg \u2014 '+som(SITE.yetkazish1kg)+'</span></div>'+
     '</div>'+
     '<div class="acts">'+
       '<a class="btn btn-p btn-md" href="'+SITE.telegram+'" target="_blank" rel="noopener">'+
       '<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg>'+
       ' Telegram kanalimiz</a>'+
+      '<a class="btn btn-g btn-md" href="'+SITE.menejer+'" target="_blank" rel="noopener">'+
+      '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.5-.7L3 21l1.9-5A8.2 8.2 0 0 1 4 11.5 8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5z"/></svg>'+
+      ' Menejer bilan bog\'lanish</a>'+
       '<button class="btn btn-g btn-md" onclick="resetOrder()">Bosh sahifaga qaytish</button></div>'+
     '<p style="margin-top:16px;font-size:12.5px;color:var(--ink-soft)">Yangi kitoblar va chegirmalardan xabardor bo\'lish uchun kanalimizga obuna bo\'ling.</p></div>';
 }
 function resetOrder(){
-  S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",sort:"",touched:false,sending:false,err:"",done:false};
+  S={step:0,ism:"",tel:"",viloyat:"",bts:"",izoh:"",sel:{},q:"",turi:"",sort:"",touched:false,sending:false,err:"",done:false};
   closeOrder();render();
 }
 </script>
