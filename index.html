@@ -504,17 +504,29 @@ var PALETTE = [["#1f5d47","#2f7d60"],["#8a4b2a","#b8873b"],["#243b53","#3d5a80"]
   ["#5b2c3e","#8d4f63"],["#3d4a1f","#68793a"],["#4a2c5b","#74508d"]];
 
 var DEMO = [
-  {id:"k1",nomi:"Saodat asriga sayohat",muallif:"Sagoviddin Jabborov",narx:68000},
-  {id:"k2",nomi:"Qalb tarbiyasi",muallif:"Abdulaziz Mansur",narx:54000},
-  {id:"k3",nomi:"Ilm yo'lidagilar uchun",muallif:"Muhammad Sodiq",narx:72000},
-  {id:"k4",nomi:"Oila gulshani",muallif:"Nodira Karimova",narx:49000},
-  {id:"k5",nomi:"Buyuk allomalar",muallif:"Tarix instituti",narx:89000},
-  {id:"k6",nomi:"Vaqtni boshqarish san'ati",muallif:"Jasur Ergashev",narx:62000}
+  {id:"k01",nomi:"Daloilul xayrot",muallif:"Muhammad ibn Sulaymon al-Jazuliy",narx:0,rasm:"https://risolanashr.vercel.app/dalail-al-xayrot.jpg"},
+  {id:"k02",nomi:"Nurul iyzoh (al-Isboh hoshiyasi bilan)",muallif:"Hasan ibn Ali ash-Shurunbuloliy",narx:0,rasm:"https://risolanashr.vercel.app/nur-al-iyzoh.jpg"},
+  {id:"k03",nomi:"Sharhul Fiqhil akbar",muallif:"Shihobuddin Ahmad ibn Muhammad al-G'unaymiy",narx:0,rasm:"https://risolanashr.vercel.app/sharh-al-fiqh-al-akbar.jpg"},
+  {id:"k04",nomi:"Al-Muxtasar fil fiqhil hanafiy",muallif:"",narx:0,rasm:"https://risolanashr.vercel.app/al-muxtasar-fiqh-hanafiy.jpg"},
+  {id:"k05",nomi:"Qasasun nabiyyin",muallif:"Abul Hasan Ali al-Hasaniy an-Nadviy",narx:0,rasm:"https://risolanashr.vercel.app/qasas-an-nabiyyin.jpg"},
+  {id:"k06",nomi:"Durusul lug'atil arabiyya va sharhi (1-4 juz)",muallif:"D. F. Abdurrahim",narx:0,rasm:"https://risolanashr.vercel.app/durus-al-lugha-jam.jpg"},
+  {id:"k07",nomi:"Ad-Durusun nahviyya",muallif:"Hifniy Nosif va boshqalar",narx:0,rasm:"https://risolanashr.vercel.app/ad-durus-an-nahviyya.jpg"},
+  {id:"k08",nomi:"Al-Kofiya fi ilmin nahv",muallif:"Ibn al-Hojib",narx:0,rasm:"https://risolanashr.vercel.app/al-kafiya-fi-ilm-nahv.jpg"},
+  {id:"k09",nomi:"Taysirus siyratin nabawiyya",muallif:"D-r Hassan Sayyid Yusuf",narx:0,rasm:"https://risolanashr.vercel.app/taysir-sira-nabawiyya.jpg"},
+  {id:"k10",nomi:"Nurul yaqin fi siyrati sayyidil mursalin",muallif:"Muhammad al-Xudariy",narx:0,rasm:"https://risolanashr.vercel.app/nur-al-yaqin.jpg"},
+  {id:"k11",nomi:"Ta'limul muta'allim + Nasoihul ibod",muallif:"Burhonuddin az-Zarnujiy",narx:0,rasm:"https://risolanashr.vercel.app/talim-al-mutaallim.jpg"},
+  {id:"k12",nomi:"Muxtasarul Viqoya (an-Nuqoya)",muallif:"Ubaydulloh ibn Mas'ud al-Mahbubiy",narx:0,rasm:"https://risolanashr.vercel.app/muxtasar-al-viqoya.jpg"},
+  {id:"k13",nomi:"Ayyuhal valad + Laftatul kabid",muallif:"Imom G'azzoliy / Ibnul Javziy",narx:0,rasm:"https://risolanashr.vercel.app/ayyuhal-valad.jpg"},
+  {id:"k14",nomi:"Unvonul bayan va bustonul azhon",muallif:"Abdulloh ibn Muhammad ash-Shabroviy",narx:0,rasm:"https://risolanashr.vercel.app/unvan-al-bayan.jpg"},
+  {id:"k15",nomi:"Durusul balog'a (Shumusul baro'a sharhi bilan)",muallif:"Hifniy Nosif va boshqalar",narx:0,rasm:"https://risolanashr.vercel.app/durus-al-balagha.jpg"},
+  {id:"k16",nomi:"Zav'ul maoli li bad'il amoliy",muallif:"Mulla Ali al-Qoriy",narx:0,rasm:"https://risolanashr.vercel.app/zavul-maoli.jpg"}
 ];
 
 /* ================= YORDAMCHILAR ================= */
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function som(n){return String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?!\d))/g," ")+" so'm";}
+function narxT(n){n=Number(n)||0;return n>0?som(n):"Narxi: so'rang";}
+function totT(n){n=Number(n)||0;return n>0?som(n):"Menejer bilan kelishiladi";}
 function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
 function coverHTML(b,compact){
   if(b.rasm) return '<img src="'+esc(b.rasm)+'" alt="'+esc(b.nomi)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover">';
@@ -586,7 +598,7 @@ function renderPreview(){
   document.getElementById("booksGrid").innerHTML=BOOKS.slice(0,6).map(function(b,i){
     return '<button class="book reveal" style="transition-delay:'+(i*60)+'ms" onclick="openOrder()">'+
       '<div class="cover">'+coverHTML(b)+'</div>'+
-      '<div class="meta"><div class="t">'+esc(b.nomi)+'</div><div class="p">'+som(b.narx)+'</div></div></button>';
+      '<div class="meta"><div class="t">'+esc(b.nomi)+'</div><div class="p">'+narxT(b.narx)+'</div></div></button>';
   }).join("");
   document.querySelectorAll("#booksGrid .reveal").forEach(function(el){io.observe(el);});
 }
@@ -723,7 +735,7 @@ function picksHTML(list){
       '<div class="cover">'+coverHTML(b)+'</div>'+
       '<div class="meta"><div class="t">'+esc(b.nomi)+'</div>'+
       (b.muallif?'<div class="a">'+esc(b.muallif)+'</div>':'')+
-      '<div class="p">'+som(b.narx)+'</div></div></button>';
+      '<div class="p">'+narxT(b.narx)+'</div></div></button>';
   }).join("");
 }
 function renderPicks(){
@@ -739,7 +751,7 @@ function step3(t){
   t.list.map(function(k){
     var b=BOOKS.filter(function(x){return x.id===k.id;})[0]||k;
     return '<div class="card qrow"><div class="th">'+coverHTML(b,true)+'</div>'+
-      '<div class="info"><div class="nm">'+esc(k.nomi)+'</div><div class="pr">'+som(k.narx)+'</div>'+
+      '<div class="info"><div class="nm">'+esc(k.nomi)+'</div><div class="pr">'+narxT(k.narx)+'</div>'+
       '<div class="qbtns">'+[1,2,3].map(function(n){
         return '<button class="qb'+(k.soni===n?" on":"")+'" onclick="setQ(\''+k.id+'\','+n+')">'+n+'</button>';
       }).join("")+
@@ -748,10 +760,10 @@ function step3(t){
       '<input class="qnum" inputmode="numeric" value="'+k.soni+'" onchange="setQ(\''+k.id+'\',this.value)">'+
       '<button class="qb" onclick="setQ(\''+k.id+'\','+(k.soni+1)+')">+</button>'+
       '</div></div>'+
-      '<div class="side"><div class="s">'+som(k.narx*k.soni)+'</div>'+
+      '<div class="side">'+(k.narx?'<div class="s">'+som(k.narx*k.soni)+'</div>':'')+
       '<button class="del" onclick="toggleBook(\''+k.id+'\')">O\'chirish</button></div></div>';
   }).join("")+'</div>'+
-  '<div class="total"><span class="l">Jami '+t.n+' dona</span><span class="r">'+som(t.s)+'</span></div>'+
+  '<div class="total"><span class="l">Jami '+t.n+' dona</span><span class="r" style="font-size:'+(t.s?'21px':'14px')+'">'+totT(t.s)+'</span></div>'+
   '<div class="nav"><button class="btn btn-g btn-md" onclick="go(1)">'+
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Orqaga</button>'+
     '<button class="btn btn-p btn-lg" '+(t.n?"":"disabled")+' onclick="go(3)">Tasdiqlashga o\'tish'+
@@ -767,10 +779,10 @@ function step4(t){
       '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div></div>'+
     '<div class="blk"><div class="bh"><h3>Buyurtma</h3><button onclick="go(1)">O\'zgartirish</button></div>'+
       t.list.map(function(k){
-        return '<div class="li"><span><span class="n">'+esc(k.nomi)+'</span><br><span class="q">'+k.soni+' × '+som(k.narx)+'</span></span>'+
-          '<span class="s">'+som(k.narx*k.soni)+'</span></div>';
+        return '<div class="li"><span><span class="n">'+esc(k.nomi)+'</span><br><span class="q">'+k.soni+' dona'+(k.narx?' × '+som(k.narx):'')+'</span></span>'+
+          '<span class="s">'+(k.narx?som(k.narx*k.soni):'\u2014')+'</span></div>';
       }).join("")+
-      '<div class="sumtot"><span class="l">Jami ('+t.n+' dona)</span><span class="r">'+som(t.s)+'</span></div></div>'+
+      '<div class="sumtot"><span class="l">Jami ('+t.n+' dona)</span><span class="r" style="font-size:'+(t.s?'21px':'14px')+'">'+totT(t.s)+'</span></div></div>'+
     '<div class="blk"><span class="lt" style="font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)">Izoh (ixtiyoriy)</span>'+
       '<textarea id="f_izoh" class="inp" style="margin-top:10px" maxlength="400" placeholder="Manzil, yetkazish vaqti yoki boshqa istaklaringiz..." oninput="S.izoh=this.value"></textarea></div>'+
   '</div>'+
@@ -831,7 +843,7 @@ function doneHTML(){
       '<div class="kv"><span class="k">Mijoz</span><span class="v">'+esc(S.ism)+'</span></div>'+
       '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div>'+
       '<div class="kv"><span class="k">Kitoblar</span><span class="v">'+t.list.length+' nom · '+t.n+' dona</span></div>'+
-      '<div class="kv"><span class="k">Jami summa</span><span class="v" style="color:var(--brand)">'+som(t.s)+'</span></div>'+
+      '<div class="kv"><span class="k">Jami summa</span><span class="v" style="color:var(--brand)">'+totT(t.s)+'</span></div>'+
     '</div>'+
     '<div class="acts"><button class="btn btn-p btn-md" onclick="resetOrder()">Bosh sahifaga qaytish</button></div></div>';
 }
