@@ -134,6 +134,10 @@ h2{font-size:clamp(26px,4.2vw,38px);font-weight:600;margin-top:12px}
 .book .meta .t{font-size:13px;font-weight:700;line-height:1.3;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .book .meta .p{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--brand)}
+.book .meta .ar{margin-top:4px;font-size:12px;color:var(--ink-soft);line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.book .meta .d{margin-top:3px;font-size:11px;color:var(--ink-soft);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pick .meta .ar{margin-top:4px;font-size:12px;color:var(--ink-soft);line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.pick .meta .d{margin-top:3px;font-size:11px;color:var(--ink-soft);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ---------- process ---------- */
 .proc{background:var(--ink);color:var(--cream)}
@@ -504,22 +508,23 @@ var PALETTE = [["#1f5d47","#2f7d60"],["#8a4b2a","#b8873b"],["#243b53","#3d5a80"]
   ["#5b2c3e","#8d4f63"],["#3d4a1f","#68793a"],["#4a2c5b","#74508d"]];
 
 var DEMO = [
-  {id:"k01",nomi:"Daloilul xayrot",muallif:"Muhammad ibn Sulaymon al-Jazuliy",narx:0,rasm:"https://risolanashr.vercel.app/dalail-al-xayrot.jpg"},
-  {id:"k02",nomi:"Nurul iyzoh (al-Isboh hoshiyasi bilan)",muallif:"Hasan ibn Ali ash-Shurunbuloliy",narx:0,rasm:"https://risolanashr.vercel.app/nur-al-iyzoh.jpg"},
-  {id:"k03",nomi:"Sharhul Fiqhil akbar",muallif:"Shihobuddin Ahmad ibn Muhammad al-G'unaymiy",narx:0,rasm:"https://risolanashr.vercel.app/sharh-al-fiqh-al-akbar.jpg"},
-  {id:"k04",nomi:"Al-Muxtasar fil fiqhil hanafiy",muallif:"",narx:0,rasm:"https://risolanashr.vercel.app/al-muxtasar-fiqh-hanafiy.jpg"},
-  {id:"k05",nomi:"Qasasun nabiyyin",muallif:"Abul Hasan Ali al-Hasaniy an-Nadviy",narx:0,rasm:"https://risolanashr.vercel.app/qasas-an-nabiyyin.jpg"},
-  {id:"k06",nomi:"Durusul lug'atil arabiyya va sharhi (1-4 juz)",muallif:"D. F. Abdurrahim",narx:0,rasm:"https://risolanashr.vercel.app/durus-al-lugha-jam.jpg"},
-  {id:"k07",nomi:"Ad-Durusun nahviyya",muallif:"Hifniy Nosif va boshqalar",narx:0,rasm:"https://risolanashr.vercel.app/ad-durus-an-nahviyya.jpg"},
-  {id:"k08",nomi:"Al-Kofiya fi ilmin nahv",muallif:"Ibn al-Hojib",narx:0,rasm:"https://risolanashr.vercel.app/al-kafiya-fi-ilm-nahv.jpg"},
-  {id:"k09",nomi:"Taysirus siyratin nabawiyya",muallif:"D-r Hassan Sayyid Yusuf",narx:0,rasm:"https://risolanashr.vercel.app/taysir-sira-nabawiyya.jpg"},
-  {id:"k10",nomi:"Nurul yaqin fi siyrati sayyidil mursalin",muallif:"Muhammad al-Xudariy",narx:0,rasm:"https://risolanashr.vercel.app/nur-al-yaqin.jpg"},
-  {id:"k11",nomi:"Ta'limul muta'allim + Nasoihul ibod",muallif:"Burhonuddin az-Zarnujiy",narx:0,rasm:"https://risolanashr.vercel.app/talim-al-mutaallim.jpg"},
-  {id:"k12",nomi:"Muxtasarul Viqoya (an-Nuqoya)",muallif:"Ubaydulloh ibn Mas'ud al-Mahbubiy",narx:0,rasm:"https://risolanashr.vercel.app/muxtasar-al-viqoya.jpg"},
-  {id:"k13",nomi:"Ayyuhal valad + Laftatul kabid",muallif:"Imom G'azzoliy / Ibnul Javziy",narx:0,rasm:"https://risolanashr.vercel.app/ayyuhal-valad.jpg"},
-  {id:"k14",nomi:"Unvonul bayan va bustonul azhon",muallif:"Abdulloh ibn Muhammad ash-Shabroviy",narx:0,rasm:"https://risolanashr.vercel.app/unvan-al-bayan.jpg"},
-  {id:"k15",nomi:"Durusul balog'a (Shumusul baro'a sharhi bilan)",muallif:"Hifniy Nosif va boshqalar",narx:0,rasm:"https://risolanashr.vercel.app/durus-al-balagha.jpg"},
-  {id:"k16",nomi:"Zav'ul maoli li bad'il amoliy",muallif:"Mulla Ali al-Qoriy",narx:0,rasm:"https://risolanashr.vercel.app/zavul-maoli.jpg"}
+  {id:"k01",nomi:"Daloilul xoyrot",muallif:"Muhammad ibn Sulaymon al-Juzuliy",narx:0,tavsif:"دلائل الخيرات · Kundalik vird, salovot · 160 bet · Muhaqqiq: Shayx Mahmud Durra",rasm:"https://risolanashr.vercel.app/dalail-al-xayrot.jpg"},
+  {id:"k02",nomi:"Nurul iyzoh va najotul arvoh",muallif:"Hasan ibn Aliy Shurunbuloliy",narx:0,tavsif:"نور الإيضاح ونجاة الأرواح · Fiqh · 310 bet",rasm:"https://risolanashr.vercel.app/nur-al-iyzoh.jpg"},
+  {id:"k03",nomi:"Sharhul fiqhil akbar",muallif:"Abul Muntaho Shihobiddin al-Mag'nisoviy",narx:0,tavsif:"شرح الفقه الأكبر · Aqida",rasm:"https://risolanashr.vercel.app/sharh-al-fiqh-al-akbar.jpg"},
+  {id:"k04",nomi:"Al-Muxtasar fil fiqhil hanafiy",muallif:"Ashraf Aliy Tahonaviy",narx:0,tavsif:"المختصر في الفقه الحنفي · Fiqh · 300 bet",rasm:"https://risolanashr.vercel.app/al-muxtasar-fiqh-hanafiy.jpg"},
+  {id:"k05",nomi:"Qisosun nabiyyin",muallif:"Abul Hasan Nadviy",narx:0,tavsif:"قصص النبيين · Mutolaa · 336 bet",rasm:"https://risolanashr.vercel.app/qasas-an-nabiyyin.jpg"},
+  {id:"k06",nomi:"Durusul lug'atil arabiyya (Madina)",muallif:"D. F. Abdurrahim",narx:0,tavsif:"دروس اللغة العربية · Arab tili · 800 bet",rasm:"https://risolanashr.vercel.app/durus-al-lugha-jam.jpg"},
+  {id:"k07",nomi:"Ad-Durusun nahviyya",muallif:"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih",narx:0,tavsif:"الدروس النحوية · Arab tili · 488 bet",rasm:"https://risolanashr.vercel.app/ad-durus-an-nahviyya.jpg"},
+  {id:"k08",nomi:"Al-Kofiya fi ilmin nahv",muallif:"Alloma ibn Hojib",narx:0,tavsif:"الكافية في علم النحو · Arab tili · 208 bet",rasm:"https://risolanashr.vercel.app/al-kafiya-fi-ilm-nahv.jpg"},
+  {id:"k09",nomi:"Taysirus siyrotin nabaviyya",muallif:"D. Hasson Sayyid Yusuf",narx:0,tavsif:"تيسير السيرة النبوية · Siyrat, mutolaa · 304 bet",rasm:"https://risolanashr.vercel.app/taysir-sira-nabawiyya.jpg"},
+  {id:"k10",nomi:"Nurul yaqin fi siyrati sayyidil mursalin",muallif:"Muhammad al-Bajuriy Huzariybek",narx:0,tavsif:"نور اليقين في سيرة سيد المرسلين · Siyrat · 455 bet",rasm:"https://risolanashr.vercel.app/nur-al-yaqin.jpg"},
+  {id:"k11",nomi:"Ta'limul mutaallim va Nasoihul ibod",muallif:"Imom Burhonul islom Zarnujiy va Muhammad Navaviy al-Joviy",narx:0,tavsif:"تعليم المتعلم ويليه نصائح العباد · Mutolaa · 488 bet",rasm:"https://risolanashr.vercel.app/talim-al-mutaallim.jpg"},
+  {id:"k12",nomi:"Muxtasarul viqoya (an-Nuqoya)",muallif:"Ubaydulloh ibn Mas'ud al-Mahbubiy",narx:0,tavsif:"مختصر الوقاية في مسائل الهداية · Fiqh · 352 bet",rasm:"https://risolanashr.vercel.app/muxtasar-al-viqoya.jpg"},
+  {id:"k13",nomi:"Ayyuhal valad va laftatul kabad",muallif:"Abu Homid G'azzoliy va Jamoliddin Abul Faraj",narx:0,tavsif:"أيها الولد ويليه لفتة الكبد · Mutolaa · 136 bet",rasm:"https://risolanashr.vercel.app/ayyuhal-valad.jpg"},
+  {id:"k14",nomi:"Unvonul bayon va bustonul azhon",muallif:"Abdulloh Shabroviy",narx:0,tavsif:"عنوان البيان وبستان الأذهان · Mutolaa · 232 bet",rasm:"https://risolanashr.vercel.app/unvan-al-bayan.jpg"},
+  {id:"k15",nomi:"Durusul balog'a",muallif:"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih",narx:0,tavsif:"دروس البلاغة · Balog'at · 192 bet",rasm:"https://risolanashr.vercel.app/durus-al-balagha.jpg"},
+  {id:"k16",nomi:"Zovul maoliy sharhu bad'il amoliy",muallif:"Mulla Aliy Qoriy",narx:0,tavsif:"ضوء المعالي شرح بدء الأمالي · Aqida · 192 bet",rasm:"https://risolanashr.vercel.app/zavul-maoli.jpg"},
+  {id:"k17",nomi:"Al-Hidoya sharh bidoyatil mubtadiy (4 jild)",muallif:"Burhoniddin Marg'inoniy",narx:0,tavsif:"الهداية شرح بداية المبتدي · Fiqh · 4 jild, har jild ~500 bet · 25×35 sm",rasm:""}
 ];
 
 /* ================= YORDAMCHILAR ================= */
@@ -528,6 +533,12 @@ function som(n){return String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?
 function narxT(n){n=Number(n)||0;return n>0?som(n):"Narxi: so'rang";}
 function totT(n){n=Number(n)||0;return n>0?som(n):"Menejer bilan kelishiladi";}
 function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function tavHTML(t){
+  if(!t) return "";
+  var s=String(t).trim(), m=s.match(/^([\u0600-\u06FF\u0750-\u077F\s\u060C\u061B\u061F]+)(?:\s*\u00b7\s*)?([\s\S]*)$/);
+  if(m&&m[1].trim())return '<div class="ar" dir="rtl">'+esc(m[1].trim())+'</div>'+(m[2].trim()?'<div class="d">'+esc(m[2].trim())+'</div>':"");
+  return '<div class="d">'+esc(s)+'</div>';
+}
 function coverHTML(b,compact){
   if(b.rasm) return '<img src="'+esc(b.rasm)+'" alt="'+esc(b.nomi)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover">';
   var p=PALETTE[hash(b.nomi||b.id)%PALETTE.length];
@@ -598,7 +609,7 @@ function renderPreview(){
   document.getElementById("booksGrid").innerHTML=BOOKS.slice(0,6).map(function(b,i){
     return '<button class="book reveal" style="transition-delay:'+(i*60)+'ms" onclick="openOrder()">'+
       '<div class="cover">'+coverHTML(b)+'</div>'+
-      '<div class="meta"><div class="t">'+esc(b.nomi)+'</div><div class="p">'+narxT(b.narx)+'</div></div></button>';
+      '<div class="meta"><div class="t">'+esc(b.nomi)+'</div>'+tavHTML(b.tavsif)+'<div class="p">'+narxT(b.narx)+'</div></div></button>';
   }).join("");
   document.querySelectorAll("#booksGrid .reveal").forEach(function(el){io.observe(el);});
 }
@@ -735,6 +746,7 @@ function picksHTML(list){
       '<div class="cover">'+coverHTML(b)+'</div>'+
       '<div class="meta"><div class="t">'+esc(b.nomi)+'</div>'+
       (b.muallif?'<div class="a">'+esc(b.muallif)+'</div>':'')+
+      tavHTML(b.tavsif)+
       '<div class="p">'+narxT(b.narx)+'</div></div></button>';
   }).join("");
 }
