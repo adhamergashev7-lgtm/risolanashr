@@ -71,12 +71,20 @@ header.on{background:rgba(247,243,234,.95);backdrop-filter:blur(14px);border-bot
 @media(min-width:640px){.logo img{height:34px}}
 .flogo img{height:74px!important}
 .soc{display:flex;gap:8px;margin-top:18px}
-.soc a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid rgba(20,32,27,.12);color:var(--ink);transition:.2s}
+.soc a{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid rgba(20,32,27,.12);color:var(--ink);transition:.2s}
 .soc a:hover{background:var(--brand);border-color:var(--brand);color:#fff;transform:translateY(-2px)}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.chip{border:1px solid rgba(20,32,27,.14);background:#fff;border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.18s;color:var(--ink-soft);white-space:nowrap}
+.chips{display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
+.chips::-webkit-scrollbar{display:none}
+@media(min-width:620px){.chips{flex-wrap:wrap;overflow:visible}}
+.chip{border:1px solid rgba(20,32,27,.14);background:#fff;border-radius:999px;padding:9px 16px;min-height:38px;flex:none;font-size:12.5px;font-weight:600;cursor:pointer;transition:.18s;color:var(--ink-soft);white-space:nowrap}
 .chip:hover{border-color:var(--brand);color:var(--brand)}
 .chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.srtbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.srtbar .cnt{font-size:13px;color:var(--ink-soft)}
+.srt{appearance:none;border:1px solid rgba(20,32,27,.14);background:#fff;border-radius:999px;
+  padding:9px 34px 9px 15px;font-size:13px;font-weight:600;cursor:pointer;min-height:38px;outline:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234a5852' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center}
 #detail{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(20,32,27,.55);backdrop-filter:blur(3px)}
 #detail.open{display:flex}
 #detail .box{background:var(--cream);border-radius:calc(var(--r) + 4px);max-width:760px;width:100%;max-height:92vh;overflow:auto;position:relative;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)}
@@ -89,6 +97,13 @@ header.on{background:rgba(247,243,234,.95);backdrop-filter:blur(14px);border-bot
 #detail .facts{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px}
 #detail .facts span{background:rgba(31,93,71,.09);color:var(--brand);border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:600}
 #detail .pr{margin-top:18px;font-family:'Playfair Display',serif;font-size:27px;font-weight:600;color:var(--brand)}
+#detail .cover{cursor:zoom-in}
+#zoom{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;
+  background:rgba(12,20,17,.93);padding:20px;cursor:zoom-out}
+#zoom.open{display:flex}
+#zoom img{max-width:100%;max-height:100%;border-radius:10px;box-shadow:0 30px 70px -20px rgba(0,0,0,.8)}
+#zoom .x{position:absolute;right:16px;top:16px;width:44px;height:44px;border-radius:50%;border:0;
+  background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;cursor:pointer}
 #detail .x{position:absolute;right:12px;top:12px;z-index:3;width:36px;height:36px;border-radius:50%;border:1px solid rgba(20,32,27,.12);background:#fff;display:grid;place-items:center;cursor:pointer}
 .logo .mark{width:36px;height:36px;border-radius:11px;background:var(--brand);color:#fff;
   display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:18px}
@@ -103,6 +118,37 @@ nav.main a:hover{color:var(--ink)}
 @media(min-width:640px){.ico{display:grid}}
 @media(min-width:880px){nav.main{display:flex}}
 
+/* --- burger + mobil menyu --- */
+.hd-cta{display:none}
+@media(min-width:880px){.hd-cta{display:inline-flex}}
+.burg{width:44px;height:44px;border-radius:12px;border:1px solid rgba(20,32,27,.12);background:#fff;
+  display:grid;place-items:center;cursor:pointer;flex:none}
+@media(min-width:880px){.burg{display:none}}
+#mmenu{position:fixed;inset:0;z-index:60;display:none;background:rgba(20,32,27,.5);backdrop-filter:blur(3px)}
+#mmenu.open{display:block}
+#mmenu .sheet{position:absolute;left:0;right:0;top:0;background:var(--cream);padding:14px 20px 26px;
+  border-bottom-left-radius:22px;border-bottom-right-radius:22px;animation:down .28s cubic-bezier(.16,1,.3,1) both}
+@keyframes down{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
+#mmenu .top{display:flex;align-items:center;justify-content:space-between;height:52px}
+#mmenu nav{display:grid;margin-top:10px}
+#mmenu nav a{display:flex;align-items:center;min-height:52px;font-size:16px;font-weight:600;
+  border-bottom:1px solid rgba(20,32,27,.07)}
+#mmenu .cts{display:grid;gap:8px;margin-top:18px}
+#mmenu .cts a{display:flex;align-items:center;gap:12px;min-height:52px;padding:0 16px;border-radius:14px;
+  background:#fff;border:1px solid rgba(20,32,27,.1);font-size:15px;font-weight:600}
+#mmenu .cts a svg{color:var(--brand);flex:none}
+
+/* --- mobil pastki panel --- */
+#bbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;gap:8px;align-items:center;
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(247,243,234,.96);backdrop-filter:blur(14px);border-top:1px solid rgba(20,32,27,.1)}
+@media(min-width:880px){#bbar{display:none}}
+#bbar .b{flex:1;justify-content:center}
+#bbar .s{width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;
+  background:#fff;border:1px solid rgba(20,32,27,.12);color:var(--ink)}
+@media(max-width:879px){body.hasbar{padding-bottom:76px}}
+body.noscroll #bbar{display:none}
+
 /* ---------- hero ---------- */
 .hero{position:relative;overflow:hidden}
 .hero:before,.hero:after{content:"";position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
@@ -110,8 +156,8 @@ nav.main a:hover{color:var(--ink)}
 .hero:after{width:420px;height:420px;right:-140px;top:60px;background:rgba(184,135,59,.18)}
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.035;
   background-image:radial-gradient(circle at 1px 1px,#14201b 1px,transparent 0);background-size:4px 4px}
-.hero-in{position:relative;display:grid;gap:48px;padding:56px 0 70px}
-@media(min-width:940px){.hero-in{grid-template-columns:1.05fr .95fr;align-items:center;gap:60px;padding:76px 0 96px}}
+.hero-in{position:relative;display:grid;gap:48px;padding:56px 20px 70px}
+@media(min-width:940px){.hero-in{grid-template-columns:1.05fr .95fr;align-items:center;gap:60px;padding:76px 20px 96px}}
 .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(184,135,59,.35);
   background:rgba(184,135,59,.09);color:var(--gold);border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:600}
 h1{font-size:clamp(34px,7vw,58px);line-height:1.07;font-weight:600;margin-top:22px}
@@ -167,9 +213,9 @@ h2{font-size:clamp(26px,4.2vw,38px);font-weight:600;margin-top:12px}
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .book .meta .p{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--brand)}
 .book .meta .ar{margin-top:4px;font-size:12px;color:var(--ink-soft);line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-.book .meta .d{margin-top:3px;font-size:11px;color:var(--ink-soft);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.book .meta .d{margin-top:3px;font-size:12px;color:var(--ink-soft);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pick .meta .ar{margin-top:4px;font-size:12px;color:var(--ink-soft);line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-.pick .meta .d{margin-top:3px;font-size:11px;color:var(--ink-soft);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pick .meta .d{margin-top:3px;font-size:12px;color:var(--ink-soft);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ---------- process ---------- */
 .proc{background:var(--ink);color:var(--cream)}
@@ -206,7 +252,9 @@ footer{margin-top:90px;border-top:1px solid rgba(20,32,27,.08);background:rgba(2
 @media(min-width:640px){.fg{grid-template-columns:1fr 1fr}}
 @media(min-width:960px){.fg{grid-template-columns:2fr 1fr 1fr}}
 footer h4{font-size:14px;font-weight:700}
-footer ul{list-style:none;margin-top:14px;display:grid;gap:10px;font-size:14px;color:var(--ink-soft)}
+footer ul{list-style:none;margin-top:8px;display:grid;font-size:14px;color:var(--ink-soft)}
+footer ul li{display:flex;align-items:center;min-height:40px}
+footer ul a{display:flex;align-items:center;min-height:40px;width:100%}
 footer ul a:hover{color:var(--ink)}
 .fbot{border-top:1px solid rgba(20,32,27,.08);padding:20px 0;display:flex;flex-wrap:wrap;gap:8px;
   justify-content:space-between;font-size:12px;color:var(--ink-soft)}
@@ -222,10 +270,11 @@ footer ul a:hover{color:var(--ink)}
   cursor:pointer;display:grid;place-items:center;color:var(--ink-soft);transition:.2s}
 .xbtn:hover{border-color:rgba(20,32,27,.34);color:var(--ink)}
 
-.prog{display:flex;align-items:center;margin:26px 0 30px}
+.prog{display:flex;align-items:center;margin:16px 0 20px}
+@media(min-width:560px){.prog{margin:26px 0 30px}}
 .prog .it{display:flex;align-items:center;flex:1}
 .prog .it:last-child{flex:none}
-.prog .cir{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;
+.prog .cir{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;
   border:1px solid rgba(20,32,27,.16);background:#fff;color:var(--ink-soft);transition:.3s;flex:none}
 .prog .it.done .cir,.prog .it.now .cir{background:var(--brand);color:#fff;border-color:var(--brand)}
 .prog .it.now .cir{box-shadow:0 0 0 4px rgba(31,93,71,.15)}
@@ -239,8 +288,8 @@ footer ul a:hover{color:var(--ink)}
 
 .step{animation:up .45s cubic-bezier(.16,1,.3,1) both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.step h2{font-size:clamp(24px,4.6vw,32px);margin-top:0}
-.step .sub{margin-top:8px;font-size:14.5px}
+.step h2{font-size:clamp(21px,4.6vw,32px);margin-top:0;line-height:1.2}
+.step .sub{margin-top:6px;font-size:14px}
 
 label.f{display:block;margin-top:20px}
 label.f .lt{display:block;font-size:13.5px;font-weight:700;margin-bottom:8px}
@@ -254,10 +303,10 @@ label.f .hint{display:block;font-size:12px;color:var(--ink-soft);margin-top:7px}
 .selwrap svg{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-soft)}
 select.inp{appearance:none;padding-right:44px;cursor:pointer}
 
-.searchwrap{position:relative;margin-top:22px}
+.searchwrap{position:relative;margin-top:16px}
 .searchwrap .clr{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;
   cursor:pointer;color:var(--ink-soft);padding:4px;display:none}
-.pickgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.pickgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 @media(min-width:620px){.pickgrid{grid-template-columns:repeat(3,1fr);gap:16px}}
 .pick{position:relative;border:1px solid rgba(20,32,27,.08);background:#fff;border-radius:var(--r);
   overflow:hidden;cursor:pointer;text-align:left;padding:0;transition:.2s}
@@ -272,25 +321,31 @@ select.inp{appearance:none;padding-right:44px;cursor:pointer}
 .pick .meta .a{margin-top:3px;font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pick .meta .p{margin-top:7px;font-size:12.5px;font-weight:700;color:var(--brand)}
 
-.qrow{display:flex;align-items:center;gap:14px;padding:14px;margin-top:12px}
-.qrow .th{width:58px;height:78px;border-radius:10px;overflow:hidden;flex:none;position:relative}
+.qrow{padding:14px;margin-top:12px}
+.qtop{display:flex;align-items:flex-start;gap:12px}
+.qrow .th{width:52px;height:70px;border-radius:10px;overflow:hidden;flex:none;position:relative}
 .qrow .info{flex:1;min-width:0}
-.qrow .nm{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.qrow .pr{font-size:12px;color:var(--ink-soft)}
-.qbtns{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
-.qb{height:34px;min-width:38px;border-radius:9px;border:1px solid rgba(20,32,27,.13);background:#fff;
-  cursor:pointer;font-size:13px;font-weight:700;transition:.18s}
+.qrow .nm{font-size:14px;font-weight:700;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qrow .pr{font-size:12.5px;color:var(--ink-soft);margin-top:4px}
+.qrow .side{text-align:right;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.qrow .side .s{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--brand);white-space:nowrap}
+.qrow .side .del{background:none;border:0;cursor:pointer;font-size:12px;color:var(--ink-soft);
+  padding:6px 0;min-height:32px;text-decoration:underline;text-underline-offset:3px}
+.qrow .side .del:hover{color:#c62828}
+.qbtns{display:flex;align-items:center;gap:6px;margin-top:12px;padding-top:12px;
+  border-top:1px solid rgba(20,32,27,.07)}
+.qb{height:42px;min-width:42px;border-radius:11px;border:1px solid rgba(20,32,27,.13);background:#fff;
+  cursor:pointer;font-size:14px;font-weight:700;transition:.18s;flex:none}
 .qb:hover{border-color:rgba(20,32,27,.32)}
 .qb.on{background:var(--brand);color:#fff;border-color:var(--brand)}
-.qsep{width:1px;height:20px;background:rgba(20,32,27,.12);margin:0 4px}
-.qnum{width:50px;height:34px;text-align:center;border-radius:9px;border:1px solid rgba(20,32,27,.13);
-  background:#fff;font-size:13px;font-weight:700;outline:none}
+.qsep{flex:1}
+.qstep{display:flex;align-items:center;gap:4px;background:rgba(20,32,27,.045);border-radius:13px;padding:3px}
+.qstep .qb{border:0;background:transparent;font-size:18px;line-height:1}
+.qstep .qb:hover{background:rgba(255,255,255,.9)}
+.qnum{width:46px;height:36px;text-align:center;border-radius:9px;border:1px solid rgba(20,32,27,.1);
+  background:#fff;font-size:14px;font-weight:700;outline:none}
 .qnum:focus{border-color:var(--brand)}
-.qrow .side{text-align:right;flex:none;display:none}
-@media(min-width:560px){.qrow .side{display:block}}
-.qrow .side .s{font-size:13px;font-weight:700;color:var(--brand)}
-.qrow .side .del{margin-top:4px;background:none;border:0;cursor:pointer;font-size:11.5px;color:var(--ink-soft)}
-.qrow .side .del:hover{color:#c62828}
 
 .total{display:flex;align-items:center;justify-content:space-between;background:rgba(31,93,71,.08);
   border-radius:14px;padding:16px 20px;margin-top:18px}
@@ -317,8 +372,11 @@ select.inp{appearance:none;padding-right:44px;cursor:pointer}
 .sumtot .r{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:var(--brand)}
 textarea.inp{resize:none;min-height:88px}
 
-.nav{display:flex;flex-direction:column-reverse;gap:12px;margin-top:30px}
-@media(min-width:560px){.nav{flex-direction:row;align-items:center;justify-content:space-between}}
+.nav{display:flex;flex-direction:row;align-items:center;gap:10px;margin-top:24px;position:sticky;bottom:0;z-index:5;padding:14px 0 calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--cream) 78%,rgba(247,243,234,0))}
+.nav .btn-p,.nav .btn-lg{flex:1;justify-content:center}
+.nav .btn-g{flex:none;padding-left:18px;padding-right:18px}
+@media(min-width:560px){.nav{flex-direction:row;justify-content:space-between}
+.nav .btn-p,.nav .btn-lg{flex:none}}
 .fine{margin-top:16px;text-align:center;font-size:12.5px;color:var(--ink-soft)}
 .alert{background:#fdecec;color:#b3261e;border-radius:12px;padding:13px 16px;font-size:13.5px;margin-top:16px}
 
@@ -340,10 +398,20 @@ textarea.inp{resize:none;min-height:88px}
 @keyframes sk{0%,100%{opacity:1}50%{opacity:.5}}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1!important;transform:none!important}
+}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--brand);color:#fff;
+  padding:12px 20px;border-radius:0 0 12px 0;font-weight:700}
+.skip:focus{left:0}
 .noscroll{overflow:hidden}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
+<a class="skip" href="#kitoblar">Asosiy qismga o'tish</a>
 
 <header id="hdr">
   <div class="wrap hd">
@@ -360,7 +428,10 @@ textarea.inp{resize:none;min-height:88px}
       <a class="ico" id="hdTel" href="#" style="display:none" aria-label="Telefon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3l1.6 4-2 1.4a12 12 0 0 0 5.5 5.5l1.4-2 4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5z"/></svg></a>
       <a class="ico" href="https://t.me/risolanashr" target="_blank" rel="noopener" aria-label="Telegram kanal"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg></a>
       <a class="ico" href="https://www.instagram.com/risolanashr" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg></a>
-      <button class="btn btn-p btn-sm" onclick="openOrder()">Buyurtma berish</button>
+      <button class="btn btn-p btn-sm hd-cta" onclick="openOrder()">Buyurtma berish</button>
+      <button class="burg" onclick="openMenu()" aria-label="Menyu" aria-expanded="false" aria-controls="mmenu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
   </div>
 </header>
@@ -519,12 +590,46 @@ textarea.inp{resize:none;min-height:88px}
   </div>
 </footer>
 
-<div id="detail" aria-hidden="true" onclick="if(event.target===this)closeDetail()">
+<div id="mmenu" aria-hidden="true" onclick="if(event.target===this)closeMenu()">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Menyu">
+    <div class="top">
+      <span class="logo"><img src="/rn-mark.png" alt="" width="154" height="128"><span><b>Risola Nashr</b><span>Nashriyot</span></span></span>
+      <button class="burg" onclick="closeMenu()" aria-label="Yopish">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <nav>
+      <a href="#kitoblar" onclick="closeMenu()">Kitoblar</a>
+      <a href="#jarayon" onclick="closeMenu()">Qanday ishlaydi</a>
+      <a href="#savollar" onclick="closeMenu()">Savollar</a>
+    </nav>
+    <div class="cts">
+      <a href="https://t.me/risolanashr" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg> Telegram kanalimiz</a>
+      <a href="https://www.instagram.com/risolanashr" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg> Instagram</a>
+      <a id="mmTel" href="#" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3l1.6 4-2 1.4a12 12 0 0 0 5.5 5.5l1.4-2 4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5z"/></svg> <span></span></a>
+    </div>
+    <button class="btn btn-p btn-lg" style="width:100%;margin-top:16px" onclick="closeMenu();openOrder()">Buyurtma berish</button>
+  </div>
+</div>
+
+<div id="zoom" onclick="closeZoom()" aria-hidden="true">
+  <button class="x" aria-label="Yopish"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img id="zoomImg" src="" alt="">
+</div>
+
+<div id="bbar">
+  <a class="s" href="https://t.me/risolanashr" target="_blank" rel="noopener" aria-label="Telegram kanal"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg></a>
+  <a class="s" href="https://www.instagram.com/risolanashr" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+  <a class="s" id="bbTel" href="#" style="display:none" aria-label="Telefon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3l1.6 4-2 1.4a12 12 0 0 0 5.5 5.5l1.4-2 4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5z"/></svg></a>
+  <button class="btn btn-p btn-md b" onclick="openOrder()">Buyurtma berish</button>
+</div>
+
+<div id="detail" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Kitob haqida" onclick="if(event.target===this)closeDetail()">
   <div class="box"><button class="x" onclick="closeDetail()" aria-label="Yopish"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div class="inner" id="detailBody"></div></div>
 </div>
 
 <!-- ==================== BUYURTMA ==================== -->
-<div id="order" aria-hidden="true">
+<div id="order" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Buyurtma berish">
   <div class="obar">
     <div class="wrap in">
       <a href="#" class="logo" onclick="closeOrder();return false">
@@ -535,7 +640,7 @@ textarea.inp{resize:none;min-height:88px}
       </button>
     </div>
   </div>
-  <div class="narrow" style="padding-bottom:70px"><div id="orderBody"></div></div>
+  <div class="narrow" style="padding-bottom:20px"><p id="jonli" role="status" aria-live="polite" class="sr"></p><div id="orderBody"></div></div>
 </div>
 
 <script>
@@ -627,13 +732,16 @@ function phoneDigits(v){return String(v).replace(/\D/g,"").replace(/^998/,"").sl
 
 /* ================= STATIC BLOKLAR ================= */
 document.getElementById("yr").textContent=new Date().getFullYear();
+document.body.classList.add("hasbar");
 
 (function(){
   if(!SITE.tel)return;
   var href="tel:+"+String(SITE.tel).replace(/\D/g,"");
-  ["hdTel","socTel"].forEach(function(id){
+  ["hdTel","socTel","bbTel"].forEach(function(id){
     var e=document.getElementById(id);if(e){e.href=href;e.style.display="grid";}
   });
+  var mm=document.getElementById("mmTel");
+  if(mm){mm.href=href;mm.style.display="flex";mm.querySelector("span").textContent=SITE.tel;}
   var li=document.getElementById("ftTelLi"),a=document.getElementById("ftTel");
   if(li&&a){a.href=href;a.textContent=SITE.tel;li.style.display="";}
 })();
@@ -662,6 +770,7 @@ document.getElementById("procGrid").innerHTML=PROC.map(function(p,i){
 }).join("");
 
 var FAQ=[
+ ["Yetkazib berish qancha narx turadi?","Yetkazib berish narxi manzilingizga qarab hisoblanadi — menejer qo'ng'iroq paytida aniq summani aytadi. Toshkent shahri bo'yicha yetkazish odatda arzonroq."],
  ["Yetkazib berish qancha vaqt oladi?","Toshkent shahri bo'yicha odatda 1 ish kuni, viloyatlarga 2–4 ish kuni. Aniq muddatni menejer qo'ng'iroq paytida aytadi."],
  ["To'lovni qanday amalga oshiraman?","Kitobni qo'lingizga olganingizda naqd yoki karta orqali to'laysiz. Oldindan to'lov talab qilinmaydi."],
  ["Bir nechta kitob buyurtma qilsam bo'ladimi?","Ha. Buyurtma oynasida bir nechta kitobni tanlab, har biriga alohida soni belgilashingiz mumkin."],
@@ -703,18 +812,87 @@ function loadCatalog(){
     })
     .catch(function(){});
 }
-loadCatalog();
+loadCatalog().then(function(){
+  if(/^#kitob-/.test(location.hash)){
+    var id=location.hash.replace("#kitob-","");
+    if(BOOKS.some(function(b){return b.id===id;}))openDetail(id,true);
+  }
+});
+
+/* ================= UMUMIY OYNA YORDAMCHILARI ================= */
+var FOKUS_TARIX = [];
+function fokusla(el){
+  FOKUS_TARIX.push(document.activeElement);
+  var f=el.querySelector('button,[href],input,select,textarea');
+  if(f)setTimeout(function(){f.focus();},60);
+}
+function fokusQaytar(){
+  var e=FOKUS_TARIX.pop();
+  if(e&&e.focus)try{e.focus();}catch(x){}
+}
+function ochiqOyna(){
+  var z=document.getElementById("zoom"), d=document.getElementById("detail"),
+      m=document.getElementById("mmenu"), o=document.getElementById("order");
+  if(z.classList.contains("open"))return z;
+  if(d.classList.contains("open"))return d;
+  if(m.classList.contains("open"))return m;
+  if(o.classList.contains("open"))return o;
+  return null;
+}
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Tab")return;
+  var box=ochiqOyna(); if(!box)return;
+  var f=[].slice.call(box.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'))
+    .filter(function(x){return x.offsetParent!==null&&!x.disabled;});
+  if(!f.length)return;
+  var birinchi=f[0], oxirgi=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===birinchi){e.preventDefault();oxirgi.focus();}
+  else if(!e.shiftKey&&document.activeElement===oxirgi){e.preventDefault();birinchi.focus();}
+});
+function tanaQulf(){
+  var ochiq=!!ochiqOyna();
+  document.body.classList.toggle("noscroll",ochiq);
+}
+
+/* ================= MOBIL MENYU ================= */
+function openMenu(){
+  var m=document.getElementById("mmenu");
+  m.classList.add("open");m.setAttribute("aria-hidden","false");
+  document.querySelector("header .burg").setAttribute("aria-expanded","true");
+  tanaQulf();fokusla(m);
+}
+function closeMenu(){
+  var m=document.getElementById("mmenu");
+  m.classList.remove("open");m.setAttribute("aria-hidden","true");
+  document.querySelector("header .burg").setAttribute("aria-expanded","false");
+  tanaQulf();fokusQaytar();
+}
+
+/* ================= RASMNI KATTALASHTIRISH ================= */
+function openZoom(src,alt){
+  if(!src)return;
+  var z=document.getElementById("zoom"),i=document.getElementById("zoomImg");
+  i.src=src;i.alt=alt||"";
+  z.classList.add("open");z.setAttribute("aria-hidden","false");tanaQulf();
+}
+function closeZoom(){
+  var z=document.getElementById("zoom");
+  z.classList.remove("open");z.setAttribute("aria-hidden","true");
+  document.getElementById("zoomImg").src="";tanaQulf();
+}
 
 /* ================= KITOB TAFSILOTI ================= */
-function openDetail(id){
+function openDetail(id,tarixsiz){
   var b=null;for(var i=0;i<BOOKS.length;i++)if(BOOKS[i].id===id)b=BOOKS[i];
   if(!b)return openOrder();
+  if(!tarixsiz){try{history.pushState({kitob:id},"","#kitob-"+id);}catch(x){}}
   var t=String(b.tavsif||""),ar="",qol=t;
   var m=t.match(/^([\u0600-\u06FF\u0750-\u077F\s\u060C\u061B\u061F]+)(?:\s*\u00b7\s*)?([\s\S]*)$/);
   if(m&&m[1].trim()){ar=m[1].trim();qol=m[2];}
   var facts=qol.split("\u00b7").map(function(x){return x.trim();}).filter(Boolean);
   document.getElementById("detailBody").innerHTML=
-    '<div class="cover" style="aspect-ratio:3/4;position:relative;overflow:hidden">'+coverHTML(b)+'</div>'+
+    '<div class="cover" style="aspect-ratio:3/4;position:relative;overflow:hidden"'+
+      (b.rasm?' onclick="openZoom(\''+esc(b.rasm)+'\',\''+esc(b.nomi)+'\')" title="Kattalashtirish"':'')+'>'+coverHTML(b)+'</div>'+
     '<div><h3>'+esc(b.nomi)+'</h3>'+
     (ar?'<div class="ar" dir="rtl">'+esc(ar)+'</div>':'')+
     (b.muallif?'<div class="a">'+esc(b.muallif)+'</div>':'')+
@@ -723,20 +901,30 @@ function openDetail(id){
     '<button class="btn btn-p btn-lg" style="margin-top:20px;width:100%" onclick="buyurtmaBer(\''+b.id+'\')">Buyurtma berish'+
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>'+
     '<p style="margin-top:12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6">Oldindan to\'lov shart emas — kitobni qo\'lingizga olganingizda to\'laysiz.</p></div>';
-  document.getElementById("detail").classList.add("open");
-  document.body.classList.add("noscroll");
+  var d=document.getElementById("detail");
+  d.classList.add("open");d.setAttribute("aria-hidden","false");
+  tanaQulf();fokusla(d);
 }
-function closeDetail(){
-  document.getElementById("detail").classList.remove("open");
-  if(!document.getElementById("order").classList.contains("open"))document.body.classList.remove("noscroll");
+function closeDetail(tarixsiz){
+  var d=document.getElementById("detail");
+  if(!d.classList.contains("open"))return;
+  d.classList.remove("open");d.setAttribute("aria-hidden","true");
+  tanaQulf();fokusQaytar();
+  if(!tarixsiz&&/^#kitob-/.test(location.hash)){try{history.back();}catch(x){}}
 }
+window.addEventListener("popstate",function(){
+  if(/^#kitob-/.test(location.hash)){
+    var id=location.hash.replace("#kitob-","");
+    if(!document.getElementById("detail").classList.contains("open"))openDetail(id,true);
+  } else closeDetail(true);
+});
 function buyurtmaBer(id){
   if(!S.sel[id])S.sel[id]=1;
   closeDetail();openOrder();
 }
 
 /* ================= BUYURTMA HOLATI ================= */
-var S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",touched:false,sending:false,err:"",done:false};
+var S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",sort:"",touched:false,sending:false,err:"",done:false};
 
 function selList(){
   return BOOKS.filter(function(b){return S.sel[b.id];}).map(function(b){
@@ -746,20 +934,24 @@ function selList(){
 function totals(){var l=selList(),n=0,s=0;l.forEach(function(k){n+=k.soni;s+=k.soni*k.narx;});return {list:l,n:n,s:s};}
 
 function openOrder(){
-  document.getElementById("order").classList.add("open");
-  document.getElementById("order").setAttribute("aria-hidden","false");
-  document.body.classList.add("noscroll");
+  var o=document.getElementById("order");
+  o.classList.add("open");o.setAttribute("aria-hidden","false");
+  tanaQulf();
   loadCatalog().then(render);
   render();
+  fokusla(o);
 }
 function closeOrder(){
-  document.getElementById("order").classList.remove("open");
-  document.getElementById("order").setAttribute("aria-hidden","true");
-  document.body.classList.remove("noscroll");
+  var o=document.getElementById("order");
+  o.classList.remove("open");o.setAttribute("aria-hidden","true");
+  tanaQulf();fokusQaytar();
 }
 document.addEventListener("keydown",function(e){
   if(e.key!=="Escape")return;
-  if(document.getElementById("detail").classList.contains("open"))closeDetail();
+  var z=document.getElementById("zoom"),d=document.getElementById("detail"),m=document.getElementById("mmenu");
+  if(z.classList.contains("open"))closeZoom();
+  else if(d.classList.contains("open"))closeDetail();
+  else if(m.classList.contains("open"))closeMenu();
   else closeOrder();
 });
 
@@ -796,6 +988,8 @@ function render(){
   if(S.step===2)body=step3(t);
   if(S.step===3)body=step4(t);
   el.innerHTML=progressHTML()+'<div class="step">'+body+'</div>';
+  var lv=document.getElementById("jonli");
+  if(lv)lv.textContent=S.err?S.err:(QADAMLAR[S.step]?QADAMLAR[S.step]+" bosqichi":"");
   if(S.step===0){
     var i1=document.getElementById("f_ism");if(i1)i1.value=S.ism;
     var i2=document.getElementById("f_tel");if(i2)i2.value=S.tel;
@@ -839,12 +1033,20 @@ function syncBtn(){
 function matn(b){return ((b.nomi||"")+" "+(b.muallif||"")+" "+(b.tavsif||"")+" "+turi(b)).toLowerCase();}
 function filtrla(){
   var q=S.q.trim().toLowerCase();
-  return BOOKS.filter(function(b){
+  return saralash(BOOKS.filter(function(b){
     if(S.turi && turi(b)!==S.turi) return false;
     return !q||matn(b).indexOf(q)>=0;
-  });
+  }));
 }
 function setTuri(t){S.turi=(S.turi===t?"":t);renderPicks();}
+function setSort(v){S.sort=v;renderPicks();}
+function saralash(l){
+  var a=l.slice();
+  if(S.sort==="arzon")a.sort(function(x,y){return (Number(x.narx)||1e12)-(Number(y.narx)||1e12);});
+  else if(S.sort==="qimmat")a.sort(function(x,y){return (Number(y.narx)||0)-(Number(x.narx)||0);});
+  else if(S.sort==="nom")a.sort(function(x,y){return String(x.nomi).localeCompare(String(y.nomi),"uz");});
+  return a;
+}
 function step2(){
   var list=filtrla();
   var cnt=selList().length;
@@ -852,6 +1054,11 @@ function step2(){
   '<div class="searchwrap"><input id="f_q" class="inp" type="text" placeholder="Kitob nomi yoki muallif bo\'yicha qidirish..." '+
     'oninput="S.q=this.value;renderPicks()"></div>'+
   '<div class="chips" id="chipRow">'+chipsHTML()+'</div>'+
+  '<div class="srtbar"><span class="cnt" id="srtCnt">'+list.length+' ta kitob</span>'+
+    '<select class="srt" aria-label="Saralash" onchange="setSort(this.value)">'+
+    [["","Tavsiya etilgan"],["arzon","Avval arzoni"],["qimmat","Avval qimmati"],["nom","Nomi bo\'yicha"]].map(function(o){
+      return '<option value="'+o[0]+'"'+(S.sort===o[0]?" selected":"")+'>'+o[1]+'</option>';}).join("")+
+    '</select></div>'+
   '<div class="pickgrid" id="pickGrid">'+picksHTML(list)+'</div>'+
   '<div class="nav"><button class="btn btn-g btn-md" onclick="go(0)">'+
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Orqaga</button>'+
@@ -879,6 +1086,7 @@ function renderPicks(){
   var list=filtrla();
   document.getElementById("pickGrid").innerHTML=picksHTML(list);
   var cr=document.getElementById("chipRow");if(cr)cr.innerHTML=chipsHTML();
+  var cc=document.getElementById("srtCnt");if(cc)cc.textContent=list.length+" ta kitob";
   var nb=document.querySelector('#orderBody .nav .btn-p');
   if(nb){var c=selList().length;nb.disabled=!c;nb.innerHTML=(c?"Davom etish ("+c+")":"Kitob tanlang")+
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';}
@@ -889,18 +1097,22 @@ function step3(t){
   return '<h2>Nechta kerak?</h2><p class="sub">Har bir kitob uchun sonini belgilang.</p><div style="margin-top:22px">'+
   t.list.map(function(k){
     var b=BOOKS.filter(function(x){return x.id===k.id;})[0]||k;
-    return '<div class="card qrow"><div class="th">'+coverHTML(b,true)+'</div>'+
-      '<div class="info"><div class="nm">'+esc(k.nomi)+'</div><div class="pr">'+narxT(k.narx)+'</div>'+
+    return '<div class="card qrow">'+
+      '<div class="qtop"><div class="th">'+coverHTML(b,true)+'</div>'+
+        '<div class="info"><div class="nm">'+esc(k.nomi)+'</div>'+
+          '<div class="pr">'+(k.narx?'1 dona · '+som(k.narx):narxT(k.narx))+'</div></div>'+
+        '<div class="side">'+(k.narx?'<div class="s">'+som(k.narx*k.soni)+'</div>':'')+
+          '<button class="del" onclick="toggleBook(\''+k.id+'\')">O\'chirish</button></div>'+
+      '</div>'+
       '<div class="qbtns">'+[1,2,3].map(function(n){
-        return '<button class="qb'+(k.soni===n?" on":"")+'" onclick="setQ(\''+k.id+'\','+n+')">'+n+'</button>';
+        return '<button class="qb'+(k.soni===n?" on":"")+'" aria-label="'+n+' dona" onclick="setQ(\''+k.id+'\','+n+')">'+n+'</button>';
       }).join("")+
       '<span class="qsep"></span>'+
-      '<button class="qb" onclick="setQ(\''+k.id+'\','+(k.soni-1)+')">−</button>'+
-      '<input class="qnum" inputmode="numeric" value="'+k.soni+'" onchange="setQ(\''+k.id+'\',this.value)">'+
-      '<button class="qb" onclick="setQ(\''+k.id+'\','+(k.soni+1)+')">+</button>'+
-      '</div></div>'+
-      '<div class="side">'+(k.narx?'<div class="s">'+som(k.narx*k.soni)+'</div>':'')+
-      '<button class="del" onclick="toggleBook(\''+k.id+'\')">O\'chirish</button></div></div>';
+      '<span class="qstep">'+
+        '<button class="qb" aria-label="Kamaytirish" onclick="setQ(\''+k.id+'\','+(k.soni-1)+')">−</button>'+
+        '<input class="qnum" inputmode="numeric" aria-label="Soni" value="'+k.soni+'" onchange="setQ(\''+k.id+'\',this.value)">'+
+        '<button class="qb" aria-label="Ko\'paytirish" onclick="setQ(\''+k.id+'\','+(k.soni+1)+')">+</button>'+
+      '</span></div></div>';
   }).join("")+'</div>'+
   '<div class="total"><span class="l">Jami '+t.n+' dona</span><span class="r" style="font-size:'+(t.s?'21px':'14px')+'">'+totT(t.s)+'</span></div>'+
   '<div class="nav"><button class="btn btn-g btn-md" onclick="go(1)">'+
@@ -997,7 +1209,7 @@ function doneHTML(){
     '<p style="margin-top:16px;font-size:12.5px;color:var(--ink-soft)">Yangi kitoblar va chegirmalardan xabardor bo\'lish uchun kanalimizga obuna bo\'ling.</p></div>';
 }
 function resetOrder(){
-  S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",touched:false,sending:false,err:"",done:false};
+  S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",sort:"",touched:false,sending:false,err:"",done:false};
   closeOrder();render();
 }
 </script>
