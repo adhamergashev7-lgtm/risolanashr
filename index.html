@@ -299,6 +299,8 @@ label.f .hint{display:block;font-size:12px;color:var(--ink-soft);margin-top:7px}
 .inp:focus{border-color:var(--brand)}
 .inp::placeholder{color:rgba(74,88,82,.5)}
 .err{display:block;font-size:12px;color:#c62828;margin-top:7px}
+.opt{margin-left:7px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-soft);background:rgba(20,32,27,.07);border-radius:999px;padding:3px 8px;vertical-align:middle}
 .btslink{display:inline-flex;align-items:center;gap:7px;margin-top:10px;min-height:42px;padding:0 15px;
   border-radius:999px;background:rgba(31,93,71,.08);color:var(--brand);font-size:13px;font-weight:600}
 .btslink:hover{background:rgba(31,93,71,.15)}
@@ -753,7 +755,7 @@ function ismOk(v){
   var t=String(v||"").trim();
   return t.replace(/[^\u0400-\u04FF\u0100-\u017Fa-zA-Z'\u2019]/g,"").length>=4;
 }
-function formOk(){return ismOk(S.ism)&&telOk(S.tel)&&S.viloyat&&String(S.bts||"").trim().length>=3;}
+function formOk(){return ismOk(S.ism)&&telOk(S.tel)&&!!S.viloyat;}
 
 /* ================= STATIC BLOKLAR ================= */
 document.getElementById("yr").textContent=new Date().getFullYear();
@@ -1031,7 +1033,6 @@ function render(){
 function step1(){
   var nameBad=S.touched&&S.ism.trim()&&!ismOk(S.ism);
   var telBad=S.touched&&S.tel&&!telOk(S.tel);
-  var btsBad=S.touched&&S.bts&&String(S.bts).trim().length<3;
   var ok=formOk();
   return '<h2>Ma\'lumotlaringizni kiriting</h2><p class="sub">Menejerimiz shu ma\'lumotlar orqali siz bilan bog\'lanadi.</p>'+
   '<label class="f"><span class="lt">Ismingiz</span>'+
@@ -1049,11 +1050,10 @@ function step1(){
     VILOYATLAR.map(function(v){return '<option value="'+esc(v)+'"'+(S.viloyat===v?' selected':'')+'>'+esc(v)+'</option>';}).join("")+
     '</select><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>'+
     '<span class="hint">BTS yoki EMU orqali shu hududga jo\'natamiz</span></label>'+
-  '<label class="f"><span class="lt">Sizga yaqin BTS filiali</span>'+
+  '<label class="f"><span class="lt">Sizga yaqin BTS filiali <span class="opt">ixtiyoriy</span></span>'+
     '<input id="f_bts" class="inp" type="text" maxlength="120" placeholder="Masalan: Namangan, Navoiy ko\'chasi 12" '+
     'oninput="setF(\'bts\',this.value);syncBtn()" onblur="S.touched=true;syncBtn()">'+
-    (btsBad?'<span class="err">Filial nomini yoki manzilini yozing</span>'
-      :'<span class="hint">Kitob shu filialga jo\'natiladi</span>')+
+    '<span class="hint">Bilmasangiz bo\'sh qoldiring — menejer qo\'ng\'iroq paytida aniqlaydi</span>'+
     '<a class="btslink" href="'+SITE.bts+'" target="_blank" rel="noopener">'+
       '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.5c0 5.5-8 11.5-8 11.5s-8-6-8-11.5a8 8 0 1 1 16 0z"/><circle cx="12" cy="10.3" r="2.7"/></svg>'+
       ' BTS filiallari ro\'yxatini ochish'+
@@ -1167,7 +1167,7 @@ function step4(t){
       '<div class="kv"><span class="k">Ism-familya</span><span class="v">'+esc(S.ism)+'</span></div>'+
       '<div class="kv"><span class="k">Telefon</span><span class="v">'+esc(S.tel)+'</span></div>'+
       '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div>'+
-      '<div class="kv"><span class="k">BTS filiali</span><span class="v">'+esc(S.bts)+'</span></div></div>'+
+      (String(S.bts||"").trim()?'<div class="kv"><span class="k">BTS filiali</span><span class="v">'+esc(S.bts)+'</span></div>':'')+'</div>'+
     '<div class="blk"><div class="bh"><h3>Buyurtma</h3><button onclick="go(1)">O\'zgartirish</button></div>'+
       t.list.map(function(k){
         return '<div class="li"><span><span class="n">'+esc(k.nomi)+'</span><br><span class="q">'+k.soni+' dona'+(k.narx?' × '+som(k.narx):'')+'</span></span>'+
@@ -1203,7 +1203,8 @@ function submitOrder(){
     telefon:"+998"+phoneDigits(S.tel),
     viloyat:S.viloyat,
     bts:(S.bts||"").trim(),
-    izoh:"BTS filiali: "+(S.bts||"").trim()+((S.izoh||"").trim()?" | Izoh: "+(S.izoh||"").trim():""),
+    izoh:[((S.bts||"").trim()?"BTS filiali: "+(S.bts||"").trim():""),
+          ((S.izoh||"").trim()?"Izoh: "+(S.izoh||"").trim():"")].filter(Boolean).join(" | "),
     kitoblar:t.list,
     jamiSoni:t.n,
     jamiNarx:t.s,
@@ -1242,7 +1243,7 @@ function doneHTML(){
     '<div class="card">'+
       '<div class="kv"><span class="k">Mijoz</span><span class="v">'+esc(S.ism)+'</span></div>'+
       '<div class="kv"><span class="k">Viloyat</span><span class="v">'+esc(S.viloyat)+'</span></div>'+
-      '<div class="kv"><span class="k">BTS filiali</span><span class="v">'+esc(S.bts)+'</span></div>'+
+      (String(S.bts||"").trim()?'<div class="kv"><span class="k">BTS filiali</span><span class="v">'+esc(S.bts)+'</span></div>':'')+
       '<div class="kv"><span class="k">Kitoblar</span><span class="v">'+t.list.length+' nom · '+t.n+' dona</span></div>'+
       '<div class="kv"><span class="k">Kitoblar summasi</span><span class="v" style="color:var(--brand)">'+totT(t.s)+'</span></div>'+
       '<div class="kv"><span class="k">Yetkazib berish</span><span class="v">1 kg \u2014 '+som(SITE.yetkazish1kg)+'</span></div>'+
