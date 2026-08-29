@@ -9,11 +9,20 @@
 <meta property="og:title" content="Risola Nashr — ma'noli kitoblar, ishonchli yetkazib berish">
 <meta property="og:description" content="Katalogdan kitobni tanlang, ma'lumotlaringizni qoldiring — menejerimiz bog'lanib, buyurtmani manzilingizga yetkazadi.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://risolanashr.vercel.app/">
+<meta property="og:image" content="https://risolanashr.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Risola Nashr">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://risolanashr.vercel.app/og.png">
+<link rel="canonical" href="https://risolanashr.vercel.app/">
 <meta property="og:locale" content="uz_UZ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231f5d47'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="/rn-mark.png">
+<link rel="apple-touch-icon" href="/rn-mark.png">
 <style>
 :root{
   --cream:#f7f3ea; --cream-2:#efe8da; --ink:#14201b; --ink-soft:#4a5852;
@@ -58,6 +67,29 @@ header{position:sticky;top:0;z-index:40;transition:.28s ease;border-bottom:1px s
 header.on{background:rgba(247,243,234,.95);backdrop-filter:blur(14px);border-bottom-color:rgba(20,32,27,.1)}
 .hd{display:flex;align-items:center;justify-content:space-between;height:66px}
 .logo{display:flex;align-items:center;gap:10px}
+.logo img{height:30px;width:auto;display:block}
+@media(min-width:640px){.logo img{height:34px}}
+.flogo img{height:74px!important}
+.soc{display:flex;gap:8px;margin-top:18px}
+.soc a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid rgba(20,32,27,.12);color:var(--ink);transition:.2s}
+.soc a:hover{background:var(--brand);border-color:var(--brand);color:#fff;transform:translateY(-2px)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{border:1px solid rgba(20,32,27,.14);background:#fff;border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.18s;color:var(--ink-soft);white-space:nowrap}
+.chip:hover{border-color:var(--brand);color:var(--brand)}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+#detail{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(20,32,27,.55);backdrop-filter:blur(3px)}
+#detail.open{display:flex}
+#detail .box{background:var(--cream);border-radius:calc(var(--r) + 4px);max-width:760px;width:100%;max-height:92vh;overflow:auto;position:relative;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)}
+#detail .inner{display:grid;gap:22px;padding:22px}
+@media(min-width:640px){#detail .inner{grid-template-columns:260px 1fr;padding:28px}}
+#detail .cover{border-radius:var(--r);overflow:hidden;box-shadow:0 20px 40px -22px rgba(20,32,27,.6)}
+#detail h3{font-family:'Playfair Display',serif;font-size:24px;line-height:1.2;font-weight:600}
+#detail .ar{margin-top:8px;font-size:16px;color:var(--ink-soft)}
+#detail .a{margin-top:10px;font-size:14px;color:var(--ink-soft)}
+#detail .facts{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px}
+#detail .facts span{background:rgba(31,93,71,.09);color:var(--brand);border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:600}
+#detail .pr{margin-top:18px;font-family:'Playfair Display',serif;font-size:27px;font-weight:600;color:var(--brand)}
+#detail .x{position:absolute;right:12px;top:12px;z-index:3;width:36px;height:36px;border-radius:50%;border:1px solid rgba(20,32,27,.12);background:#fff;display:grid;place-items:center;cursor:pointer}
 .logo .mark{width:36px;height:36px;border-radius:11px;background:var(--brand);color:#fff;
   display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:18px}
 .logo b{display:block;font-family:'Playfair Display',serif;font-size:17px;font-weight:600;line-height:1.15}
@@ -315,8 +347,8 @@ textarea.inp{resize:none;min-height:88px}
 
 <header id="hdr">
   <div class="wrap hd">
-    <a href="#" class="logo">
-      <span class="mark">R</span>
+    <a href="#" class="logo" aria-label="Risola Nashr">
+      <img src="/rn-mark.png" alt="" width="154" height="128">
       <span><b>Risola Nashr</b><span>Nashriyot</span></span>
     </a>
     <nav class="main">
@@ -325,9 +357,9 @@ textarea.inp{resize:none;min-height:88px}
       <a href="#savollar">Savollar</a>
     </nav>
     <div class="hd-r">
-      <a class="ico" href="https://t.me/risolanashr_buyurtma_bot" target="_blank" rel="noopener" aria-label="Telegram">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg>
-      </a>
+      <a class="ico" id="hdTel" href="#" style="display:none" aria-label="Telefon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3l1.6 4-2 1.4a12 12 0 0 0 5.5 5.5l1.4-2 4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5z"/></svg></a>
+      <a class="ico" href="https://t.me/risolanashr" target="_blank" rel="noopener" aria-label="Telegram kanal"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg></a>
+      <a class="ico" href="https://www.instagram.com/risolanashr" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg></a>
       <button class="btn btn-p btn-sm" onclick="openOrder()">Buyurtma berish</button>
     </div>
   </div>
@@ -450,7 +482,7 @@ textarea.inp{resize:none;min-height:88px}
   <div class="wrap">
     <div class="fg">
       <div>
-        <div class="logo"><span class="mark">R</span><span><b>Risola Nashr</b></span></div>
+        <div class="logo flogo"><img src="/rn-logo.png" alt="Risola Nashr" width="223" height="220"></div>
         <p style="margin-top:16px;max-width:32em;font-size:14px;color:var(--ink-soft)">
           Risola Nashr — sifatli kitoblarni butun O'zbekiston bo'ylab yetkazib beruvchi nashriyot.
           Buyurtmangizni 2 daqiqada rasmiylashtiring.</p>
@@ -467,10 +499,17 @@ textarea.inp{resize:none;min-height:88px}
       <div>
         <h4>Bog'lanish</h4>
         <ul>
-          <li><a href="https://t.me/risolanashr_buyurtma_bot" target="_blank" rel="noopener">Telegram</a></li>
+          <li id="ftTelLi" style="display:none"><a id="ftTel" href="#"></a></li>
+          <li><a href="https://t.me/risolanashr" target="_blank" rel="noopener">Telegram kanal</a></li>
+          <li><a href="https://www.instagram.com/risolanashr" target="_blank" rel="noopener">Instagram</a></li>
           <li>Har kuni 9:00 — 19:00</li>
           <li>Toshkent shahri</li>
         </ul>
+        <div class="soc">
+          <a href="https://t.me/risolanashr" target="_blank" rel="noopener" aria-label="Telegram kanal"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg></a>
+          <a href="https://www.instagram.com/risolanashr" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+          <a id="socTel" href="#" style="display:none" aria-label="Telefon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3l1.6 4-2 1.4a12 12 0 0 0 5.5 5.5l1.4-2 4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.7 2 2 0 0 1 5 3.5z"/></svg></a>
+        </div>
       </div>
     </div>
     <div class="fbot">
@@ -480,12 +519,16 @@ textarea.inp{resize:none;min-height:88px}
   </div>
 </footer>
 
+<div id="detail" aria-hidden="true" onclick="if(event.target===this)closeDetail()">
+  <div class="box"><button class="x" onclick="closeDetail()" aria-label="Yopish"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div class="inner" id="detailBody"></div></div>
+</div>
+
 <!-- ==================== BUYURTMA ==================== -->
 <div id="order" aria-hidden="true">
   <div class="obar">
     <div class="wrap in">
       <a href="#" class="logo" onclick="closeOrder();return false">
-        <span class="mark">R</span><span><b>Risola Nashr</b><span>Buyurtma</span></span>
+        <img src="/rn-mark.png" alt="" width="154" height="128"><span><b>Risola Nashr</b><span>Buyurtma</span></span>
       </a>
       <button class="xbtn" onclick="closeOrder()" aria-label="Yopish">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
@@ -499,6 +542,12 @@ textarea.inp{resize:none;min-height:88px}
 /* ================= SOZLAMALAR ================= */
 var ENDPOINT = "https://script.google.com/macros/s/AKfycbz2Wbbn8s8uGkHw4V8hbCDVKXZ4V-zIkF4S6KHv2E2_Q3EK9e4qBWx_PokiGFjHQ4V53Q/exec";
 
+var SITE = {
+  tel: "",                                       /* masalan: "+998 90 123 45 67" */
+  telegram: "https://t.me/risolanashr",
+  instagram: "https://www.instagram.com/risolanashr"
+};
+
 var VILOYATLAR = ["Toshkent shahri","Toshkent viloyati","Andijon","Buxoro","Farg'ona","Jizzax","Xorazm",
   "Namangan","Navoiy","Qashqadaryo","Qoraqalpog'iston Respublikasi","Samarqand","Sirdaryo","Surxondaryo"];
 
@@ -508,23 +557,23 @@ var PALETTE = [["#1f5d47","#2f7d60"],["#8a4b2a","#b8873b"],["#243b53","#3d5a80"]
   ["#5b2c3e","#8d4f63"],["#3d4a1f","#68793a"],["#4a2c5b","#74508d"]];
 
 var DEMO = [
-  {id:"k01",nomi:"Daloilul xoyrot",muallif:"Muhammad ibn Sulaymon al-Juzuliy",narx:0,tavsif:"دلائل الخيرات · Kundalik vird, salovot · 160 bet · Muhaqqiq: Shayx Mahmud Durra",rasm:"https://risolanashr.vercel.app/dalail-al-xayrot.jpg"},
-  {id:"k02",nomi:"Nurul iyzoh va najotul arvoh",muallif:"Hasan ibn Aliy Shurunbuloliy",narx:0,tavsif:"نور الإيضاح ونجاة الأرواح · Fiqh · 310 bet",rasm:"https://risolanashr.vercel.app/nur-al-iyzoh.jpg"},
+  {id:"k01",nomi:"Daloilul xoyrot",muallif:"Muhammad ibn Sulaymon al-Juzuliy",narx:105000,tavsif:"دلائل الخيرات · Kundalik vird, salovot · 160 bet · Muhaqqiq: Shayx Mahmud Durra",rasm:"https://risolanashr.vercel.app/dalail-al-xayrot.jpg"},
+  {id:"k02",nomi:"Nurul iyzoh va najotul arvoh",muallif:"Hasan ibn Aliy Shurunbuloliy",narx:95000,tavsif:"نور الإيضاح ونجاة الأرواح · Fiqh · 310 bet",rasm:"https://risolanashr.vercel.app/nur-al-iyzoh.jpg"},
   {id:"k03",nomi:"Sharhul fiqhil akbar",muallif:"Abul Muntaho Shihobiddin al-Mag'nisoviy",narx:0,tavsif:"شرح الفقه الأكبر · Aqida",rasm:"https://risolanashr.vercel.app/sharh-al-fiqh-al-akbar.jpg"},
-  {id:"k04",nomi:"Al-Muxtasar fil fiqhil hanafiy",muallif:"Ashraf Aliy Tahonaviy",narx:0,tavsif:"المختصر في الفقه الحنفي · Fiqh · 300 bet",rasm:"https://risolanashr.vercel.app/al-muxtasar-fiqh-hanafiy.jpg"},
-  {id:"k05",nomi:"Qisosun nabiyyin",muallif:"Abul Hasan Nadviy",narx:0,tavsif:"قصص النبيين · Mutolaa · 336 bet",rasm:"https://risolanashr.vercel.app/qasas-an-nabiyyin.jpg"},
-  {id:"k06",nomi:"Durusul lug'atil arabiyya (Madina)",muallif:"D. F. Abdurrahim",narx:0,tavsif:"دروس اللغة العربية · Arab tili · 800 bet",rasm:"https://risolanashr.vercel.app/durus-al-lugha-jam.jpg"},
-  {id:"k07",nomi:"Ad-Durusun nahviyya",muallif:"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih",narx:0,tavsif:"الدروس النحوية · Arab tili · 488 bet",rasm:"https://risolanashr.vercel.app/ad-durus-an-nahviyya.jpg"},
-  {id:"k08",nomi:"Al-Kofiya fi ilmin nahv",muallif:"Alloma ibn Hojib",narx:0,tavsif:"الكافية في علم النحو · Arab tili · 208 bet",rasm:"https://risolanashr.vercel.app/al-kafiya-fi-ilm-nahv.jpg"},
-  {id:"k09",nomi:"Taysirus siyrotin nabaviyya",muallif:"D. Hasson Sayyid Yusuf",narx:0,tavsif:"تيسير السيرة النبوية · Siyrat, mutolaa · 304 bet",rasm:"https://risolanashr.vercel.app/taysir-sira-nabawiyya.jpg"},
-  {id:"k10",nomi:"Nurul yaqin fi siyrati sayyidil mursalin",muallif:"Muhammad al-Bajuriy Huzariybek",narx:0,tavsif:"نور اليقين في سيرة سيد المرسلين · Siyrat · 455 bet",rasm:"https://risolanashr.vercel.app/nur-al-yaqin.jpg"},
-  {id:"k11",nomi:"Ta'limul mutaallim va Nasoihul ibod",muallif:"Imom Burhonul islom Zarnujiy va Muhammad Navaviy al-Joviy",narx:0,tavsif:"تعليم المتعلم ويليه نصائح العباد · Mutolaa · 488 bet",rasm:"https://risolanashr.vercel.app/talim-al-mutaallim.jpg"},
-  {id:"k12",nomi:"Muxtasarul viqoya (an-Nuqoya)",muallif:"Ubaydulloh ibn Mas'ud al-Mahbubiy",narx:0,tavsif:"مختصر الوقاية في مسائل الهداية · Fiqh · 352 bet",rasm:"https://risolanashr.vercel.app/muxtasar-al-viqoya.jpg"},
-  {id:"k13",nomi:"Ayyuhal valad va laftatul kabad",muallif:"Abu Homid G'azzoliy va Jamoliddin Abul Faraj",narx:0,tavsif:"أيها الولد ويليه لفتة الكبد · Mutolaa · 136 bet",rasm:"https://risolanashr.vercel.app/ayyuhal-valad.jpg"},
-  {id:"k14",nomi:"Unvonul bayon va bustonul azhon",muallif:"Abdulloh Shabroviy",narx:0,tavsif:"عنوان البيان وبستان الأذهان · Mutolaa · 232 bet",rasm:"https://risolanashr.vercel.app/unvan-al-bayan.jpg"},
-  {id:"k15",nomi:"Durusul balog'a",muallif:"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih",narx:0,tavsif:"دروس البلاغة · Balog'at · 192 bet",rasm:"https://risolanashr.vercel.app/durus-al-balagha.jpg"},
-  {id:"k16",nomi:"Zovul maoliy sharhu bad'il amoliy",muallif:"Mulla Aliy Qoriy",narx:0,tavsif:"ضوء المعالي شرح بدء الأمالي · Aqida · 192 bet",rasm:"https://risolanashr.vercel.app/zavul-maoli.jpg"},
-  {id:"k17",nomi:"Al-Hidoya sharh bidoyatil mubtadiy (4 jild)",muallif:"Burhoniddin Marg'inoniy",narx:0,tavsif:"الهداية شرح بداية المبتدي · Fiqh · 4 jild, har jild ~500 bet · 25×35 sm",rasm:""}
+  {id:"k04",nomi:"Al-Muxtasar fil fiqhil hanafiy",muallif:"Ashraf Aliy Tahonaviy",narx:120000,tavsif:"المختصر في الفقه الحنفي · Fiqh · 300 bet",rasm:"https://risolanashr.vercel.app/al-muxtasar-fiqh-hanafiy.jpg"},
+  {id:"k05",nomi:"Qisosun nabiyyin",muallif:"Abul Hasan Nadviy",narx:78000,tavsif:"قصص النبيين · Mutolaa · 336 bet",rasm:"https://risolanashr.vercel.app/qasas-an-nabiyyin.jpg"},
+  {id:"k06",nomi:"Durusul lug'atil arabiyya (Madina)",muallif:"D. F. Abdurrahim",narx:200000,tavsif:"دروس اللغة العربية · Arab tili · 800 bet",rasm:"https://risolanashr.vercel.app/durus-al-lugha-jam.jpg"},
+  {id:"k07",nomi:"Ad-Durusun nahviyya",muallif:"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih",narx:120000,tavsif:"الدروس النحوية · Arab tili · 488 bet",rasm:"https://risolanashr.vercel.app/ad-durus-an-nahviyya.jpg"},
+  {id:"k08",nomi:"Al-Kofiya fi ilmin nahv",muallif:"Alloma ibn Hojib",narx:75000,tavsif:"الكافية في علم النحو · Arab tili · 208 bet",rasm:"https://risolanashr.vercel.app/al-kafiya-fi-ilm-nahv.jpg"},
+  {id:"k09",nomi:"Taysirus siyrotin nabaviyya",muallif:"D. Hasson Sayyid Yusuf",narx:145000,tavsif:"تيسير السيرة النبوية · Siyrat, mutolaa · 304 bet",rasm:"https://risolanashr.vercel.app/taysir-sira-nabawiyya.jpg"},
+  {id:"k10",nomi:"Nurul yaqin fi siyrati sayyidil mursalin",muallif:"Muhammad al-Bajuriy Huzariybek",narx:130000,tavsif:"نور اليقين في سيرة سيد المرسلين · Siyrat · 455 bet",rasm:"https://risolanashr.vercel.app/nur-al-yaqin.jpg"},
+  {id:"k11",nomi:"Ta'limul mutaallim va Nasoihul ibod",muallif:"Imom Burhonul islom Zarnujiy va Muhammad Navaviy al-Joviy",narx:135000,tavsif:"تعليم المتعلم ويليه نصائح العباد · Mutolaa · 488 bet",rasm:"https://risolanashr.vercel.app/talim-al-mutaallim.jpg"},
+  {id:"k12",nomi:"Muxtasarul viqoya (an-Nuqoya)",muallif:"Ubaydulloh ibn Mas'ud al-Mahbubiy",narx:95000,tavsif:"مختصر الوقاية في مسائل الهداية · Fiqh · 352 bet",rasm:"https://risolanashr.vercel.app/muxtasar-al-viqoya.jpg"},
+  {id:"k13",nomi:"Ayyuhal valad va laftatul kabad",muallif:"Abu Homid G'azzoliy va Jamoliddin Abul Faraj",narx:50000,tavsif:"أيها الولد ويليه لفتة الكبد · Mutolaa · 136 bet",rasm:"https://risolanashr.vercel.app/ayyuhal-valad.jpg"},
+  {id:"k14",nomi:"Unvonul bayon va bustonul azhon",muallif:"Abdulloh Shabroviy",narx:85000,tavsif:"عنوان البيان وبستان الأذهان · Mutolaa · 232 bet",rasm:"https://risolanashr.vercel.app/unvan-al-bayan.jpg"},
+  {id:"k15",nomi:"Durusul balog'a",muallif:"Hifniy Nosif, Muhammad Diyob, Mustafo Tamum, Muhammad Solih",narx:80000,tavsif:"دروس البلاغة · Balog'at · 192 bet",rasm:"https://risolanashr.vercel.app/durus-al-balagha.jpg"},
+  {id:"k16",nomi:"Zovul maoliy sharhu bad'il amoliy",muallif:"Mulla Aliy Qoriy",narx:90000,tavsif:"ضوء المعالي شرح بدء الأمالي · Aqida · 192 bet",rasm:"https://risolanashr.vercel.app/zavul-maoli.jpg"},
+  {id:"k17",nomi:"Al-Hidoya sharh bidoyatil mubtadiy (4 jild)",muallif:"Burhoniddin Marg'inoniy",narx:825000,tavsif:"الهداية شرح بداية المبتدي · Fiqh · 4 jild, har jild ~500 bet · 25×35 sm",rasm:""}
 ];
 
 /* ================= YORDAMCHILAR ================= */
@@ -533,6 +582,25 @@ function som(n){return String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?
 function narxT(n){n=Number(n)||0;return n>0?som(n):"Narxi: so'rang";}
 function totT(n){n=Number(n)||0;return n>0?som(n):"Menejer bilan kelishiladi";}
 function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function turi(b){
+  var t=String(b.tavsif||"");
+  var m=t.split("\u00b7").map(function(x){return x.trim();});
+  for(var i=0;i<m.length;i++){
+    var v=m[i].toLowerCase();
+    if(/fiqh/.test(v))return "Fiqh";
+    if(/aqida/.test(v))return "Aqida";
+    if(/arab tili|balog/.test(v))return "Arab tili";
+    if(/siyrat/.test(v))return "Siyrat";
+    if(/vird|salovot/.test(v))return "Vird";
+    if(/mutolaa/.test(v))return "Mutolaa";
+  }
+  return "Boshqa";
+}
+function turlar(){
+  var o=[],seen={};
+  BOOKS.forEach(function(b){var t=turi(b);if(!seen[t]){seen[t]=1;o.push(t);}});
+  return o;
+}
 function tavHTML(t){
   if(!t) return "";
   var s=String(t).trim(), m=s.match(/^([\u0600-\u06FF\u0750-\u077F\s\u060C\u061B\u061F]+)(?:\s*\u00b7\s*)?([\s\S]*)$/);
@@ -544,6 +612,7 @@ function coverHTML(b,compact){
   var p=PALETTE[hash(b.nomi||b.id)%PALETTE.length];
   return '<div style="position:absolute;inset:0;background:linear-gradient(150deg,'+p[0]+','+p[1]+')"></div>'+
     '<span class="lines"></span><span class="spine" style="width:'+(compact?3:7)+'px"></span>'+
+    '<img src="/rn-mark-oq.png" alt="" style="position:absolute;left:50%;top:34%;transform:translate(-50%,-50%);width:'+(compact?38:58)+'%;opacity:.22">'+
     (compact
       ? '<div class="txt" style="padding:8px;justify-content:flex-end"><div class="name" style="font-size:10px;-webkit-line-clamp:3">'+esc(b.nomi)+'</div></div>'
       : '<div class="txt"><div class="brandline">Risola Nashr</div><div><div class="name">'+esc(b.nomi)+'</div>'+
@@ -558,6 +627,16 @@ function phoneDigits(v){return String(v).replace(/\D/g,"").replace(/^998/,"").sl
 
 /* ================= STATIC BLOKLAR ================= */
 document.getElementById("yr").textContent=new Date().getFullYear();
+
+(function(){
+  if(!SITE.tel)return;
+  var href="tel:+"+String(SITE.tel).replace(/\D/g,"");
+  ["hdTel","socTel"].forEach(function(id){
+    var e=document.getElementById(id);if(e){e.href=href;e.style.display="grid";}
+  });
+  var li=document.getElementById("ftTelLi"),a=document.getElementById("ftTel");
+  if(li&&a){a.href=href;a.textContent=SITE.tel;li.style.display="";}
+})();
 
 var FEATS=[
  ["M12 3l7.5 3v5.5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5V6z|m9 12 2 2 4-4","Original nashr","Barcha kitoblar rasmiy nashriyotdan. Sifatli qog'oz, aniq bosma, mustahkam muqova."],
@@ -606,8 +685,8 @@ document.querySelectorAll(".reveal").forEach(function(el){io.observe(el);});
 /* ================= KATALOG ================= */
 var BOOKS=DEMO.slice(), catalogLoaded=false;
 function renderPreview(){
-  document.getElementById("booksGrid").innerHTML=BOOKS.slice(0,6).map(function(b,i){
-    return '<button class="book reveal" style="transition-delay:'+(i*60)+'ms" onclick="openOrder()">'+
+  document.getElementById("booksGrid").innerHTML=BOOKS.map(function(b,i){
+    return '<button class="book reveal" style="transition-delay:'+(Math.min(i,8)*60)+'ms" onclick="openDetail(\''+b.id+'\')">'+
       '<div class="cover">'+coverHTML(b)+'</div>'+
       '<div class="meta"><div class="t">'+esc(b.nomi)+'</div>'+tavHTML(b.tavsif)+'<div class="p">'+narxT(b.narx)+'</div></div></button>';
   }).join("");
@@ -626,8 +705,38 @@ function loadCatalog(){
 }
 loadCatalog();
 
+/* ================= KITOB TAFSILOTI ================= */
+function openDetail(id){
+  var b=null;for(var i=0;i<BOOKS.length;i++)if(BOOKS[i].id===id)b=BOOKS[i];
+  if(!b)return openOrder();
+  var t=String(b.tavsif||""),ar="",qol=t;
+  var m=t.match(/^([\u0600-\u06FF\u0750-\u077F\s\u060C\u061B\u061F]+)(?:\s*\u00b7\s*)?([\s\S]*)$/);
+  if(m&&m[1].trim()){ar=m[1].trim();qol=m[2];}
+  var facts=qol.split("\u00b7").map(function(x){return x.trim();}).filter(Boolean);
+  document.getElementById("detailBody").innerHTML=
+    '<div class="cover" style="aspect-ratio:3/4;position:relative;overflow:hidden">'+coverHTML(b)+'</div>'+
+    '<div><h3>'+esc(b.nomi)+'</h3>'+
+    (ar?'<div class="ar" dir="rtl">'+esc(ar)+'</div>':'')+
+    (b.muallif?'<div class="a">'+esc(b.muallif)+'</div>':'')+
+    (facts.length?'<div class="facts">'+facts.map(function(f){return '<span>'+esc(f)+'</span>';}).join("")+'</div>':'')+
+    '<div class="pr">'+narxT(b.narx)+'</div>'+
+    '<button class="btn btn-p btn-lg" style="margin-top:20px;width:100%" onclick="buyurtmaBer(\''+b.id+'\')">Buyurtma berish'+
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>'+
+    '<p style="margin-top:12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6">Oldindan to\'lov shart emas — kitobni qo\'lingizga olganingizda to\'laysiz.</p></div>';
+  document.getElementById("detail").classList.add("open");
+  document.body.classList.add("noscroll");
+}
+function closeDetail(){
+  document.getElementById("detail").classList.remove("open");
+  if(!document.getElementById("order").classList.contains("open"))document.body.classList.remove("noscroll");
+}
+function buyurtmaBer(id){
+  if(!S.sel[id])S.sel[id]=1;
+  closeDetail();openOrder();
+}
+
 /* ================= BUYURTMA HOLATI ================= */
-var S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",touched:false,sending:false,err:"",done:false};
+var S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",touched:false,sending:false,err:"",done:false};
 
 function selList(){
   return BOOKS.filter(function(b){return S.sel[b.id];}).map(function(b){
@@ -648,7 +757,11 @@ function closeOrder(){
   document.getElementById("order").setAttribute("aria-hidden","true");
   document.body.classList.remove("noscroll");
 }
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closeOrder();});
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Escape")return;
+  if(document.getElementById("detail").classList.contains("open"))closeDetail();
+  else closeOrder();
+});
 
 function go(n){S.step=n;S.err="";render();document.getElementById("order").scrollTo({top:0,behavior:"smooth"});}
 function setF(k,v){S[k]=v;}
@@ -723,20 +836,32 @@ function syncBtn(){
   b.disabled=!ok;
 }
 
-function step2(){
+function matn(b){return ((b.nomi||"")+" "+(b.muallif||"")+" "+(b.tavsif||"")+" "+turi(b)).toLowerCase();}
+function filtrla(){
   var q=S.q.trim().toLowerCase();
-  var list=BOOKS.filter(function(b){
-    return !q||(b.nomi||"").toLowerCase().indexOf(q)>=0||(b.muallif||"").toLowerCase().indexOf(q)>=0;
+  return BOOKS.filter(function(b){
+    if(S.turi && turi(b)!==S.turi) return false;
+    return !q||matn(b).indexOf(q)>=0;
   });
+}
+function setTuri(t){S.turi=(S.turi===t?"":t);renderPicks();}
+function step2(){
+  var list=filtrla();
   var cnt=selList().length;
   return '<h2>Kitobni tanlang</h2><p class="sub">Bir nechta kitobni ham tanlashingiz mumkin.</p>'+
   '<div class="searchwrap"><input id="f_q" class="inp" type="text" placeholder="Kitob nomi yoki muallif bo\'yicha qidirish..." '+
     'oninput="S.q=this.value;renderPicks()"></div>'+
+  '<div class="chips" id="chipRow">'+chipsHTML()+'</div>'+
   '<div class="pickgrid" id="pickGrid">'+picksHTML(list)+'</div>'+
   '<div class="nav"><button class="btn btn-g btn-md" onclick="go(0)">'+
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Orqaga</button>'+
     '<button class="btn btn-p btn-lg" '+(cnt?"":"disabled")+' onclick="go(2)">'+(cnt?"Davom etish ("+cnt+")":"Kitob tanlang")+
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>';
+}
+function chipsHTML(){
+  return turlar().map(function(t){
+    return '<button type="button" class="chip'+(S.turi===t?" on":"")+'" onclick="setTuri(\''+t+'\')">'+esc(t)+'</button>';
+  }).join("");
 }
 function picksHTML(list){
   if(!list.length)return '<p style="grid-column:1/-1;text-align:center;color:var(--ink-soft);font-size:14px;padding:30px 0">Hech narsa topilmadi.</p>';
@@ -751,12 +876,14 @@ function picksHTML(list){
   }).join("");
 }
 function renderPicks(){
-  var q=S.q.trim().toLowerCase();
-  var list=BOOKS.filter(function(b){
-    return !q||(b.nomi||"").toLowerCase().indexOf(q)>=0||(b.muallif||"").toLowerCase().indexOf(q)>=0;
-  });
+  var list=filtrla();
   document.getElementById("pickGrid").innerHTML=picksHTML(list);
+  var cr=document.getElementById("chipRow");if(cr)cr.innerHTML=chipsHTML();
+  var nb=document.querySelector('#orderBody .nav .btn-p');
+  if(nb){var c=selList().length;nb.disabled=!c;nb.innerHTML=(c?"Davom etish ("+c+")":"Kitob tanlang")+
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';}
 }
+
 
 function step3(t){
   return '<h2>Nechta kerak?</h2><p class="sub">Har bir kitob uchun sonini belgilang.</p><div style="margin-top:22px">'+
@@ -808,8 +935,12 @@ function step4(t){
   '<p class="fine">Tasdiqlash orqali menejerimiz siz bilan bog\'lanishiga rozilik bildirasiz. Oldindan to\'lov talab qilinmaydi.</p>';
 }
 
+var YUBORILGAN={};
 function submitOrder(){
   var t=totals();
+  if(S.sending)return;
+  var kalit=phoneDigits(S.tel)+"|"+t.list.map(function(k){return k.id+"x"+k.soni;}).join(",");
+  if(YUBORILGAN[kalit]){S.sending=false;S.done=true;render();return;}
   S.sending=true;S.err="";render();
   var payload={
     action:"buyurtma",
@@ -836,6 +967,7 @@ function submitOrder(){
   }).then(function(txt){
     var j=null;try{j=JSON.parse(txt);}catch(e){}
     if(j&&j.ok===false)throw new Error(j.xato||"Server xatosi");
+    YUBORILGAN[kalit]=1;
     S.sending=false;S.done=true;render();
     document.getElementById("order").scrollTo({top:0,behavior:"smooth"});
   }).catch(function(e){
@@ -857,10 +989,15 @@ function doneHTML(){
       '<div class="kv"><span class="k">Kitoblar</span><span class="v">'+t.list.length+' nom · '+t.n+' dona</span></div>'+
       '<div class="kv"><span class="k">Jami summa</span><span class="v" style="color:var(--brand)">'+totT(t.s)+'</span></div>'+
     '</div>'+
-    '<div class="acts"><button class="btn btn-p btn-md" onclick="resetOrder()">Bosh sahifaga qaytish</button></div></div>';
+    '<div class="acts">'+
+      '<a class="btn btn-p btn-md" href="'+SITE.telegram+'" target="_blank" rel="noopener">'+
+      '<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 4.2 3.3 11.3c-1.1.4-1.1 1.9 0 2.3l4.5 1.4 1.7 5.3c.3.9 1.4 1.1 2 .4l2.5-2.5 4.5 3.3c.8.6 1.9.2 2.1-.8l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.2 14.3l8.6-5.3-6.9 6.3-.3 3.4z"/></svg>'+
+      ' Telegram kanalimiz</a>'+
+      '<button class="btn btn-g btn-md" onclick="resetOrder()">Bosh sahifaga qaytish</button></div>'+
+    '<p style="margin-top:16px;font-size:12.5px;color:var(--ink-soft)">Yangi kitoblar va chegirmalardan xabardor bo\'lish uchun kanalimizga obuna bo\'ling.</p></div>';
 }
 function resetOrder(){
-  S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",touched:false,sending:false,err:"",done:false};
+  S={step:0,ism:"",tel:"",viloyat:"",izoh:"",sel:{},q:"",turi:"",touched:false,sending:false,err:"",done:false};
   closeOrder();render();
 }
 </script>
