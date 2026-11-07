@@ -1,0 +1,26 @@
+# Supabase CLI uchun minimal konfiguratsiya (supabase start / supabase db reset)
+project_id = "adhamjon-crm"
+
+[api]
+port = 54321
+schemas = ["public"]
+
+[db]
+port = 54322
+major_version = 15
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+port = 54323
+
+[auth]
+site_url = "http://localhost:3000"
+# Faqat admin kiradi — ro'yxatdan o'tish o'chirilgan. Foydalanuvchini Studio orqali qo'shing.
+enable_signup = false
+
+[auth.email]
+enable_signup = false
+enable_confirmations = false
