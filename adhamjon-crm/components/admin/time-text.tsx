@@ -25,7 +25,7 @@ export function TimeText({
   className?: string;
 }) {
   const now = useNow();
-  let text = " ";
+  let text = "\u00A0";
   if (now !== null) {
     if (!value) text = "—";
     else text = format === "ago" ? timeAgo(value) : format === "short" ? formatShortDateTime(value) : formatDateTime(value);
