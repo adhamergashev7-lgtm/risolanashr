@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
 
+/** Qiymat agency brendbuki (2026) asosidagi palitra */
 const config: Config = {
   darkMode: ["class"],
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
@@ -8,8 +9,8 @@ const config: Config = {
     container: { center: true, padding: "1rem", screens: { "2xl": "1400px" } },
     extend: {
       fontFamily: {
-        sans: ["Inter Variable", "Inter", "system-ui", "sans-serif"],
-        display: ["Manrope Variable", "Manrope", "Inter Variable", "system-ui", "sans-serif"],
+        sans: ["Inter Variable", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
+        display: ["Outfit Variable", "Century Gothic", "Avenir Next", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -24,25 +25,30 @@ const config: Config = {
         accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
         popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
         card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
-        success: "#22C55E",
-        warning: "#F59E0B",
-        danger: "#EF4444",
-        lime: { DEFAULT: "#C6FF00", soft: "rgba(198,255,0,0.12)" },
+        qiymat: {
+          DEFAULT: "#0E5A4D",
+          80: "#3E7B71",
+          60: "#6E9C94",
+          40: "#9FBDB8",
+        },
+        graphite: { DEFAULT: "#222D2F", 80: "#4E5759", 60: "#7A8182", 40: "#A7ABAC" },
+        sage: { DEFAULT: "#92B79C", 80: "#A8C5B0", 60: "#BED4C4", 40: "#D3E2D7" },
+        deep: { DEFAULT: "#23463F", 80: "#4F6B65" },
+        danger: "#B91C1C",
+        warning: "#C2410C",
       },
       borderRadius: {
+        sm: "6px",
+        md: "12px",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 4px)",
-        sm: "calc(var(--radius) - 8px)",
-        "2xl": "1.25rem",
-        "3xl": "1.75rem",
-      },
-      boxShadow: {
-        glow: "0 0 0 1px rgba(198,255,0,0.25), 0 10px 40px -10px rgba(198,255,0,0.35)",
+        xl: "16px",
+        "2xl": "20px",
+        "3xl": "24px",
       },
       keyframes: {
         "fade-up": { from: { opacity: "0", transform: "translateY(8px)" }, to: { opacity: "1", transform: "translateY(0)" } },
       },
-      animation: { "fade-up": "fade-up 0.4s ease-out both" },
+      animation: { "fade-up": "fade-up 0.35s ease-out both" },
     },
   },
   plugins: [animate],

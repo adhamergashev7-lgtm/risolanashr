@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Inbox, LogOut, Plus } from "lucide-react";
+import Link from "next/link";
+import { ExternalLink, FlaskConical, Inbox, Loader2, LogOut, Plus } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -15,45 +16,44 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { STATUSES, STATUS_META, nextStatus, type LeadStatus } from "@/lib/constants";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
-import type { Lead } from "@/types/lead";
-import { Filters, type FiltersState, type StatusFilter, type ViewMode } from "./filters";
-import { KanbanBoard } from "./kanban-board";
+import { cn } from "@/lib/utils";
+import type { Lead, Stage } from "@/types/lead";
+import { BrandMark } from "./brand-logo";
+import { KanbanBoard, type StageActions } from "./kanban-board";
 import { LeadCard, type LeadActions } from "./lead-card";
+import { LeadDialog } from "./lead-dialog";
 import { LeadDrawer } from "./lead-drawer";
+import { StageDialog } from "./stage-dialog";
 import { StatsCards } from "./stats-cards";
+import { Toolbar, type ToolbarState, type ViewMode } from "./toolbar";
+import { useCrm } from "./use-crm";
 
-const VIEW_KEY = "crm:view";
+const VIEW_KEY = "qiymat-crm:view";
 
-export function Dashboard({
-  initialLeads,
-  userEmail,
-  loadError,
-}: {
-  initialLeads: Lead[];
-  userEmail: string;
-  loadError?: string;
-}) {
+export function Dashboard({ userEmail }: { userEmail: string }) {
   const router = useRouter();
-  const supabase = getSupabaseBrowserClient();
-  const [leads, setLeads] = useState<Lead[]>(initialLeads);
-  const [filters, setFilters] = useState<FiltersState>({ status: "all", business: "all", query: "", sort: "newest" });
-  const [view, setView] = useState<ViewMode>("list");
+  const crm = useCrm(userEmail);
+  const { stages, leads, loading, store } = crm;
+  const demo = store.mode === "demo";
+
+  const [toolbar, setToolbar] = useState<ToolbarState>({ query: "", source: "all", sort: "newest" });
+  const [view, setView] = useState<ViewMode>("kanban");
+  const [listStage, setListStage] = useState<string>("all");
   const [openId, setOpenId] = useState<string | null>(null);
-  const [toDelete, setToDelete] = useState<Lead | null>(null);
+  const [leadDialog, setLeadDialog] = useState<{ open: boolean; lead?: Lead | null; stageId?: string }>({ open: false });
+  const [stageDialog, setStageDialog] = useState<{ open: boolean; stage?: Stage | null }>({ open: false });
+  const [toDestroy, setToDestroy] = useState<Lead | null>(null);
+  const [stageToDelete, setStageToDelete] = useState<Stage | null>(null);
+  const [moveTo, setMoveTo] = useState<string>("");
 
-  useEffect(() => {
-    if (loadError) toast.error("Lidlarni yuklab bo'lmadi", { description: loadError });
-  }, [loadError]);
-
-  // Ko'rinish rejimini eslab qolish (per-browser qulaylik)
   useEffect(() => {
     try {
       const saved = localStorage.getItem(VIEW_KEY);
-      if (saved === "list" || saved === "kanban") setView(saved);
+      if (saved === "kanban" || saved === "list") setView(saved);
     } catch {
-      /* localStorage mavjud emas */
+      /* localStorage yo'q */
     }
   }, []);
 
@@ -66,209 +66,286 @@ export function Dashboard({
     }
   };
 
-  // Realtime: yangi lid kelsa yoki boshqa menejer o'zgartirsa — darhol ko'rinadi
-  useEffect(() => {
-    const channel = supabase
-      .channel("leads-realtime")
-      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, (payload) => {
-        if (payload.eventType === "INSERT") {
-          const lead = payload.new as Lead;
-          setLeads((prev) => (prev.some((l) => l.id === lead.id) ? prev : [lead, ...prev]));
-          toast.success(`Yangi lid: ${lead.full_name}`, { description: `Ball: ${lead.score}/100` });
-        } else if (payload.eventType === "UPDATE") {
-          const lead = payload.new as Lead;
-          setLeads((prev) => prev.map((l) => (l.id === lead.id ? { ...l, ...lead } : l)));
-        } else if (payload.eventType === "DELETE") {
-          const id = (payload.old as Partial<Lead>).id;
-          if (id) setLeads((prev) => prev.filter((l) => l.id !== id));
-        }
-      })
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [supabase]);
-
-  /** Lidni yangilash (optimistik) */
-  const updateLead = useCallback(
-    async (lead: Lead, patch: Partial<Lead>) => {
-      const prev = leads.find((l) => l.id === lead.id) ?? lead;
-      setLeads((ls) => ls.map((l) => (l.id === lead.id ? { ...l, ...patch } : l)));
-      const { data, error } = await supabase.from("leads").update(patch).eq("id", lead.id).select().single();
-      if (error) {
-        setLeads((ls) => ls.map((l) => (l.id === lead.id ? prev : l)));
-        toast.error("O'zgartirib bo'lmadi", { description: error.message });
-        return false;
-      }
-      setLeads((ls) => ls.map((l) => (l.id === lead.id ? (data as Lead) : l)));
-      return true;
-    },
-    [leads, supabase],
-  );
-
-  const changeStatus = useCallback(
-    async (lead: Lead, status: LeadStatus) => {
-      const ok = await updateLead(lead, { status });
-      if (ok) toast.success(`Status: ${STATUS_META[status].label}`, { description: lead.full_name });
-    },
-    [updateLead],
-  );
-
   const actions: LeadActions = useMemo(
     () => ({
       onOpen: (lead) => setOpenId(lead.id),
-      onStatusChange: (lead, status) => void changeStatus(lead, status),
-      onAdvance: (lead) => {
-        const next = nextStatus(lead.status);
-        if (next) void changeStatus(lead, next);
-      },
-      onResend: async (lead) => {
-        const id = toast.loading("Telegramga yuborilmoqda...");
-        try {
-          const res = await fetch(`/api/leads/${lead.id}/telegram`, { method: "POST" });
-          const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-          if (res.ok && data.ok) toast.success("Telegramga yuborildi", { id });
-          else toast.error("Yuborib bo'lmadi", { id, description: data.error });
-        } catch {
-          toast.error("Tarmoq xatosi", { id });
-        }
-      },
-      onDelete: (lead) => setToDelete(lead),
+      onEdit: (lead) => setLeadDialog({ open: true, lead }),
+      onMove: (lead, stageId) => void crm.moveLead(lead, stageId),
+      onArchive: (lead) => void crm.archiveLead(lead),
+      onRestore: (lead) => void crm.restoreLead(lead),
+      onDestroy: (lead) => setToDestroy(lead),
+      onResend: demo
+        ? undefined
+        : async (lead) => {
+            const id = toast.loading("Telegramga yuborilmoqda...");
+            try {
+              const res = await fetch(`/api/leads/${lead.id}/telegram`, { method: "POST" });
+              const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+              if (res.ok && data.ok) toast.success("Telegramga yuborildi", { id });
+              else toast.error("Yuborib bo'lmadi", { id, description: data.error });
+            } catch {
+              toast.error("Tarmoq xatosi", { id });
+            }
+          },
     }),
-    [changeStatus],
+    [crm, demo],
   );
 
-  async function confirmDelete() {
-    const lead = toDelete;
-    if (!lead) return;
-    setToDelete(null);
-    if (openId === lead.id) setOpenId(null);
-    const snapshot = leads;
-    setLeads((ls) => ls.filter((l) => l.id !== lead.id));
-    const { error } = await supabase.from("leads").delete().eq("id", lead.id);
-    if (error) {
-      setLeads(snapshot);
-      toast.error("O'chirib bo'lmadi", { description: error.message });
-    } else {
-      toast.success("Lid o'chirildi", { description: lead.full_name });
+  const stageActions: StageActions = {
+    onAddLead: (stage) => setLeadDialog({ open: true, stageId: stage.id }),
+    onEditStage: (stage) => setStageDialog({ open: true, stage }),
+    onMoveStage: (stage, dir) => void crm.moveStage(stage, dir),
+    onDeleteStage: (stage) => {
+      setStageToDelete(stage);
+      setMoveTo(crm.defaultStage?.id !== stage.id ? crm.defaultStage?.id ?? "" : stages.find((s) => s.id !== stage.id)?.id ?? "");
+    },
+    onAddStage: () => setStageDialog({ open: true, stage: null }),
+  };
+
+  // Qidiruv / filtr / saralash
+  const filtered = useMemo(() => {
+    const q = toolbar.query.trim().toLowerCase();
+    const qDigits = q.replace(/\D/g, "");
+    const list = leads.filter((l) => {
+      if (toolbar.source !== "all" && l.source !== toolbar.source) return false;
+      if (!q) return true;
+      if (l.full_name.toLowerCase().includes(q) || (l.product ?? "").toLowerCase().includes(q)) return true;
+      return qDigits.length > 0 && l.phone.replace(/\D/g, "").includes(qDigits);
+    });
+    return list.sort((a, b) => {
+      if (toolbar.sort === "name") return a.full_name.localeCompare(b.full_name);
+      if (toolbar.sort === "reminder") {
+        const ra = a.reminder_at ? +new Date(a.reminder_at) : Infinity;
+        const rb = b.reminder_at ? +new Date(b.reminder_at) : Infinity;
+        if (ra !== rb) return ra - rb;
+      }
+      return +new Date(b.created_at) - +new Date(a.created_at);
+    });
+  }, [leads, toolbar]);
+
+  const deletedId = stages.find((s) => s.key === "deleted")?.id;
+  const counts = useMemo(() => {
+    const c: Record<string, number> = { all: 0 };
+    for (const l of filtered) {
+      c[l.stage_id] = (c[l.stage_id] ?? 0) + 1;
+      if (l.stage_id !== deletedId) c.all += 1;
     }
-  }
+    return c;
+  }, [filtered, deletedId]);
+
+  const listItems = useMemo(
+    () => (listStage === "all" ? filtered.filter((l) => l.stage_id !== deletedId) : filtered.filter((l) => l.stage_id === listStage)),
+    [filtered, listStage, deletedId],
+  );
+
+  const stageById = useMemo(() => new Map(stages.map((s) => [s.id, s])), [stages]);
+  const openLead = openId ? leads.find((l) => l.id === openId) ?? null : null;
 
   async function logout() {
-    await supabase.auth.signOut();
+    await getSupabaseBrowserClient().auth.signOut();
     router.replace("/login");
     router.refresh();
   }
 
-  // Filtr va saralash
-  const baseFiltered = useMemo(() => {
-    const q = filters.query.trim().toLowerCase();
-    const qDigits = q.replace(/\D/g, "");
-    return leads.filter((l) => {
-      if (filters.business !== "all" && l.business_type !== filters.business) return false;
-      if (!q) return true;
-      if (l.full_name.toLowerCase().includes(q)) return true;
-      return qDigits.length > 0 && l.phone.replace(/\D/g, "").includes(qDigits);
-    });
-  }, [leads, filters.business, filters.query]);
-
-  const counts = useMemo(() => {
-    const c = { all: baseFiltered.length } as Record<StatusFilter, number>;
-    for (const s of STATUSES) c[s] = 0;
-    for (const l of baseFiltered) c[l.status] += 1;
-    return c;
-  }, [baseFiltered]);
-
-  const visible = useMemo(() => {
-    const list = filters.status === "all" ? baseFiltered : baseFiltered.filter((l) => l.status === filters.status);
-    return [...list].sort((a, b) =>
-      filters.sort === "score"
-        ? b.score - a.score || +new Date(b.created_at) - +new Date(a.created_at)
-        : +new Date(b.created_at) - +new Date(a.created_at),
-    );
-  }, [baseFiltered, filters.status, filters.sort]);
-
-  const openLead = openId ? leads.find((l) => l.id === openId) ?? null : null;
-
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-lg">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary font-display text-lg font-black text-primary-foreground">
-              A
-            </div>
-            <div className="leading-tight">
-              <p className="font-display text-base font-extrabold">Adhamjon CRM</p>
-              <p className="text-xs text-muted-foreground">Lidlar</p>
-            </div>
-          </div>
+      <header className="sticky top-0 z-30 border-b border-border bg-white/90 backdrop-blur-lg">
+        <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-3 px-4">
+          <BrandMark />
           <div className="flex items-center gap-2">
-            <span className="hidden max-w-[200px] truncate text-sm text-muted-foreground md:inline">{userEmail}</span>
+            {demo && (
+              <span className="hidden items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-warning sm:inline-flex">
+                <FlaskConical className="h-3.5 w-3.5" /> Demo rejim
+              </span>
+            )}
+            <span className="hidden max-w-[200px] truncate text-sm text-graphite-80 lg:inline">{userEmail}</span>
             <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
-              <a href="/" target="_blank" rel="noopener noreferrer">
-                <Plus /> Forma
-              </a>
+              <Link href="/" target="_blank" rel="noopener noreferrer">
+                <ExternalLink /> Ariza formasi
+              </Link>
             </Button>
-            <Button variant="ghost" size="sm" onClick={logout} aria-label="Chiqish">
-              <LogOut /> <span className="hidden sm:inline">Chiqish</span>
-            </Button>
+            {!demo && (
+              <Button variant="ghost" size="sm" onClick={logout} aria-label="Chiqish">
+                <LogOut /> <span className="hidden sm:inline">Chiqish</span>
+              </Button>
+            )}
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:py-8">
-        <div className="flex items-end justify-between gap-4">
+      <main className="mx-auto max-w-[1600px] space-y-5 px-4 py-6 sm:py-8">
+        {demo && (
+          <div className="flex items-start gap-3 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-graphite">
+            <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+            <p>
+              <b>Demo rejim.</b> Ma&apos;lumotlar faqat shu brauzerda saqlanadi. Jamoa bilan umumiy baza uchun Vercel&apos;ga
+              Supabase kalitlarini qo&apos;shing (README).
+            </p>
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Lidlar</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Instagram bio formasidan kelgan arizalar</p>
+            <h1 className="font-display text-3xl font-semibold text-qiymat sm:text-4xl">LIDLAR</h1>
+            <p className="mt-1 text-sm text-graphite-80">Barcha mijozlar va ularning bosqichlari</p>
+          </div>
+          <div className="flex w-full gap-2 sm:w-auto">
+            <Button variant="outline" className="flex-1 sm:flex-none" onClick={stageActions.onAddStage}>
+              <Plus /> Yacheyka
+            </Button>
+            <Button className="flex-1 sm:flex-none" onClick={() => setLeadDialog({ open: true, stageId: crm.defaultStage?.id })}>
+              <Plus /> Yangi lid
+            </Button>
           </div>
         </div>
 
-        <StatsCards leads={leads} />
+        <StatsCards leads={leads} stages={stages} />
 
-        <Filters value={filters} onChange={setFilters} counts={counts} view={view} onViewChange={changeView} />
+        <Toolbar value={toolbar} onChange={setToolbar} view={view} onViewChange={changeView} />
 
-        {view === "kanban" ? (
-          <KanbanBoard leads={visible} actions={actions} />
-        ) : visible.length > 0 ? (
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {visible.map((lead) => (
-              <LeadCard key={lead.id} lead={lead} actions={actions} />
-            ))}
+        {loading ? (
+          <div className="flex items-center justify-center gap-2 py-24 text-graphite-80">
+            <Loader2 className="h-5 w-5 animate-spin" /> Yuklanmoqda...
           </div>
+        ) : view === "kanban" ? (
+          <KanbanBoard stages={stages} leads={filtered} actions={actions} stageActions={stageActions} />
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border px-6 py-16 text-center">
-            <Inbox className="mb-3 h-10 w-10 text-muted-foreground" />
-            <p className="font-display text-lg font-bold">Lid topilmadi</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {leads.length === 0 ? "Forma orqali birinchi ariza kelishini kuting" : "Filtrlarni o'zgartirib ko'ring"}
-            </p>
+          <div className="space-y-4">
+            <div className="scrollbar-thin -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+              {[{ id: "all", name: "Barchasi", color: "#0E5A4D" }, ...stages].map((s) => {
+                const active = listStage === s.id;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => setListStage(s.id)}
+                    className={cn(
+                      "inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-semibold transition-colors",
+                      active ? "border-qiymat bg-qiymat text-white" : "border-border bg-white text-graphite hover:border-qiymat-60",
+                    )}
+                  >
+                    {s.id !== "all" && <span className="h-2 w-2 rounded-full" style={{ backgroundColor: active ? "#fff" : s.color }} />}
+                    {s.name}
+                    <span className={cn("rounded-full px-1.5 text-xs tabular", active ? "bg-white/20" : "bg-sage-40 text-qiymat")}>
+                      {counts[s.id] ?? 0}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            {listItems.length > 0 ? (
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                {listItems.map((lead) => (
+                  <LeadCard key={lead.id} lead={lead} stage={stageById.get(lead.stage_id)} stages={stages} actions={actions} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-qiymat-60 bg-white px-6 py-16 text-center">
+                <Inbox className="mb-3 h-10 w-10 text-qiymat-60" />
+                <p className="font-display text-lg font-semibold text-qiymat">Lid topilmadi</p>
+                <p className="mt-1 text-sm text-graphite-80">Filtrlarni o&apos;zgartiring yoki yangi lid qo&apos;shing</p>
+              </div>
+            )}
           </div>
         )}
       </main>
 
       <LeadDrawer
         lead={openLead}
+        stages={stages}
         open={!!openLead}
         onOpenChange={(o) => !o && setOpenId(null)}
         actions={actions}
-        userEmail={userEmail}
-        onUpdate={updateLead}
+        store={store}
+        onUpdate={crm.updateLead}
       />
 
-      <AlertDialog open={!!toDelete} onOpenChange={(o) => !o && setToDelete(null)}>
+      <LeadDialog
+        open={leadDialog.open}
+        onOpenChange={(o) => setLeadDialog((d) => ({ ...d, open: o }))}
+        lead={leadDialog.lead}
+        stages={stages}
+        defaultStageId={leadDialog.stageId ?? crm.defaultStage?.id}
+        onSubmit={async (input) => {
+          if (leadDialog.lead) {
+            const original = leadDialog.lead;
+            const saved = await crm.updateLead(original, input, { success: "Saqlandi" });
+            if (saved) void store.addActivity(original.id, "edited", "Ma'lumotlar tahrirlandi").catch(() => undefined);
+            return saved;
+          }
+          return crm.createLead(input);
+        }}
+      />
+
+      <StageDialog
+        open={stageDialog.open}
+        onOpenChange={(o) => setStageDialog((d) => ({ ...d, open: o }))}
+        stage={stageDialog.stage}
+        onSubmit={(v) => (stageDialog.stage ? crm.updateStage(stageDialog.stage, v) : crm.createStage(v))}
+      />
+
+      {/* Lidni butunlay o'chirish */}
+      <AlertDialog open={!!toDestroy} onOpenChange={(o) => !o && setToDestroy(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Lidni o&apos;chirasizmi?</AlertDialogTitle>
+            <AlertDialogTitle>Lidni butunlay o&apos;chirasizmi?</AlertDialogTitle>
             <AlertDialogDescription>
-              <b className="text-foreground">{toDelete?.full_name}</b> va uning butun tarixi o&apos;chiriladi. Bu amalni
-              qaytarib bo&apos;lmaydi.
+              <b className="text-foreground">{toDestroy?.full_name}</b> va uning butun tarixi o&apos;chiriladi. Bu amalni qaytarib
+              bo&apos;lmaydi.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete}>O&apos;chirish</AlertDialogAction>
+            <AlertDialogAction
+              onClick={() => {
+                if (toDestroy) {
+                  if (openId === toDestroy.id) setOpenId(null);
+                  void crm.destroyLead(toDestroy);
+                }
+                setToDestroy(null);
+              }}
+            >
+              Butunlay o&apos;chirish
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Yacheykani o'chirish */}
+      <AlertDialog open={!!stageToDelete} onOpenChange={(o) => !o && setStageToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>&quot;{stageToDelete?.name}&quot; yacheykasini o&apos;chirasizmi?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Undagi {leads.filter((l) => l.stage_id === stageToDelete?.id).length} ta lid tanlangan yacheykaga ko&apos;chiriladi.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <Select value={moveTo} onValueChange={setMoveTo}>
+            <SelectTrigger aria-label="Lidlar ko'chiriladigan yacheyka">
+              <SelectValue placeholder="Yacheykani tanlang" />
+            </SelectTrigger>
+            <SelectContent>
+              {stages
+                .filter((s) => s.id !== stageToDelete?.id)
+                .map((s) => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.name}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={!moveTo}
+              onClick={() => {
+                const target = stages.find((s) => s.id === moveTo);
+                if (stageToDelete && target) void crm.deleteStage(stageToDelete, target);
+                setStageToDelete(null);
+              }}
+            >
+              O&apos;chirish
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

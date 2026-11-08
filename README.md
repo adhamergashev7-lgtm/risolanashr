@@ -1,6 +1,6 @@
 # Risola Nashr - kitob buyurtma sayti
 
 
-## Adhamjon CRM — Lidlar
+## Qiymat CRM — Lidlar
 
-Lid qabul qilish formasi va mini CRM (Next.js + Supabase) — [`adhamjon-crm/`](adhamjon-crm/README.md) papkasida.
+Lid qabul qilish formasi va umumiy CRM (Next.js + Supabase) — [`adhamjon-crm/`](adhamjon-crm/README.md) papkasida.

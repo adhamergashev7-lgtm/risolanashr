@@ -1,58 +1,47 @@
-import { CheckCircle2, Clock3, Instagram, TrendingUp } from "lucide-react";
+/* eslint-disable @next/next/no-img-element */
+import { Suspense } from "react";
+import { Clock3, ShieldCheck, Sparkles } from "lucide-react";
 import { LeadForm } from "@/components/form/lead-form";
+import { BRAND } from "@/lib/brand";
 
 export default function HomePage() {
   return (
-    <main className="relative min-h-dvh overflow-hidden">
-      {/* Fon effektlari */}
-      <div className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_75%)]" />
-      <div className="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[680px] -translate-x-1/2 rounded-full bg-lime/10 blur-[120px]" />
+    <main className="relative min-h-dvh overflow-hidden bg-qiymat">
+      {/* Emblemaning chorak-aylana motivi */}
+      <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full border-[70px] border-sage/20" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-56 -left-48 h-[560px] w-[560px] rounded-full border-[80px] border-white/[0.06]" />
 
-      <div className="relative mx-auto flex w-full max-w-xl flex-col px-4 pb-16 pt-8 sm:pt-14">
-        <header className="mb-8 flex items-center justify-between">
-          <a
-            href="https://instagram.com/marketolog_adhamjon"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2.5 rounded-full border border-border bg-card/80 py-1.5 pl-1.5 pr-4 text-sm font-semibold backdrop-blur transition-colors hover:border-primary/40"
-          >
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
-              <Instagram className="h-4 w-4" />
-            </span>
-            @marketolog_adhamjon
-          </a>
-          <span className="hidden items-center gap-1.5 text-xs font-medium text-muted-foreground sm:flex">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-success" /> Ariza qabul qilinmoqda
-          </span>
-        </header>
-
-        <section className="mb-8 animate-fade-up">
-          <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-lime-soft px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-            <TrendingUp className="h-3.5 w-3.5" /> Bepul tahlil
-          </span>
-          <h1 className="font-display text-[2.15rem] font-extrabold leading-[1.08] sm:text-5xl">
-            Bepul marketing tahlili uchun <span className="text-primary">ariza qoldiring</span>
+      <div className="relative mx-auto grid w-full max-w-6xl gap-10 px-4 pb-16 pt-8 sm:pt-12 lg:grid-cols-[1fr_480px] lg:items-center lg:gap-16 lg:pt-20">
+        <section className="animate-fade-up text-white">
+          <div className="mb-10 inline-flex items-center rounded-2xl bg-white px-4 py-2.5">
+            <img src="/qiymat-logo.svg" alt={BRAND.name} className="h-9 w-auto" width={94} height={36} />
+          </div>
+          <p className="mb-4 font-display text-sm uppercase tracking-[0.2em] text-sage-60">Ariza qoldiring</p>
+          <h1 className="font-display text-[2.4rem] font-semibold leading-[1.05] sm:text-6xl">
+            Bepul konsultatsiya uchun <span className="text-sage">ariza qoldiring</span>
           </h1>
-          <p className="mt-4 flex items-center gap-2 text-base text-muted-foreground sm:text-lg">
-            <Clock3 className="h-5 w-5 shrink-0 text-primary" />
-            24 soat ichida menejer bog&apos;lanadi
+          <p className="mt-5 flex items-center gap-2 text-lg text-sage-60">
+            <Clock3 className="h-5 w-5 shrink-0 text-sage" />
+            Menejerimiz tez orada siz bilan bog&apos;lanadi
           </p>
+          <ul className="mt-8 hidden gap-4 text-sm text-sage-60 lg:grid">
+            <li className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-sage" /> {BRAND.tagline}
+            </li>
+            <li className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-sage" /> Ma&apos;lumotlar uchinchi shaxslarga berilmaydi
+            </li>
+          </ul>
         </section>
 
-        <LeadForm />
-
-        <ul className="mt-8 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
-          {["Bepul va majburiyatsiz", "Biznesingizga mos strategiya", "Ma'lumotlar maxfiy"].map((t) => (
-            <li key={t} className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> {t}
-            </li>
-          ))}
-        </ul>
-
-        <footer className="mt-12 text-center text-xs text-muted-foreground/70">
-          © {new Date().getFullYear()} Marketolog Adhamjon
-        </footer>
+        <Suspense>
+          <LeadForm />
+        </Suspense>
       </div>
+
+      <footer className="relative pb-8 text-center text-xs text-sage-60">
+        © {new Date().getFullYear()} {BRAND.name} — {BRAND.tagline}
+      </footer>
     </main>
   );
 }

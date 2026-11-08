@@ -4,28 +4,28 @@
 
 @layer base {
   :root {
-    /* Dizayn palitrasi: #0A0A0A fon, #161616 karta, #262626 chegara, #C6FF00 accent */
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 8.6%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 8.6%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 73 100% 50%;
-    --primary-foreground: 0 0% 3.9%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    /* Qiymat agency: white #FFFFFF fon, graphite #222D2F matn, qiymat-green #0E5A4D brend, sage #92B79C aksent */
+    --background: 140 14% 97%; /* sahifa foni — sage-40 dan ham ochroq */
+    --foreground: 189 16% 16%; /* graphite */
+    --card: 0 0% 100%;
+    --card-foreground: 189 16% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 189 16% 16%;
+    --primary: 170 73% 20%; /* qiymat-green */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 136 21% 86%; /* sage-40 */
+    --secondary-foreground: 170 73% 20%;
+    --muted: 140 14% 94%;
+    --muted-foreground: 190 7% 33%; /* graphite-80 */
+    --accent: 136 21% 91%;
+    --accent-foreground: 189 16% 16%;
+    --destructive: 0 74% 42%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 73 100% 50%;
-    --radius: 1rem;
-    color-scheme: dark;
+    --border: 140 12% 87%;
+    --input: 171 17% 52%; /* qiymat-green-60 — kontrol chegarasi ≥3:1 */
+    --ring: 170 73% 20%;
+    --radius: 12px;
+    color-scheme: light;
   }
 
   * {
@@ -38,31 +38,31 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "cv11", "ss01";
   }
 
   h1, h2, h3, h4 {
     @apply font-display tracking-tight;
   }
-
-  /* datetime-local ikonkasi qorong'i fonda ko'rinsin */
-  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    opacity: 0.6;
-  }
 }
 
 @layer utilities {
-  .bg-grid {
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-    background-size: 44px 44px;
-  }
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: #262626 transparent;
+    scrollbar-color: #bed4c4 transparent;
   }
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+  /* Emblemaning chorak-aylana motivi — brend fon bloklari uchun */
+  .qiymat-arcs {
+    background-image: radial-gradient(circle at 100% 0%, transparent 59%, rgba(146, 183, 156, 0.22) 60%, rgba(146, 183, 156, 0.22) 72%, transparent 73%),
+      radial-gradient(circle at 0% 100%, transparent 54%, rgba(255, 255, 255, 0.07) 55%, rgba(255, 255, 255, 0.07) 68%, transparent 69%);
+  }
+}
+
+/* Sonner mobil CSS'ida width:100% + chekka offset ekrandan 16px chiqib ketadi */
+@media (max-width: 600px) {
+  [data-sonner-toaster] {
+    width: auto !important;
   }
 }

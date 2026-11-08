@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { DEFAULT_SOURCE } from "@/lib/constants";
 import { isSupabaseConfigured } from "@/lib/env";
-import { calculateScore } from "@/lib/score";
 import { createSupabaseAnonClient } from "@/lib/supabase/server";
 import { sendLeadToTelegram } from "@/lib/telegram";
 import { flattenErrors, leadFormSchema } from "@/lib/validation";
@@ -27,29 +25,19 @@ export async function POST(request: Request) {
   }
 
   const { website, ...values } = parsed.data;
-
-  // Honeypot to'ldirilgan bo'lsa — bot. Jim qabul qilamiz, lekin saqlamaymiz.
-  if (website) return NextResponse.json({ ok: true });
+  if (website) return NextResponse.json({ ok: true }); // honeypot — bot
 
   if (!isSupabaseConfigured()) {
-    console.error("[api/leads] Supabase sozlanmagan: NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY");
-    return NextResponse.json({ ok: false, error: "Server sozlanmagan. Keyinroq urinib ko'ring." }, { status: 500 });
+    return NextResponse.json({ ok: false, demo: true, error: "Demo rejim: Supabase sozlanmagan" }, { status: 503 });
   }
 
-  const id = crypto.randomUUID();
-  // Score bazada ham trigger orqali qayta hisoblanadi — bu qiymat Telegram xabari uchun
-  const score = calculateScore(values);
-
-  const supabase = createSupabaseAnonClient();
-  const { error } = await supabase.from("leads").insert({
-    id,
+  const { error } = await createSupabaseAnonClient().from("leads").insert({
+    id: crypto.randomUUID(),
     full_name: values.full_name,
     phone: values.phone,
-    business_type: values.business_type,
-    monthly_budget: values.monthly_budget,
-    problems: values.problems,
+    product: values.product,
     comment: values.comment,
-    source: DEFAULT_SOURCE,
+    source: values.source,
   });
 
   if (error) {
@@ -57,7 +45,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Arizani saqlab bo'lmadi. Qayta urinib ko'ring." }, { status: 500 });
   }
 
-  const telegram = await sendLeadToTelegram({ ...values, score });
-
-  return NextResponse.json({ ok: true, id, score, telegram: telegram.ok }, { status: 201 });
+  const telegram = await sendLeadToTelegram(values);
+  return NextResponse.json({ ok: true, telegram: telegram.ok }, { status: 201 });
 }

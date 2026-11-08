@@ -4,8 +4,13 @@ import { SUPABASE_ANON_KEY, SUPABASE_URL, isSupabaseConfigured } from "@/lib/env
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
+  const { pathname } = request.nextUrl;
 
-  if (!isSupabaseConfigured()) return response;
+  // Demo rejim: login yo'q, /login -> /admin
+  if (!isSupabaseConfigured()) {
+    if (pathname === "/login") return NextResponse.redirect(new URL("/admin", request.url));
+    return response;
+  }
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     cookies: {
@@ -23,8 +28,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin") && !user) {
     const url = request.nextUrl.clone();

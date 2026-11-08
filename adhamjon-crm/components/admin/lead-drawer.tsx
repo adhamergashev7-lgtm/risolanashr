@@ -2,123 +2,113 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  ArrowRight,
-  CalendarClock,
-  CalendarPlus,
+  ArrowRightLeft,
+  BellRing,
   Eye,
   Loader2,
   MessageSquareText,
+  Pencil,
   Phone,
   PhoneCall,
-  RefreshCw,
+  RotateCcw,
   Send,
   Sparkles,
   Trash2,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import { BUDGET_LABELS, STATUS_META, nextStatus, type LeadStatus } from "@/lib/constants";
-import { getSupabaseBrowserClient } from "@/lib/supabase/client";
-import { formatDateTime, phoneHref } from "@/lib/utils";
-import type { ActivityType, Lead, LeadActivity } from "@/types/lead";
+import { sourceLabel } from "@/lib/constants";
+import type { CrmStore } from "@/lib/store";
+import { cn, formatDateTime, formatMoney, phoneHref, tint, toLocalInput } from "@/lib/utils";
+import type { ActivityType, Lead, LeadActivity, LeadPatch, Stage } from "@/types/lead";
 import type { LeadActions } from "./lead-card";
-import { ScoreBar } from "./score-bar";
-import { StatusPill } from "./status-pill";
-import { TimeText } from "./time-text";
+import { StagePill } from "./stage-pill";
+import { ReminderBadge, TimeText } from "./time-text";
 
-const ACTIVITY_META: Record<ActivityType, { icon: typeof Eye; color: string; title: string }> = {
-  created: { icon: Sparkles, color: "#C6FF00", title: "Yaratildi" },
-  viewed: { icon: Eye, color: "#38BDF8", title: "Ko'rildi" },
-  status_changed: { icon: RefreshCw, color: "#F59E0B", title: "Status o'zgardi" },
-  note: { icon: MessageSquareText, color: "#FFFFFF", title: "Izoh" },
-  call: { icon: PhoneCall, color: "#22C55E", title: "Qo'ng'iroq qilindi" },
-  meeting: { icon: CalendarClock, color: "#F59E0B", title: "Uchrashuv belgilandi" },
-  telegram_sent: { icon: Send, color: "#38BDF8", title: "Telegramga yuborildi" },
+const ACTIVITY_META: Record<ActivityType, { icon: typeof Eye; title: string }> = {
+  created: { icon: Sparkles, title: "Yaratildi" },
+  viewed: { icon: Eye, title: "Ko'rildi" },
+  stage_changed: { icon: ArrowRightLeft, title: "Yacheyka o'zgardi" },
+  note: { icon: MessageSquareText, title: "Izoh" },
+  call: { icon: PhoneCall, title: "Qo'ng'iroq qilindi" },
+  reminder: { icon: BellRing, title: "Eslatma" },
+  telegram_sent: { icon: Send, title: "Telegramga yuborildi" },
+  edited: { icon: Pencil, title: "Tahrirlandi" },
 };
 
 interface Props {
   lead: Lead | null;
+  stages: Stage[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
   actions: LeadActions;
-  userEmail: string;
-  onUpdate: (lead: Lead, patch: Partial<Lead>) => Promise<boolean>;
+  store: CrmStore;
+  onUpdate: (lead: Lead, patch: LeadPatch, opts?: { silent?: boolean; success?: string }) => Promise<Lead | null>;
 }
 
-export function LeadDrawer({ lead, open, onOpenChange, actions, userEmail, onUpdate }: Props) {
-  const supabase = getSupabaseBrowserClient();
+export function LeadDrawer({ lead, stages, open, onOpenChange, actions, store, onUpdate }: Props) {
   const [activities, setActivities] = useState<LeadActivity[]>([]);
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
   const [savingNote, setSavingNote] = useState(false);
-  const [meetingOpen, setMeetingOpen] = useState(false);
-  const [meetingAt, setMeetingAt] = useState("");
+  const [reminderOpen, setReminderOpen] = useState(false);
+  const [reminderAt, setReminderAt] = useState("");
   const viewedRef = useRef<string | null>(null);
   const requestRef = useRef(0);
-
   const leadId = lead?.id;
 
   const loadActivities = useCallback(async () => {
     if (!leadId) return;
-    // Faqat eng oxirgi so'rov natijasi qo'llaniladi (eski javob yangisini ustidan yozmasin)
+    // Faqat eng oxirgi so'rov natijasi qo'llaniladi
     const reqId = ++requestRef.current;
-    const { data, error } = await supabase
-      .from("lead_activities")
-      .select("*")
-      .eq("lead_id", leadId)
-      .order("created_at", { ascending: true });
-    if (reqId !== requestRef.current) return;
-    if (error) {
-      toast.error("Tarixni yuklab bo'lmadi", { description: error.message });
-      return;
+    try {
+      const data = await store.listActivities(leadId);
+      if (reqId === requestRef.current) setActivities(data);
+    } catch (e) {
+      if (reqId === requestRef.current) toast.error("Tarixni yuklab bo'lmadi", { description: e instanceof Error ? e.message : "" });
     }
-    setActivities((data as LeadActivity[]) ?? []);
-  }, [leadId, supabase]);
+  }, [leadId, store]);
 
-  // Drawer ochilganda: tarixni yuklash + birinchi marta ochilsa "Ko'rildi" deb belgilash
   useEffect(() => {
     if (!open || !lead) return;
     setNote("");
-    setMeetingOpen(false);
-    setMeetingAt("");
+    setReminderOpen(false);
+    setReminderAt(toLocalInput(lead.reminder_at));
     setLoading(true);
     setActivities([]);
-
     (async () => {
       if (!lead.viewed_at && viewedRef.current !== lead.id) {
         viewedRef.current = lead.id;
-        await onUpdate(lead, { viewed_at: new Date().toISOString() });
+        await onUpdate(lead, { viewed_at: new Date().toISOString() }, { silent: true });
       }
       await loadActivities();
       setLoading(false);
     })();
-    // faqat boshqa lid ochilganda qayta ishlaydi
+    // faqat boshqa lid ochilganda
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, leadId]);
 
-  // Status yoki uchrashuv o'zgarganda tarixni yangilash
+  // Lid o'zgarganda (yacheyka va h.k.) tarixni yangilash
   useEffect(() => {
     if (open && lead?.updated_at) void loadActivities();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lead?.updated_at]);
+  }, [lead?.updated_at, lead?.stage_id]);
 
   async function logActivity(type: ActivityType, message: string, meta?: Record<string, unknown>) {
     if (!lead) return false;
-    const { data, error } = await supabase
-      .from("lead_activities")
-      .insert({ lead_id: lead.id, type, message, meta: meta ?? null, author_email: userEmail || null })
-      .select()
-      .single();
-    if (error) {
-      toast.error("Saqlab bo'lmadi", { description: error.message });
+    try {
+      const a = await store.addActivity(lead.id, type, message, meta);
+      requestRef.current++; // yo'ldagi eski yuklash natijasi ustidan yozmasin
+      setActivities((list) => (list.some((x) => x.id === a.id) ? list : [...list, a]));
+      return true;
+    } catch (e) {
+      toast.error("Saqlab bo'lmadi", { description: e instanceof Error ? e.message : "" });
       return false;
     }
-    requestRef.current++; // yo'ldagi eski yuklashni bekor qilamiz
-    setActivities((a) => (a.some((x) => x.id === (data as LeadActivity).id) ? a : [...a, data as LeadActivity]));
-    return true;
   }
 
   async function addNote() {
@@ -133,39 +123,44 @@ export function LeadDrawer({ lead, open, onOpenChange, actions, userEmail, onUpd
     }
   }
 
-  async function scheduleMeeting() {
-    if (!lead || !meetingAt) return;
-    const date = new Date(meetingAt);
-    if (Number.isNaN(date.getTime())) return;
-    const ok = await onUpdate(lead, { meeting_at: date.toISOString(), status: "uchrashuv" });
-    if (!ok) return;
-    await logActivity("meeting", `Uchrashuv: ${formatDateTime(date)}`, { meeting_at: date.toISOString() });
+  async function saveReminder(value: string | null) {
+    if (!lead) return;
+    const iso = value ? new Date(value).toISOString() : null;
+    const callback = stages.find((s) => s.key === "callback");
+    const patch: LeadPatch = { reminder_at: iso };
+    // Eslatma qo'yilsa va lid "Yangi"da bo'lsa — "Qayta qo'ng'iroq"ga o'tadi
+    const current = stages.find((s) => s.id === lead.stage_id);
+    if (iso && callback && current?.key === "new") patch.stage_id = callback.id;
+    const saved = await onUpdate(lead, patch);
+    if (!saved) return;
+    await logActivity("reminder", iso ? `Qayta qo'ng'iroq: ${formatDateTime(iso)}` : "Eslatma olib tashlandi", { reminder_at: iso });
     await loadActivities();
-    setMeetingOpen(false);
-    toast.success("Uchrashuv belgilandi", { description: formatDateTime(date) });
+    setReminderOpen(false);
+    toast.success(iso ? "Eslatma qo'yildi" : "Eslatma olib tashlandi", { description: iso ? formatDateTime(iso) : undefined });
   }
 
   if (!lead) return null;
-  const next = nextStatus(lead.status);
+  const stage = stages.find((s) => s.id === lead.stage_id);
+  const isDeleted = stage?.key === "deleted";
+  const moveTargets = stages.filter((s) => s.key !== "deleted");
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent aria-describedby="lead-drawer-desc">
-        <SheetHeader>
-          <div className="flex items-center gap-2">
-            <StatusPill status={lead.status} onChange={(s: LeadStatus) => actions.onStatusChange(lead, s)} />
-            <span className="text-xs text-muted-foreground">
-              <TimeText value={lead.created_at} format="ago" />
-            </span>
+        <SheetHeader className="bg-qiymat qiymat-arcs text-white">
+          <div className="flex items-center gap-2 text-xs text-sage-60">
+            <TimeText value={lead.created_at} format="ago" /> · {sourceLabel(lead.source)}
           </div>
-          <SheetTitle className="pt-1">{lead.full_name}</SheetTitle>
-          <SheetDescription id="lead-drawer-desc">
-            {lead.business_type} · {BUDGET_LABELS[lead.monthly_budget]}
+          <SheetTitle className="pt-1 text-2xl font-semibold text-white">{lead.full_name}</SheetTitle>
+          <SheetDescription id="lead-drawer-desc" asChild>
+            <a href={phoneHref(lead.phone)} className="w-fit text-base font-medium text-sage-60 tabular hover:text-white">
+              {lead.phone}
+            </a>
           </SheetDescription>
         </SheetHeader>
 
         <div className="scrollbar-thin min-w-0 flex-1 space-y-6 overflow-y-auto overflow-x-hidden p-5">
-          {/* Keyingi qadam */}
+          {/* Asosiy amallar */}
           <section className="grid grid-cols-2 gap-2 [&>*]:min-w-0">
             <Button asChild className="h-auto min-h-12 whitespace-normal py-2 text-center leading-tight">
               <a href={phoneHref(lead.phone)} onClick={() => void logActivity("call", `Qo'ng'iroq: ${lead.phone}`)}>
@@ -175,85 +170,99 @@ export function LeadDrawer({ lead, open, onOpenChange, actions, userEmail, onUpd
             <Button
               variant="secondary"
               className="h-auto min-h-12 whitespace-normal py-2 text-center leading-tight"
-              onClick={() => setMeetingOpen((v) => !v)}
+              onClick={() => setReminderOpen((v) => !v)}
             >
-              <CalendarPlus /> Uchrashuv belgilash
+              <BellRing /> Eslatma qo&apos;yish
             </Button>
-            {meetingOpen && (
-              <div className="col-span-2 flex flex-col gap-2 rounded-xl border border-border bg-background/60 p-3 sm:flex-row">
+            {reminderOpen && (
+              <div className="col-span-2 flex flex-col gap-2 rounded-2xl border border-border bg-[#F5F8F6] p-3 sm:flex-row">
                 <Input
                   type="datetime-local"
-                  value={meetingAt}
-                  onChange={(e) => setMeetingAt(e.target.value)}
+                  value={reminderAt}
+                  onChange={(e) => setReminderAt(e.target.value)}
                   className="h-11"
-                  aria-label="Uchrashuv vaqti"
+                  aria-label="Eslatma vaqti"
                 />
-                <Button className="h-11" disabled={!meetingAt} onClick={scheduleMeeting}>
+                <Button className="h-11" disabled={!reminderAt} onClick={() => saveReminder(reminderAt)}>
                   Saqlash
                 </Button>
+                {lead.reminder_at && (
+                  <Button variant="ghost" className="h-11" onClick={() => saveReminder(null)} aria-label="Eslatmani olib tashlash">
+                    <X /> Olib tashlash
+                  </Button>
+                )}
               </div>
             )}
-            {next && (
-              <Button
-                variant="outline"
-                className="col-span-2 h-auto min-h-11 whitespace-normal py-2 text-center"
-                onClick={() => actions.onAdvance(lead)}
-              >
-                Statusni oldinga surish: {STATUS_META[next].label} <ArrowRight />
-              </Button>
-            )}
+            {lead.reminder_at && !isDeleted && <ReminderBadge value={lead.reminder_at} icon={<BellRing className="h-3 w-3" />} className="col-span-2" />}
           </section>
 
-          {/* Score */}
-          <section className="rounded-2xl border border-border bg-background/50 p-4">
-            <ScoreBar score={lead.score} size="lg" />
+          {/* Yacheyka */}
+          <section>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-graphite-80">Yacheyka</h3>
+            <div className="flex flex-wrap gap-2">
+              {moveTargets.map((s) => {
+                const active = s.id === lead.stage_id;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => !active && actions.onMove(lead, s.id)}
+                    aria-pressed={active}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
+                      active ? "border-transparent text-white" : "border-border bg-white text-graphite hover:border-qiymat-60",
+                    )}
+                    style={active ? { backgroundColor: s.color } : undefined}
+                  >
+                    {!active && <span className="h-2 w-2 rounded-full" style={{ backgroundColor: s.color }} />}
+                    {s.name}
+                  </button>
+                );
+              })}
+            </div>
+            {isDeleted && (
+              <p className="mt-3 rounded-2xl px-3 py-2 text-sm" style={{ backgroundColor: tint(stage!.color, 0.1), color: stage!.color }}>
+                Bu lid &quot;{stage!.name}&quot; yacheykasida.
+              </p>
+            )}
           </section>
 
           {/* Ma'lumotlar */}
           <section>
-            <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">Ma&apos;lumotlar</h3>
-            <dl className="divide-y divide-border rounded-2xl border border-border">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-graphite-80">Ma&apos;lumotlar</h3>
+              <Button variant="ghost" size="sm" onClick={() => actions.onEdit(lead)}>
+                <Pencil /> Tahrirlash
+              </Button>
+            </div>
+            <dl className="divide-y divide-border rounded-2xl border border-border bg-white">
               <Row label="Telefon">
-                <a href={phoneHref(lead.phone)} className="font-semibold tabular text-primary hover:underline">
+                <a href={phoneHref(lead.phone)} className="font-semibold tabular text-qiymat hover:underline">
                   {lead.phone}
                 </a>
               </Row>
-              <Row label="Biznes turi">{lead.business_type}</Row>
-              <Row label="Oylik byudjet">{BUDGET_LABELS[lead.monthly_budget]}</Row>
-              <Row label="Muammolar">
-                <div className="flex flex-wrap justify-end gap-1.5">
-                  {lead.problems.length ? (
-                    lead.problems.map((p) => (
-                      <span key={p} className="rounded-md bg-lime-soft px-2 py-0.5 text-[11px] font-bold uppercase text-primary">
-                        {p}
-                      </span>
-                    ))
-                  ) : (
-                    "—"
-                  )}
-                </div>
+              <Row label="Qiziqish">{lead.product || "—"}</Row>
+              <Row label="Summa">{lead.amount != null ? `${formatMoney(lead.amount)} so'm` : "—"}</Row>
+              <Row label="Manba">{sourceLabel(lead.source)}</Row>
+              <Row label="Yacheyka">
+                <StagePill stage={stage} stages={stages} onChange={(id) => actions.onMove(lead, id)} />
               </Row>
-              {lead.meeting_at && (
-                <Row label="Uchrashuv">
-                  <TimeText value={lead.meeting_at} className="font-semibold text-warning" />
-                </Row>
-              )}
-              <Row label="Manba">{lead.source}</Row>
               <Row label="Yaratilgan">
                 <TimeText value={lead.created_at} />
               </Row>
+              {lead.created_by && <Row label="Kim qo'shgan">{lead.created_by}</Row>}
             </dl>
             {lead.comment && (
-              <div className="mt-3 rounded-2xl border border-border bg-background/50 p-4">
-                <p className="mb-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">Mijoz izohi</p>
-                <p className="whitespace-pre-wrap text-sm leading-relaxed">{lead.comment}</p>
+              <div className="mt-3 rounded-2xl bg-sage-40/60 p-4">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-qiymat">Izoh</p>
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-graphite">{lead.comment}</p>
               </div>
             )}
           </section>
 
           {/* Menejer izohi */}
           <section>
-            <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">Izoh qo&apos;shish</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-graphite-80">Izoh qo&apos;shish</h3>
             <Textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
@@ -268,44 +277,43 @@ export function LeadDrawer({ lead, open, onOpenChange, actions, userEmail, onUpd
             </Button>
           </section>
 
-          {/* Timeline */}
+          {/* Tarix */}
           <section>
-            <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">Tarix</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-graphite-80">Tarix</h3>
             {loading ? (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 text-sm text-graphite-80">
                 <Loader2 className="h-4 w-4 animate-spin" /> Yuklanmoqda...
               </div>
             ) : activities.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Hozircha yozuv yo&apos;q</p>
+              <p className="text-sm text-graphite-80">Hozircha yozuv yo&apos;q</p>
             ) : (
-              <ol className="relative space-y-4 border-l border-border pl-6">
+              <ol className="relative space-y-4 border-l-2 border-sage-60 pl-6">
                 {activities.map((a) => {
                   const meta = ACTIVITY_META[a.type] ?? ACTIVITY_META.note;
                   const Icon = meta.icon;
-                  const from = a.meta?.from as LeadStatus | undefined;
-                  const to = a.meta?.to as LeadStatus | undefined;
+                  const to = stages.find((s) => s.id === a.meta?.to_id);
                   return (
                     <li key={a.id} className="relative">
-                      <span
-                        className="absolute -left-[37px] top-0 flex h-6 w-6 items-center justify-center rounded-full border border-border bg-card"
-                        style={{ color: meta.color }}
-                      >
+                      <span className="absolute -left-[38px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-qiymat text-white">
                         <Icon className="h-3 w-3" />
                       </span>
                       <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                        <p className="text-sm font-semibold">{meta.title}</p>
-                        <TimeText value={a.created_at} className="text-xs text-muted-foreground tabular" />
+                        <p className="text-sm font-semibold text-graphite">{meta.title}</p>
+                        <TimeText value={a.created_at} className="text-xs text-graphite-80 tabular" />
                       </div>
-                      {a.type === "status_changed" && from && to ? (
-                        <p className="mt-0.5 text-sm text-muted-foreground">
-                          {STATUS_META[from]?.label ?? from} → <span style={{ color: STATUS_META[to]?.color }}>{STATUS_META[to]?.label ?? to}</span>
+                      {a.type === "stage_changed" ? (
+                        <p className="mt-0.5 text-sm text-graphite-80">
+                          {String(a.meta?.from ?? "—")} →{" "}
+                          <span className="font-semibold" style={{ color: to?.color }}>
+                            {String(a.meta?.to ?? "—")}
+                          </span>
                         </p>
                       ) : a.type === "note" ? (
-                        <p className="mt-1 whitespace-pre-wrap rounded-xl bg-white/[0.04] px-3 py-2 text-sm">{a.message}</p>
+                        <p className="mt-1 whitespace-pre-wrap rounded-2xl bg-[#F5F8F6] px-3 py-2 text-sm text-graphite">{a.message}</p>
                       ) : a.type !== "created" && a.type !== "viewed" && a.message ? (
-                        <p className="mt-0.5 text-sm text-muted-foreground">{a.message}</p>
+                        <p className="mt-0.5 text-sm text-graphite-80">{a.message}</p>
                       ) : null}
-                      {a.author_email && <p className="mt-0.5 text-[11px] text-muted-foreground/70">{a.author_email}</p>}
+                      {a.author_email && <p className="mt-0.5 text-[11px] text-graphite-60">{a.author_email}</p>}
                     </li>
                   );
                 })}
@@ -314,13 +322,26 @@ export function LeadDrawer({ lead, open, onOpenChange, actions, userEmail, onUpd
           </section>
         </div>
 
-        <footer className="grid grid-cols-2 gap-2 border-t border-border p-4">
-          <Button variant="outline" onClick={() => actions.onResend(lead)}>
-            <Send /> Telegramga
-          </Button>
-          <Button variant="outline" className="text-danger hover:text-danger" onClick={() => actions.onDelete(lead)}>
-            <Trash2 /> O&apos;chirish
-          </Button>
+        <footer className={cn("grid gap-2 border-t border-border p-4", actions.onResend ? "grid-cols-2" : "grid-cols-1")}>
+          {actions.onResend && (
+            <Button variant="outline" onClick={() => actions.onResend?.(lead)}>
+              <Send /> Telegramga
+            </Button>
+          )}
+          {isDeleted ? (
+            <div className="grid grid-cols-2 gap-2">
+              <Button variant="outline" onClick={() => actions.onRestore(lead)}>
+                <RotateCcw /> Tiklash
+              </Button>
+              <Button variant="outline" className="border-danger/40 text-danger hover:text-danger" onClick={() => actions.onDestroy(lead)}>
+                <Trash2 /> Butunlay
+              </Button>
+            </div>
+          ) : (
+            <Button variant="outline" className="border-danger/40 text-danger hover:text-danger" onClick={() => actions.onArchive(lead)}>
+              <Trash2 /> O&apos;chirish
+            </Button>
+          )}
         </footer>
       </SheetContent>
     </Sheet>
@@ -329,9 +350,9 @@ export function LeadDrawer({ lead, open, onOpenChange, actions, userEmail, onUpd
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-start justify-between gap-4 px-4 py-3 text-sm">
-      <dt className="shrink-0 text-muted-foreground">{label}</dt>
-      <dd className="text-right font-medium">{children}</dd>
+    <div className="flex items-center justify-between gap-4 px-4 py-3 text-sm">
+      <dt className="shrink-0 text-graphite-80">{label}</dt>
+      <dd className="min-w-0 text-right font-medium text-graphite">{children}</dd>
     </div>
   );
 }

@@ -1,15 +1,57 @@
-# Adhamjon CRM — Lidlar
+# Qiymat CRM — Lidlar
 
-Instagram bio'dagi Google Forms o'rniga ishlaydigan mini CRM: lidlarni qabul qiladi, avtomatik ball beradi,
-Telegramga xabar yuboradi va menejerlar uchun boshqaruv paneli taqdim etadi.
+Har qanday biznes uchun umumiy CRM: ariza formasi orqali lidlarni qabul qiladi, menejerlar ularni **yacheykalar**
+(bosqichlar) bo'yicha boshqaradi. Dizayn — Qiymat agency brendbuki (2026).
 
 **Texnologiyalar:** Next.js 14 (App Router) + TypeScript · Tailwind CSS + shadcn/ui · Supabase (PostgreSQL + Auth + Realtime) · Telegraf · Vercel
 
 | Sahifa | Kim uchun | Nima qiladi |
 |---|---|---|
-| `/` | Hamma (login shart emas) | Ariza formasi → Supabase ga yoziladi → Telegramga xabar → "Rahmat!" ekrani |
-| `/login` | Admin / menejer | Email + parol bilan kirish |
-| `/admin` | Faqat login qilganlar | Statistika, filtrlar, ro'yxat / Kanban, lid tafsiloti (drawer) |
+| `/` | Hamma | Ariza formasi (ism, telefon, qiziqish, izoh) → CRM ga tushadi → Telegramga xabar |
+| `/login` | Admin / menejer | Email + parol bilan kirish (demo rejimda kerak emas) |
+| `/admin` | Menejerlar | Yacheykalar (Kanban), ro'yxat, statistika, lid tafsiloti |
+
+## Yacheykalar
+
+Standart yacheykalar (migration yaratadi):
+
+**Yangi lidlar** → **Qayta qo'ng'iroq** → **Ma'lumot berildi** → **Do'konga chaqirildi** → **Sotib oldi** /
+**Sotib olmadi** / **MIBdan qarzi bor** / **Ko'tarmadi** · **O'chirilgan**
+
+- **"+ Yacheyka"** tugmasi (yoki ustunlar oxiridagi katta "Yacheyka qo'shish" bloki) — o'zingizning bosqichingizni qo'shasiz: nom + rang.
+- Har bir ustun menyusi (⋯): lid qo'shish, nomi/rangini o'zgartirish, chapga/o'ngga surish, o'chirish.
+- Standart yacheykalar nomini va rangini o'zgartirish mumkin, lekin o'chirib bo'lmaydi (statistika ularga tayanadi).
+  Qo'shimcha yacheykani o'chirganda undagi lidlar siz tanlagan yacheykaga ko'chiriladi.
+- "Yangi lidlar" — formadan kelgan arizalar tushadigan joy.
+- **O'chirish** lidni "O'chirilgan" yacheykasiga o'tkazadi (qayta tiklash mumkin). U yerdan **Butunlay o'chirish** mumkin.
+
+## Imkoniyatlar
+
+- **"+ Yangi lid"** — qo'ng'iroq, do'kon, Telegram va boshqa manbalardan kelgan mijozni qo'lda qo'shish
+  (ism, telefon, qiziqish, manba, yacheyka, summa, eslatma vaqti, izoh)
+- **Kanban:** lidni sudrab boshqa yacheykaga tashlash yoki karta pastidagi rangli pill orqali ko'chirish
+- **Eslatma (qayta qo'ng'iroq):** vaqt qo'yiladi. Muddati o'tganlar qizil, bugungilar to'q sariq rangda ko'rinadi
+- **Statistika:** jami lidlar (30 kun), bugun qo'ng'iroq qilinadiganlar, sotib olganlar va konversiya, sotuv summasi
+- **Qidiruv** (ism, telefon, mahsulot), manba bo'yicha filtr, saralash (yangi / eslatma / ism)
+- **Lid tafsiloti:**
+  - "Qo'ng'iroq qilish" (`tel:` havola)
+  - yacheykalar orasida tez ko'chirish
+  - menejer izohlari
+  - tarix: yaratildi → ko'rildi → yacheyka o'zgardi → izoh → eslatma
+- **Realtime:** bir menejer o'zgartirsa, boshqalarda darhol ko'rinadi (Supabase rejimida)
+- Forma manbasini havola orqali belgilash: `https://domen/?manba=instagram` (`telegram`, `sayt`, `tavsiya` ...)
+
+## Demo rejim va haqiqiy baza
+
+Supabase kalitlari **berilmasa**, ilova **demo rejimda** ishlaydi:
+- login so'ralmaydi;
+- ma'lumotlar faqat shu brauzerda (localStorage) saqlanadi;
+- namunaviy lidlar avtomatik qo'shiladi;
+- formadan yuborilgan ariza shu brauzerdagi CRM ga tushadi.
+
+Bu dizayn va funksiyalarni sinab ko'rish uchun mo'ljallangan.
+
+Jamoa bilan **umumiy baza** uchun Supabase ulang (quyida). Kalitlar qo'shilishi bilan ilova avtomatik haqiqiy rejimga o'tadi.
 
 ---
 
@@ -18,137 +60,90 @@ Telegramga xabar yuboradi va menejerlar uchun boshqaruv paneli taqdim etadi.
 ```bash
 cd adhamjon-crm
 npm install
-cp .env.example .env.local   # keyin qiymatlarni to'ldiring
+cp .env.example .env.local   # Supabase kalitlarini yozing (yoki bo'sh qoldiring — demo rejim)
+npm run dev                  # http://localhost:3000  va  http://localhost:3000/admin
 ```
 
-## 2. Supabase sozlash
+## 2. Supabase ulash
 
 1. [supabase.com](https://supabase.com) da yangi loyiha oching.
-2. **Project Settings → API** dan `Project URL` va `anon public` kalitni `.env.local` ga yozing:
+2. **SQL Editor** → `supabase/migrations/20261108000000_init_crm.sql` matnini qo'yib **Run** bosing.
+   Namunaviy lidlar kerak bo'lsa, keyin `supabase/seed.sql` ni ham ishga tushiring.
+   (CLI bilan: `npx supabase link --project-ref <REF>` → `npx supabase db push`.)
+3. **Authentication → Users → Add user** — har bir menejer uchun email + parol (Auto Confirm ✅).
+4. **Authentication → Sign In / Providers** — *Allow new users to sign up* ni o'chiring (begonalar ro'yxatdan o'ta olmasin).
+5. **Project Settings → API** dan `Project URL` va `anon public` kalitni oling:
    ```
    NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
    ```
-3. **Migration'ni ishga tushiring** — ikki usuldan biri:
 
-   **A) SQL Editor orqali (eng oson):** Supabase → SQL Editor → `supabase/migrations/20261107000000_init_leads.sql`
-   faylining butun matnini qo'yib **Run** bosing. Keyin namunaviy ma'lumotlar uchun `supabase/seed.sql` ni ham xuddi shunday ishga tushiring.
+Xavfsizlik (RLS):
+- forma (anonim) faqat yangi lid **qo'sha oladi**, o'qiy olmaydi;
+- formadan kelgan lid har doim "Yangi lidlar"ga tushadi — buni bazadagi trigger ta'minlaydi;
+- login qilgan menejerlar hamma narsani boshqaradi.
 
-   **B) Supabase CLI orqali:**
-   ```bash
-   npx supabase login
-   npx supabase link --project-ref <PROJECT_REF>
-   npx supabase db push                     # migration
-   psql "<DATABASE_URL>" -f supabase/seed.sql   # seed (ixtiyoriy)
-   ```
-   Lokal Supabase (Docker) bilan: `npx supabase start` va `npx supabase db reset` — migration va seed avtomatik qo'llanadi.
+## 3. Telegram (ixtiyoriy)
 
-4. **Admin foydalanuvchi yarating:** Authentication → Users → **Add user** → email + parol (Auto Confirm ✅).
-5. **Ro'yxatdan o'tishni o'chiring** (faqat admin kirishi uchun): Authentication → Sign In / Providers → *Allow new users to sign up* ni o'chiring.
+1. [@BotFather](https://t.me/BotFather) → `/newbot` → `TELEGRAM_BOT_TOKEN`.
+2. Botga (yoki bot qo'shilgan guruhga) xabar yozing.
+3. `https://api.telegram.org/bot<TOKEN>/getUpdates` ochib, `chat.id` ni oling → `TELEGRAM_ADMIN_CHAT_ID`.
 
-Migration nimalarni yaratadi:
-- `leads` jadvali (enum'lar, telefon formati va muammolar uchun tekshiruvlar)
-- `lead_activities` — timeline va menejer izohlari (Yaratildi → Ko'rildi → Status o'zgardi → Izoh ...)
-- `calculate_lead_score()` funksiyasi va trigger — **ball har doim bazada qayta hisoblanadi**, formadan kelgan qiymatga ishonilmaydi
-- RLS: anonim foydalanuvchi faqat yangi lid **qo'sha oladi** (o'qiy olmaydi); login qilganlar to'liq boshqaradi
-- Realtime: yangi lid admin panelda sahifani yangilamasdan paydo bo'ladi
+Har bir yangi ariza Telegramga darhol yuboriladi. Telegram javob bermasa, forma 2.5 soniyadan ko'p kutmaydi.
+Admin panelda "Telegramga yuborish" orqali lidni qayta yuborish mumkin.
 
-## 3. Telegram bot
+## 4. Vercel
 
-1. Telegramda [@BotFather](https://t.me/BotFather) → `/newbot` → tokenni oling → `TELEGRAM_BOT_TOKEN`.
-2. Botingizga istalgan xabar yozing (guruh bo'lsa — botni guruhga qo'shib, guruhda xabar yozing).
-3. Brauzerda oching: `https://api.telegram.org/bot<TOKEN>/getUpdates` → `"chat":{"id": ...}` qiymatini `TELEGRAM_ADMIN_CHAT_ID` ga yozing
-   (guruh ID'si minus bilan boshlanadi, masalan `-1001234567890`).
+Loyiha repozitoriy ichidagi `adhamjon-crm/` papkasida joylashgan, shuning uchun Vercel'da **Root Directory = `adhamjon-crm`**.
 
-```
-TELEGRAM_BOT_TOKEN=1234567890:AA...
-TELEGRAM_ADMIN_CHAT_ID=123456789
-NEXT_PUBLIC_SITE_URL=https://sizning-domeningiz.uz   # xabardagi "CRM da ko'rish" havolasi uchun
-```
+Vercel → Project → **Settings → Environment Variables** ga `.env.example` dagi o'zgaruvchilarni qo'shing va **Redeploy** qiling.
+Supabase'da **Authentication → URL Configuration → Site URL** ga Vercel domenini yozing.
 
-Xabar `/api/leads` ichida lid saqlangandan so'ng darhol yuboriladi (2.5 soniyalik timeout bilan — forma hech qachon osilib qolmaydi).
-Admin panelda har bir lidni **"Telegramga qayta yuborish"** mumkin.
-
-## 4. Ishga tushirish
+## Buyruqlar
 
 ```bash
-npm run dev        # http://localhost:3000  (forma)  va  http://localhost:3000/admin
+npm run dev        # ishlab chiqish
 npm run build      # production build
-npm start          # production server
-npm test           # score va telefon maskasi testlari (vitest)
+npm test           # telefon maskasi va validatsiya testlari
 npm run lint       # ESLint
-npm run typecheck  # TypeScript tekshiruvi
+npm run typecheck  # TypeScript
 ```
 
-## 5. Vercel'ga deploy
-
-1. Vercel → **Add New Project** → shu GitHub repozitoriyni tanlang.
-2. **Root Directory:** `adhamjon-crm` (muhim — loyiha repozitoriy ichidagi papkada).
-3. **Environment Variables:** `.env.example` dagi 5 ta o'zgaruvchini kiriting.
-4. Deploy. Keyin Supabase → Authentication → URL Configuration → **Site URL** ga Vercel domeningizni yozing.
-5. Instagram bio'ga `https://<domeningiz>/` havolasini qo'ying.
-
----
-
-## Score (ball) qoidalari
-
-| Shart | Ball |
-|---|---|
-| Byudjet 30 mln+ / 15–30 mln / 5–15 mln / 5 mln gacha | 40 / 30 / 20 / 10 |
-| Muammo: Savdo / Prosmotr / Obunachi (har biri qo'shiladi) | 30 / 15 / 10 |
-| Biznes turi: Ishlab chiqarish yoki Klinika | +10 |
-| Izoh 20 belgidan uzun | +5 |
-| **Maksimum** | **100** |
-
-Belgilar: **80–100 Issiq 🔥** · **50–79 Iliq** · **0–49 Sovuq**.
-Mantiq ikki joyda bir xil: `lib/score.ts` (Telegram xabari va testlar uchun) va SQL `calculate_lead_score()` (haqiqiy saqlanadigan qiymat).
-
-Seed lidlar: Bilol — 60 (Iliq), Xiyobon — 45 (Sovuq), Kilo — 75 (Iliq), Dr. Sardor — 80 (Issiq 🔥).
-
-**Taxminiy daromad** = rad etilmagan lidlar byudjetlarining o'rtacha qiymatlari yig'indisi × 20%
-(5 mln gacha = 3 mln, 5–15 = 10 mln, 15–30 = 22,5 mln, 30+ = 40 mln — `lib/constants.ts` da o'zgartirish mumkin).
-
-## Admin panel imkoniyatlari
-
-- **Statistika:** jami lidlar (oxirgi 30 kun), issiq lidlar (ball ≥ 80), uchrashuvlar, taxminiy daromad
-- **Filtrlar:** status tablari (soni bilan), biznes turi, ism/telefon bo'yicha qidiruv, saralash (yangi / ball)
-- **Ro'yxat yoki Kanban** ko'rinishi (Kanban'da kartani sudrab boshqa ustunga tashlash mumkin)
-- **Karta:** click-to-call telefon, biznes badge, byudjet, muammolar, rangli score bar, status pill (bosganda status o'zgaradi), sana
-- **Amallar:** batafsil ko'rish, statusni oldinga surish, Telegramga qayta yuborish, o'chirish (tasdiqlash bilan)
-- **Drawer:** barcha ma'lumotlar, timeline (vaqt bilan), menejer izohi, "Qo'ng'iroq qilish" va "Uchrashuv belgilash" tugmalari
-- Lid birinchi marta ochilganda avtomatik **"Ko'rildi"** deb belgilanadi (ko'rilmagan lidlar yashil nuqta bilan)
-
-## Loyiha tuzilmasi
+## Tuzilma
 
 ```
 adhamjon-crm/
 ├── app/
-│   ├── page.tsx                      # Public forma (/)
-│   ├── login/page.tsx                # Kirish
-│   ├── admin/page.tsx                # CRM dashboard
-│   └── api/leads/
-│       ├── route.ts                  # POST: lid saqlash + Telegram
-│       └── [id]/telegram/route.ts    # POST: Telegramga qayta yuborish (faqat admin)
+│   ├── page.tsx                 # Ariza formasi (/)
+│   ├── login/page.tsx           # Kirish
+│   ├── admin/page.tsx           # CRM
+│   └── api/leads/…              # Forma API + Telegramga qayta yuborish
 ├── components/
-│   ├── ui/                           # shadcn/ui komponentlari
-│   ├── form/lead-form.tsx            # Forma (validatsiya + telefon maskasi)
-│   └── admin/                        # Dashboard, statistika, filtr, karta, kanban, drawer
+│   ├── admin/                   # Dashboard, Kanban, karta, drawer, dialoglar, statistika
+│   ├── form/                    # Public forma, telefon maskasi
+│   └── ui/                      # shadcn/ui
 ├── lib/
-│   ├── score.ts                      # Ball hisoblash
-│   ├── telegram.ts                   # Telegraf orqali xabar
-│   ├── validation.ts                 # Zod sxemasi (klient + server)
-│   ├── phone.ts                      # +998 XX XXX XX XX maskasi
-│   ├── constants.ts                  # Enum'lar, label'lar, ranglar
-│   └── supabase/                     # Browser / server / middleware client'lar
-├── middleware.ts                     # /admin ni login bilan himoyalash
+│   ├── store/                   # Ma'lumotlar qatlami: Supabase yoki demo (localStorage)
+│   ├── constants.ts             # Standart yacheykalar, manbalar, ranglar
+│   ├── validation.ts · phone.ts · telegram.ts · brand.ts
+│   └── supabase/                # Supabase client'lar
+├── public/                      # Qiymat logotipi va emblemasi
 └── supabase/
-    ├── migrations/20261107000000_init_leads.sql
-    ├── seed.sql
-    └── config.toml
+    ├── migrations/20261108000000_init_crm.sql
+    └── seed.sql
 ```
 
-## Xavfsizlik eslatmalari
+## Brend
 
-- Forma `anon` kalit bilan ishlaydi; RLS tufayli anonim foydalanuvchi hech qanday lidni **o'qiy olmaydi**, faqat `status = 'yangi'` bilan qo'sha oladi.
-- Botlardan himoya uchun formada yashirin honeypot maydoni bor.
-- Ball va `updated_at` bazadagi trigger orqali yoziladi — ularni tashqaridan soxtalashtirib bo'lmaydi.
+Ranglar Qiymat agency brendbukidan olingan:
+
+| Rang | Hex |
+|---|---|
+| qiymat-green | `#0E5A4D` |
+| graphite | `#222D2F` |
+| sage | `#92B79C` |
+| deep-green | `#23463F` |
+| white | `#FFFFFF` |
+
+Sarlavhalar uchun YD Yoonche o'rniga unga yaqin geometrik **Outfit** shrifti ishlatilgan, matn uchun — **Inter**.
+Logotip va emblema brendbukdagi vektor fayllar.

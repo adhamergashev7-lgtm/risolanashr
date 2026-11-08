@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Eye, MoreHorizontal, Phone, Send, Trash2, Wallet } from "lucide-react";
+import { BellRing, Eye, MoreHorizontal, Pencil, Phone, RotateCcw, Send, ShoppingBag, Trash2, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,34 +9,37 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BUDGET_LABELS, STATUS_META, nextStatus, type LeadStatus } from "@/lib/constants";
-import { cn, phoneHref } from "@/lib/utils";
-import type { Lead } from "@/types/lead";
-import { ScoreBar } from "./score-bar";
-import { StatusPill } from "./status-pill";
-import { TimeText } from "./time-text";
+import { sourceLabel } from "@/lib/constants";
+import { cn, formatMoney, phoneHref } from "@/lib/utils";
+import type { Lead, Stage } from "@/types/lead";
+import { StagePill } from "./stage-pill";
+import { ReminderBadge, TimeText } from "./time-text";
 
 export interface LeadActions {
   onOpen: (lead: Lead) => void;
-  onStatusChange: (lead: Lead, status: LeadStatus) => void;
-  onAdvance: (lead: Lead) => void;
-  onResend: (lead: Lead) => void;
-  onDelete: (lead: Lead) => void;
+  onEdit: (lead: Lead) => void;
+  onMove: (lead: Lead, stageId: string) => void;
+  onArchive: (lead: Lead) => void;
+  onRestore: (lead: Lead) => void;
+  onDestroy: (lead: Lead) => void;
+  onResend?: (lead: Lead) => void;
 }
 
 export function LeadCard({
   lead,
+  stage,
+  stages,
   actions,
-  compact,
   draggable,
 }: {
   lead: Lead;
+  stage: Stage | undefined;
+  stages: Stage[];
   actions: LeadActions;
-  compact?: boolean;
   draggable?: boolean;
 }) {
-  const next = nextStatus(lead.status);
-  const isNew = !lead.viewed_at;
+  const isDeleted = stage?.key === "deleted";
+  const isNew = !lead.viewed_at && !isDeleted;
 
   return (
     <article
@@ -46,8 +49,9 @@ export function LeadCard({
         e.dataTransfer.effectAllowed = "move";
       }}
       className={cn(
-        "group relative flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-muted-foreground/30",
+        "group relative flex flex-col gap-2.5 rounded-2xl border border-border bg-white p-3.5 shadow-[0_1px_2px_rgba(34,45,47,0.04)] transition-colors hover:border-qiymat-60",
         draggable && "cursor-grab active:cursor-grabbing",
+        isDeleted && "opacity-75",
       )}
     >
       <div className="flex items-start justify-between gap-2">
@@ -55,14 +59,14 @@ export function LeadCard({
           <button
             type="button"
             onClick={() => actions.onOpen(lead)}
-            className="flex max-w-full items-center gap-2 text-left font-display text-base font-bold leading-tight hover:text-primary"
+            className="flex max-w-full items-center gap-2 text-left font-display text-[15px] font-semibold leading-tight text-graphite hover:text-qiymat"
           >
-            {isNew && <span className="h-2 w-2 shrink-0 rounded-full bg-primary" title="Hali ko'rilmagan" />}
+            {isNew && <span className="h-2 w-2 shrink-0 rounded-full bg-qiymat" title="Hali ko'rilmagan" />}
             <span className="truncate">{lead.full_name}</span>
           </button>
           <a
             href={phoneHref(lead.phone)}
-            className="mt-1 inline-flex items-center gap-1.5 text-sm text-muted-foreground tabular transition-colors hover:text-primary"
+            className="mt-1 inline-flex items-center gap-1.5 text-sm text-graphite-80 tabular transition-colors hover:text-qiymat"
           >
             <Phone className="h-3.5 w-3.5" />
             {lead.phone}
@@ -79,57 +83,60 @@ export function LeadCard({
             <DropdownMenuItem onSelect={() => actions.onOpen(lead)}>
               <Eye /> Batafsil ko&apos;rish
             </DropdownMenuItem>
-            <DropdownMenuItem disabled={!next} onSelect={() => actions.onAdvance(lead)}>
-              <ArrowRight /> {next ? `Oldinga: ${STATUS_META[next].label}` : "Statusni oldinga surish"}
+            <DropdownMenuItem onSelect={() => actions.onEdit(lead)}>
+              <Pencil /> Tahrirlash
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => actions.onResend(lead)}>
-              <Send /> Telegramga qayta yuborish
-            </DropdownMenuItem>
+            {actions.onResend && (
+              <DropdownMenuItem onSelect={() => actions.onResend?.(lead)}>
+                <Send /> Telegramga yuborish
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => actions.onDelete(lead)} className="text-danger focus:text-danger">
-              <Trash2 /> O&apos;chirish
-            </DropdownMenuItem>
+            {isDeleted ? (
+              <>
+                <DropdownMenuItem onSelect={() => actions.onRestore(lead)}>
+                  <RotateCcw /> Qayta tiklash
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => actions.onDestroy(lead)} className="text-danger focus:text-danger">
+                  <Trash2 /> Butunlay o&apos;chirish
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem onSelect={() => actions.onArchive(lead)} className="text-danger focus:text-danger">
+                <Trash2 /> O&apos;chirish
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5">
-        <span className="rounded-full border border-border bg-white/[0.03] px-2.5 py-1 text-xs font-semibold">
-          {lead.business_type}
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-border bg-white/[0.03] px-2.5 py-1 text-xs font-semibold text-muted-foreground">
-          <Wallet className="h-3 w-3" /> {BUDGET_LABELS[lead.monthly_budget]}
-        </span>
-      </div>
-
-      {!compact && lead.problems.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {lead.problems.map((p) => (
-            <span key={p} className="rounded-md bg-lime-soft px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-primary">
-              {p}
+      {(lead.product || lead.amount != null) && (
+        <div className="flex flex-wrap items-center gap-1.5">
+          {lead.product && (
+            <span className="inline-flex max-w-full items-center gap-1 rounded-full bg-sage-40 px-2.5 py-1 text-xs font-semibold text-qiymat">
+              <ShoppingBag className="h-3 w-3 shrink-0" />
+              <span className="truncate">{lead.product}</span>
             </span>
-          ))}
+          )}
+          {lead.amount != null && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-graphite">
+              <Wallet className="h-3 w-3" /> {formatMoney(lead.amount)} so&apos;m
+            </span>
+          )}
         </div>
       )}
 
-      <ScoreBar score={lead.score} />
+      {lead.comment && <p className="line-clamp-2 text-xs leading-relaxed text-graphite-80">{lead.comment}</p>}
 
-      <div className="flex items-center justify-between gap-2 border-t border-border pt-3">
-        <StatusPill status={lead.status} onChange={(s) => actions.onStatusChange(lead, s)} />
-        <div className="flex items-center gap-1">
-          <TimeText value={lead.created_at} format="ago" className="text-xs text-muted-foreground" />
-          {next && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-7 w-7 text-muted-foreground hover:text-primary"
-              onClick={() => actions.onAdvance(lead)}
-              aria-label={`Statusni oldinga surish: ${STATUS_META[next].label}`}
-              title={`Oldinga: ${STATUS_META[next].label}`}
-            >
-              <ArrowRight />
-            </Button>
-          )}
+      {lead.reminder_at && !isDeleted && (
+        <ReminderBadge value={lead.reminder_at} icon={<BellRing className="h-3 w-3" />} />
+      )}
+
+      <div className="flex items-center justify-between gap-2 border-t border-border pt-2.5">
+        <StagePill stage={stage} stages={stages} onChange={(id) => actions.onMove(lead, id)} />
+        <div className="flex min-w-0 flex-col items-end text-right text-[11px] leading-tight text-graphite-80">
+          <TimeText value={lead.created_at} format="ago" />
+          <span className="truncate">{sourceLabel(lead.source)}</span>
         </div>
       </div>
     </article>
