@@ -17,15 +17,12 @@
 - Think: Adham speaking to camera
 
 ## HeyGen
-- Group ID: PENDING — photo avatar creation failed: insufficient API credits (re-run once the API wallet is topped up)
+- Group ID: 0f753369c9ef03f7681e651117802a30
 - Voice ID: dfd899dd798149deb7ef46da5fb84f5e
 - Voice Name: Adham (klon)
 - Voice Designed: false (voice clone, language detected: Uzbek)
 - Voice Seed: n/a
-- Looks: PENDING
-- Last Synced: 2026-11-09T11:55:00Z
-
-Pending avatar command (photo already uploaded):
-`heygen avatar create -d '{"type":"photo","name":"Adham","file":{"type":"asset_id","asset_id":"35ee87a24a6f4578b62847d7d492be34"}}'`
+- Looks: portrait=0f753369c9ef03f7681e651117802a30 (photo_avatar; engines: avatar_v, avatar_iv, avatar_iii)
+- Last Synced: 2026-11-09T12:10:00Z
 
 ⚠️ look_ids are ephemeral — always resolve fresh from group_id at runtime via `heygen avatar looks list --group-id <id>`. Never hardcode look_id as the primary avatar reference.
