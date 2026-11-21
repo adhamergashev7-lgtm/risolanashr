@@ -1,0 +1,18 @@
+# Nizomiddin Telefonchi: har 5 daqiqada 30 daqiqadan beri qo'ng'iroq qilinmagan lidlarni tekshiradi
+# va Telegram guruhiga eslatma yuborishni ishga tushiradi. Bu saytning o'ziga ta'sir qilmaydi.
+name: Nizomiddin lid tekshiruvi
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Lidlarni tekshirish
+        run: curl -fsS --retry 2 --max-time 30 "https://nizomiddin-telefonchi.vercel.app/api/check"
